@@ -1,0 +1,18 @@
+
+@import '@style-assets';
+
+.app {
+  &-container {
+    display: grid;
+    grid-template-rows: 70px 1fr;
+    height: 100vh;
+  }
+
+  &-main {
+    background: $main-background-light-theme;
+
+    .dark-theme & {
+      background: $main-background-dark-theme;
+    }
+  }
+}
