@@ -25,7 +25,7 @@ export default function CountriesSection(props) {
     openFullscreen: () => {
       openFullscreen({
         currentFullscreenTitle: 'Cases by country',
-        currentFullscreenContent: CountriesSectionFullscreenContent({apiData}),
+        currentFullscreenContent: CountriesSectionFullscreenContent(),
       });
     },
   };
@@ -37,7 +37,7 @@ export default function CountriesSection(props) {
   );
 }
 
-function CountriesSectionFullscreenContent({apiData}) {
+function CountriesSectionFullscreenContent() {
   return (
     <div className="countries-section-fullscreen-content">
       {/* your code */}

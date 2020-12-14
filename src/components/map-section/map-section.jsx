@@ -25,7 +25,7 @@ export default function MapSection(props) {
     openFullscreen: () => {
       openFullscreen({
         currentFullscreenTitle: 'Map',
-        currentFullscreenContent: MapSectionFullscreenContent({apiData}),
+        currentFullscreenContent: MapSectionFullscreenContent(),
       });
     },
   };
@@ -37,7 +37,7 @@ export default function MapSection(props) {
   );
 }
 
-function MapSectionFullscreenContent({apiData}) {
+function MapSectionFullscreenContent() {
   return (
     <div className="map-section-fullscreen-content">
       {/* your code */}

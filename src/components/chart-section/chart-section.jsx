@@ -27,7 +27,7 @@ export default function ChartSection(props) {
     openFullscreen: () => {
       openFullscreen({
         currentFullscreenTitle: 'Chart',
-        currentFullscreenContent: ChartSectionFullscreenContent({apiData}),
+        currentFullscreenContent: ChartSectionFullscreenContent(),
       });
     },
   };
@@ -39,7 +39,7 @@ export default function ChartSection(props) {
   );
 }
 
-function ChartSectionFullscreenContent({apiData}) {
+function ChartSectionFullscreenContent() {
   return (
     <div className="chart-section-fullscreen-content">
       {/* your code */}
