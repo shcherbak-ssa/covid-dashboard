@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import classnames from 'classnames';
 import './app.scss';
 
@@ -11,7 +11,7 @@ import Fullscreen from '../fullscreen';
 
 const DARK_THEME_CLASSNAME = 'dark-theme';
 
-export default function App() {
+export default function App(props) {
   const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
   const [fullscreenTitle, setFullscreenTitle] = useState('');
   const [fullscreenContent, setFullscreenContent] = useState('');

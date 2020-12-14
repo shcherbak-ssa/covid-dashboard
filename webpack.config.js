@@ -27,7 +27,9 @@ module.exports = (env = {}) => {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/env', '@babel/react'],
-            plugins: []
+            plugins: [
+              '@babel/plugin-transform-runtime',
+            ]
           }
         },
         {

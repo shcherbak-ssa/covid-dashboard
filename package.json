@@ -23,6 +23,7 @@
   "homepage": "https://github.com/shcherbak-ssa/covid-dashboard#readme",
   "devDependencies": {
     "@babel/core": "^7.12.10",
+    "@babel/plugin-transform-runtime": "^7.12.10",
     "@babel/preset-env": "^7.12.10",
     "@babel/preset-react": "^7.12.10",
     "babel-loader": "^8.2.2",
