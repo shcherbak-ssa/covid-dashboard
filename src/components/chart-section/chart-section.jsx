@@ -29,13 +29,15 @@ export default function ChartSection(props) {
   
   return (
     <Section {...sectionProps}>
-      {/* content */}
+      {/* your code */}
     </Section>
   );
 }
 
 function ChartSectionFullscreenContent({apiData}) {
   return (
-    <div className="chart-section-fullscreen-content"></div>
+    <div className="chart-section-fullscreen-content">
+      {/* your code */}
+    </div>
   );
 }

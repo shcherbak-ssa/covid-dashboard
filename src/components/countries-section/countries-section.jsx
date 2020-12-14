@@ -29,13 +29,15 @@ export default function CountriesSection(props) {
   
   return (
     <Section {...sectionProps}>
-      {/* content */}
+      {/* your code */}
     </Section>
   );
 }
 
 function CountriesSectionFullscreenContent({apiData}) {
   return (
-    <div className="countries-section-fullscreen-content"></div>
+    <div className="countries-section-fullscreen-content">
+      {/* your code */}
+    </div>
   );
 }

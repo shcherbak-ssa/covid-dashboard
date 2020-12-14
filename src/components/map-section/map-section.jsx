@@ -29,13 +29,15 @@ export default function MapSection(props) {
   
   return (
     <Section {...sectionProps}>
-      {/* content */}
+      {/* your code */}
     </Section>
   );
 }
 
 function MapSectionFullscreenContent({apiData}) {
   return (
-    <div className="map-section-fullscreen-content"></div>
+    <div className="map-section-fullscreen-content">
+      {/* your code */}
+    </div>
   );
 }

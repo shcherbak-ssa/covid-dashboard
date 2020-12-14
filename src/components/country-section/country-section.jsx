@@ -35,13 +35,15 @@ export default function CountrySection(props) {
   
   return (
     <Section {...sectionProps}>
-      {/* content */}
+      {/* your code */}
     </Section>
   );
 }
 
 function CountrySectionFullscreenContent({apiData}) {
   return (
-    <div className="country-section-fullscreen-content"></div>
+    <div className="country-section-fullscreen-content">
+      {/* your code */}
+    </div>
   );
 }

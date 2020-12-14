@@ -5,6 +5,7 @@ import {
   CASES_PARAMETER_OPTION,
   DEATHS_PARAMETER_OPTION,
   RECOVERED_PARAMETER_OPTION,
+  MEASUREMENT_OPTION,
 } from '../constants';
 
 export const optionsMenu = {
@@ -49,7 +50,7 @@ export const optionsMenu = {
       {
         isSelected: false,
         value: '100K population',
-        label: '100K',
+        label: MEASUREMENT_OPTION,
       },
     ],
   },
