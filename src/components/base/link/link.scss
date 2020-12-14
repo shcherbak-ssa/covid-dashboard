@@ -1,0 +1,23 @@
+
+@import '@style-assets';
+
+.base-link {
+  border-radius: 4px;
+  color: $text-on-dark;
+  display: flex;
+  align-items: center;
+  padding: 6px;
+  transition: .2s;
+
+  &-icon {
+    margin-right: 6px;
+  }
+
+  &:hover {
+    background: rgba(241, 241, 245, 0.2);
+  }
+
+  &:active {
+    background: rgba(241, 241, 245, 0.4);
+  }
+}

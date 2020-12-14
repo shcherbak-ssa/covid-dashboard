@@ -3,6 +3,6 @@ import './text-label.scss';
 
 export default function TextLabel({value}) {
   return (
-    <div className="text-label">{ value }</div>
+    <div className="base-text-label">{ value }</div>
   );
 }
