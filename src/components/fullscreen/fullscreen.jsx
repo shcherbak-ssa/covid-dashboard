@@ -7,7 +7,7 @@ import Base from '@/components/base';
 const IS_OPEN_CLASSNAME = 'is-open';
 
 export default function Fullscreen(props) {
-  const {currentTheme, isOpen, title, closeFullscreen} = props;
+  const {currentTheme, isOpen, title, content, closeFullscreen} = props;
   const classNames = classnames('fullscreen', {
     [IS_OPEN_CLASSNAME]: isOpen
   });
@@ -26,6 +26,7 @@ export default function Fullscreen(props) {
           <Base.Title value={title} />
           <Base.Icon {...closeIconProps} />
         </div>
+        <div className="fullscreen-content">{content}</div>
       </div>
     </div>
   );

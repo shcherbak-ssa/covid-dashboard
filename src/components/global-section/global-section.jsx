@@ -7,12 +7,35 @@ import Section from '../section';
 export default function GlobalSection({openFullscreen}) {
   const sectionProps = {
     sectionType: 'global',
-    openFullscreen,
+    openFullscreen: () => {
+      openFullscreen({
+        currentFullscreenTitle: 'Global',
+        currentFullscreenContent: GlobalSectionFullscreenContent(),
+      });
+    },
   };
   
   return (
     <Section {...sectionProps}>
       <Base.Title value="Global cases" />
     </Section>
+  );
+}
+
+function GlobalSectionFullscreenContent() {
+  return (
+    <div className="global-section-fullscreen-content">
+      <GlobalSectionFullscreenItem title="Cases" />
+      <GlobalSectionFullscreenItem title="Deaths" />
+      <GlobalSectionFullscreenItem title="Recovered" />
+    </div>
+  );
+}
+
+function GlobalSectionFullscreenItem({title}) {
+  return (
+    <div className="global-section-fullscreen-item">
+      <Base.Title value={title} />
+    </div>
   );
 }

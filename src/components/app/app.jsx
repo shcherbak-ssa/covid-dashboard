@@ -13,7 +13,10 @@ const DARK_THEME_CLASSNAME = 'dark-theme';
 
 export default function App() {
   const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
+  const [fullscreenTitle, setFullscreenTitle] = useState('');
+  const [fullscreenContent, setFullscreenContent] = useState('');
   const [currentTheme, setCurrentTheme] = useState(LIGHT_THEME);
+
   const classNames = classnames('app', {
     [DARK_THEME_CLASSNAME]: currentTheme === DARK_THEME
   });
@@ -26,14 +29,17 @@ export default function App() {
   const fullscreenProps = {
     currentTheme,
     isOpen: isFullscreenOpen,
-    title: '',
+    title: fullscreenTitle,
+    content: fullscreenContent,
     closeFullscreen: () => {
       setIsFullscreenOpen(false);
     },
   };
 
-  function openFullscreen() {
+  function openFullscreen({currentFullscreenTitle, currentFullscreenContent}) {
     setIsFullscreenOpen(true);
+    setFullscreenTitle(currentFullscreenTitle);
+    setFullscreenContent(currentFullscreenContent);
   }
 
   function toggleCurrentTheme() {

@@ -11,8 +11,8 @@ export const authors = [
   },
   {
     icon: 'github',
-    value: 'shcherbak-ssa',
-    href: 'https://github.com/shcherbak-ssa',
+    value: 'Angoulema',
+    href: 'https://github.com/Angoulema',
   },
   {
     icon: 'github',

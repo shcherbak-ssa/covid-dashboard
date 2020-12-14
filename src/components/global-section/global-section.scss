@@ -15,4 +15,21 @@
       justify-content: center;
     }
   }
+
+  &-fullscreen {
+    &-content {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    &-item {
+      margin-bottom: 46px;
+
+      .base-title {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+    }
+  }
 }
