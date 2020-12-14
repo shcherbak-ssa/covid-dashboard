@@ -7,16 +7,18 @@ import {
 } from './constants';
 
 export async function loadData() {
-  const allApiData = await request('all');
-  const countriesApiData = await request('countries');
-  const transfortedCountries = transformForCountries(countriesApiData);
+  const global = await request('all');
+  const countries = await request('countries');
+  const historicalGlobal = await request('historical/all');
+  const historicalCountries = await request('historical');
+  const transfortedCountries = transformForCountries(countries, historicalCountries);
 
   return {
-    global: getTotal(allApiData),
-    country: transfromForCountrySection(allApiData),
+    global: getTotal(global),
+    country: transfromForCountrySection(global),
     countries: lodash.cloneDeep(transfortedCountries),
     map: lodash.cloneDeep(transfortedCountries),
-    chart: lodash.cloneDeep(transfortedCountries),
+    chart: transfromForChart(historicalGlobal, global.population),
   };
 }
 
@@ -29,33 +31,62 @@ async function request(type) {
   return await response.json();
 }
 
-function transformForCountries(countriesApiData) {
-  return countriesApiData.map(transformForCountry);
+/* transform functions */
+function transformForCountries(countries, historicalCountries) {
+  return countries
+    .map((country) => {
+      const countryHistorical = historicalCountries.find((historicalCountry) => {
+        if (historicalCountry.country === country.country) return true;
+        else return false;
+      });
+
+      return countryHistorical ? transformForCountry(country, countryHistorical.timeline) : null;
+    })
+    .filter((country) => country !== null);
 }
 
-function transformForCountry(countryApiData) {
+function transformForCountry(country, countryHistorical) {
   return {
-    countryName: countryApiData.country,
-    countryFlag: countryApiData.countryInfo.flag,
-    [TOTAL_TYPE_OPTION]: getTotal(countryApiData),
-    [LAST_DAY_TYPE_OPTION]: getLastDay(countryApiData),
-    [TOTAL_TYPE_OPTION + MEASUREMENT_OPTION]: getTotalCalculatedPer100K(countryApiData),
-    [LAST_DAY_TYPE_OPTION + MEASUREMENT_OPTION]: getLastDayCalculatedPer100K(countryApiData),
+    countryName: country.country,
+    countryFlag: country.countryInfo.flag,
+    [TOTAL_TYPE_OPTION]: getTotal(country),
+    [LAST_DAY_TYPE_OPTION]: getLastDay(country),
+    [TOTAL_TYPE_OPTION + MEASUREMENT_OPTION]: getTotalCalculatedPer100K(country),
+    [LAST_DAY_TYPE_OPTION + MEASUREMENT_OPTION]: getLastDayCalculatedPer100K(country),
+    timeline: {
+      [TOTAL_TYPE_OPTION]: countryHistorical,
+      [TOTAL_TYPE_OPTION + MEASUREMENT_OPTION]: getTotalCalculatedPer100KTimeline(
+        countryHistorical, country.population
+      ),
+    }
   }
 }
 
-function transfromForCountrySection(allApiData) {
+function transfromForCountrySection(global) {
   return {
-    default: {
-      [TOTAL_TYPE_OPTION]: getTotal(allApiData),
-      [LAST_DAY_TYPE_OPTION]: getLastDay(allApiData),
-      [TOTAL_TYPE_OPTION + MEASUREMENT_OPTION]: getTotalCalculatedPer100K(allApiData),
-      [LAST_DAY_TYPE_OPTION + MEASUREMENT_OPTION]: getLastDayCalculatedPer100K(allApiData),
+    global: {
+      [TOTAL_TYPE_OPTION]: getTotal(global),
+      [LAST_DAY_TYPE_OPTION]: getLastDay(global),
+      [TOTAL_TYPE_OPTION + MEASUREMENT_OPTION]: getTotalCalculatedPer100K(global),
+      [LAST_DAY_TYPE_OPTION + MEASUREMENT_OPTION]: getLastDayCalculatedPer100K(global),
     },
     country: null,
   };
 }
 
+function transfromForChart(historicalGlobal, population) {
+  return {
+    global: {
+      [TOTAL_TYPE_OPTION]: historicalGlobal,
+      [TOTAL_TYPE_OPTION + MEASUREMENT_OPTION]: getTotalCalculatedPer100KTimeline(
+        historicalGlobal, population
+      ),
+    },
+    country: null,
+  };
+}
+
+/* get functions */
 function getTotal(apiData) {
   const {cases, deaths, recovered} = apiData;
   return {cases, deaths, recovered};
@@ -89,4 +120,16 @@ function getLastDayCalculatedPer100K(apiData) {
     deaths: calculatePerPopulation(todayDeaths, population),
     recovered: calculatePerPopulation(todayRecovered, population),
   };
+}
+
+function getTotalCalculatedPer100KTimeline(historical, population) {
+  const transformedHistorical = Object.entries(historical).map(([value, timeline]) => {
+    const transformedTimeline = Object.entries(timeline).map(([day, number]) => {
+      return [day, calculatePerPopulation(number, population)];
+    });
+
+    return [value, Object.fromEntries(transformedTimeline)];
+  });
+
+  return Object.fromEntries(transformedHistorical);
 }

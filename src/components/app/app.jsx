@@ -20,6 +20,7 @@ export default function App({apiData}) {
   const [fullscreenTitle, setFullscreenTitle] = useState('');
   const [fullscreenContent, setFullscreenContent] = useState('');
   const [currentTheme, setCurrentTheme] = useState(LIGHT_THEME);
+  const [selectedCountry, setSelectedCountry] = useState(null);
 
   const classNames = classnames('app', {
     [DARK_THEME_CLASSNAME]: currentTheme === DARK_THEME
@@ -36,22 +37,22 @@ export default function App({apiData}) {
       openFullscreen,
     },
     countries: {
-      apiData: {},
+      apiData: apiData.countries,
       currentTheme,
       openFullscreen,
     },
     map: {
-      apiData: {},
+      apiData: apiData.map,
       currentTheme,
       openFullscreen,
     },
     country: {
-      apiData: {},
+      apiData: apiData.country,
       currentTheme,
       openFullscreen,
     },
     chart: {
-      apiData: {},
+      apiData: apiData.chart,
       currentTheme,
       openFullscreen,
     },
