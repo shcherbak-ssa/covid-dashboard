@@ -11,6 +11,7 @@ import Fullscreen from '../fullscreen';
 import CountriesSection from '../countries-section';
 import MapSection from '../map-section';
 import CountrySection from '../country-section';
+import ChartSection from '../chart-section/chart-section';
 
 const DARK_THEME_CLASSNAME = 'dark-theme';
 
@@ -49,6 +50,11 @@ export default function App({apiData}) {
       currentTheme,
       openFullscreen,
     },
+    chart: {
+      apiData: {},
+      currentTheme,
+      openFullscreen,
+    },
   };
 
   const fullscreenProps = {
@@ -81,6 +87,7 @@ export default function App({apiData}) {
           <CountriesSection {...sectionsProps.countries} />
           <MapSection {...sectionsProps.map} />
           <CountrySection {...sectionsProps.country} />
+          <ChartSection {...sectionsProps.chart} />
           <Fullscreen {...fullscreenProps} />
         </div>
       </div>
