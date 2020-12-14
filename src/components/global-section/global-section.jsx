@@ -18,6 +18,7 @@ export default function GlobalSection({openFullscreen}) {
   return (
     <Section {...sectionProps}>
       <Base.Title value="Global cases" />
+      <Base.NumberView type="cases" number={72742299} />
     </Section>
   );
 }

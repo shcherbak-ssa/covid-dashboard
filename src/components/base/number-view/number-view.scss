@@ -1,0 +1,18 @@
+
+@import '@style-assets';
+
+.base-number-view {
+  font: 500 18px/28px 'Montserrat', sans-serif;
+
+  &[data-number-type="cases"] {
+    color: $cases-number-type-color;
+  }
+
+  &[data-number-type="deaths"] {
+    color: $deaths-number-type-color;
+  }
+
+  &[data-number-type="recovered"] {
+    color: $recovered-number-type-color;
+  }
+}
