@@ -8,6 +8,7 @@ import AppHeader from './app-header';
 import AppFooter from './app-footer';
 import GlobalSection from '../global-section';
 import Fullscreen from '../fullscreen';
+import CountriesSection from '../countries-section';
 
 const DARK_THEME_CLASSNAME = 'dark-theme';
 
@@ -53,6 +54,7 @@ export default function App({apiData}) {
         <AppHeader {...appHeaderProps} />
         <div className="app-main">
           <GlobalSection apiData={apiData.global} openFullscreen={openFullscreen}/>
+          <CountriesSection apiData={{}} openFullscreen={openFullscreen} />
           <Fullscreen {...fullscreenProps} />
         </div>
       </div>

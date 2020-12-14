@@ -23,7 +23,7 @@ export default function Section(props) {
   );
 }
 
-function SectionHeader({title, iconClickHandle}) {
+function SectionHeader({title, textLabel = true, iconClickHandle}) {
   const optionsIconProps = {
     icon: 'options',
     iconClickHandle,
@@ -33,7 +33,7 @@ function SectionHeader({title, iconClickHandle}) {
     <div className="section-header flex-space-between">
       <Base.Title value={title} />
       <div className="section-icons">
-        <Base.TextLabel value="[text-label]" />
+        {textLabel ? <Base.TextLabel value="[text-label]" /> : ''}
         <Base.Icon {...optionsIconProps} />
       </div>
     </div>
