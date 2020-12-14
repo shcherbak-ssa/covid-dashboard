@@ -28,3 +28,9 @@ body {
   font-weight: bold;
   line-height: 28px;
 }
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
