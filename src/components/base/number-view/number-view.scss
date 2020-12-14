@@ -10,6 +10,10 @@
 
   &[data-number-type="deaths"] {
     color: $deaths-number-type-color;
+
+    .dark-theme & {
+      color: $text-on-dark;
+    }
   }
 
   &[data-number-type="recovered"] {

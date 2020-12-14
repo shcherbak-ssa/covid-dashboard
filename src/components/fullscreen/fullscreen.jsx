@@ -2,9 +2,8 @@ import React from 'react';
 import classnames from 'classnames';
 import './fullscreen.scss';
 
+import { IS_OPEN_CLASSNAME } from '@/constants';
 import Base from '@/components/base';
-
-const IS_OPEN_CLASSNAME = 'is-open';
 
 export default function Fullscreen(props) {
   const {currentTheme, isOpen, title, content, closeFullscreen} = props;

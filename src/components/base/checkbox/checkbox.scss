@@ -1,7 +1,7 @@
 
 @import '@style-assets';
 
-.base-radio {
+.base-checkbox {
   display: flex;
   align-items: center;
   padding-left: 16px;
@@ -16,20 +16,16 @@
   &-label {
     margin-right: 10px;
     background: #E3DAF9;
+    border-radius: 4px;
     -x-size: 24px;
 
     .dark-theme & {
       background: $dark;
     }
 
-    span {
-      background: #fff;
+    img {
       display: none;
-      -x-size: 10px;
-    }
-
-    &, span {
-      border-radius: 50%;
+      // -x-size: 10px;
     }
   }
 
@@ -42,10 +38,10 @@
   }
 
   &.is-selected {
-    .base-radio-label {
+    .base-checkbox-label {
       background: $dark;
 
-      span {
+      img {
         display: block;
       }
 

@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classnames from 'classnames';
 import './section.scss';
 
 import { getIconUrl } from '@/tools';
 import Base from '@/components/base';
+import OptionsMenu from '../options-menu';
 
 export default function Section(props) {
   const {sectionType, headerProps, openFullscreen} = props;
@@ -23,20 +24,38 @@ export default function Section(props) {
   );
 }
 
-function SectionHeader({title, currentTheme, textLabel = true, iconClickHandle}) {
+function SectionHeader(props) {
+  const {title, currentTheme, optionsMenuType, textLabel, updateApiData} = props;
+  const [isOptionsMenuOpen, setIsOptionsMenuOpen] = useState(false);
   const optionsIconProps = {
     icon: 'options',
     currentTheme,
-    iconClickHandle,
+    iconClickHandle: () => {
+      setIsOptionsMenuOpen(!isOptionsMenuOpen);
+    },
   };
+
+  const optionsMenuProps = {
+    isOpen: isOptionsMenuOpen,
+    menuType: optionsMenuType,
+    updateApiData,
+  };
+
+  function transformTextLabel() {
+    const {type, parameter, measurement} = textLabel;
+    const measure = measurement ? ` / ${measurement}` : '';
+    const param = parameter ? ` ${parameter}` : '';
+    return type + param + measure;
+  }
 
   return (
     <div className="section-header flex-space-between">
       <Base.Title value={title} />
       <div className="section-icons">
-        {textLabel ? <Base.TextLabel value="[text-label]" /> : ''}
+      <Base.TextLabel value={transformTextLabel()} />
         <Base.Icon {...optionsIconProps} />
       </div>
+      <OptionsMenu {...optionsMenuProps} />
     </div>
   );
 }

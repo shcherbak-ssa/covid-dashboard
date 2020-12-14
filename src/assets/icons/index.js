@@ -6,3 +6,4 @@ import './options-dark.svg';
 import './fullscreen.svg';
 import './close.svg';
 import './close-dark.svg';
+import './checked.svg';
