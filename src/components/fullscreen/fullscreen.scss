@@ -1,0 +1,27 @@
+
+@import '@style-assets';
+
+.fullscreen {
+  background: rgba(57, 62, 70, 0.4);
+  display: none;
+  z-index: 9;
+  -x-position: absolute 0 0 0 0;
+
+  &-container {
+    background: $fullscreen-container-background-light-theme;
+    border-radius: 4px;
+    -x-size: 100%;
+
+    .dark-theme & {
+      background: $fullscreen-container-background-dark-theme;
+    }  
+  }
+
+  &, &-container {
+    padding: 16px;
+  }
+
+  &.is-open {
+    display: block;
+  }
+}

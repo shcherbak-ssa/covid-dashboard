@@ -1,0 +1,18 @@
+
+@import '@style-assets';
+
+.global-section {
+  grid-area: global;
+
+  .section {
+    &-header {
+      display: none;
+    }
+
+    &-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}

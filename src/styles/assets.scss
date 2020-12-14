@@ -14,6 +14,8 @@ $footer-background-light-theme: #393E46;
 $section-title-color-light-theme: #393E46;
 $section-background-light-theme: #fff;
 
+$fullscreen-container-background-light-theme: #fff;
+
 /** dark theme */
 $header-background-dark-theme: #222;
 $main-background-dark-theme: #2D2D2D;
@@ -21,6 +23,8 @@ $footer-background-dark-theme: #222;
 
 $section-title-color-dark-theme: #fff;
 $section-background-dark-theme: #393E46;
+
+$fullscreen-container-background-dark-theme: #393E46;
 
 /** functions */
 @function relativeWidth($width) {

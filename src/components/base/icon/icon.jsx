@@ -2,18 +2,23 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 import './icon.scss';
 
+import { getIconUrl } from '@/tools';
 import { IS_ACTIVE_CLASSNAME } from '@/constants';
 
-export default function Icon({icon, iconClickHandle}) {
+export default function Icon(props) {
+  const {currentTheme, icon, iconClickHandle, isActionIcon = true} = props;
   const [isActive, setIsActive] = useState(false);
-  const iconUrl = getIconUrl(icon);
+  const iconUrl = getIconUrl(icon, currentTheme);
 
   const className = classnames('base-icon click flex-center', {
     [IS_ACTIVE_CLASSNAME]: isActive,
   });
 
   function clickHandle() {
-    isActive ? setIsActive(false) : setIsActive(true);
+    if (isActionIcon) {
+      isActive ? setIsActive(false) : setIsActive(true);
+    }
+
     iconClickHandle(isActive);
   }
   

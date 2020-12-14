@@ -8,7 +8,7 @@
   padding: 24px relativeWidth(100);
 
   .dark-theme & {
-    background: $header-background-dark-theme;
+    background: $footer-background-dark-theme;
   }
 
   @media screen and (max-width: 730px) {
