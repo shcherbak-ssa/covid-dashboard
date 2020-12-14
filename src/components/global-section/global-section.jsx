@@ -1,7 +1,7 @@
 import React from 'react';
 import './global-section.scss';
 
-import Base from '@/components/base';
+import Base from '../base';
 import Section from '../section';
 
 export default function GlobalSection({apiData, openFullscreen}) {

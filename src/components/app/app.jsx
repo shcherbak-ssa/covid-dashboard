@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 import './app.scss';
 
-import { DARK_THEME, LIGHT_THEME } from '@/constants';
+import { DARK_THEME, LIGHT_THEME } from '../../constants';
 
 import AppHeader from './app-header';
 import AppFooter from './app-footer';
@@ -40,20 +40,24 @@ export default function App({apiData}) {
       apiData: apiData.countries,
       currentTheme,
       openFullscreen,
+      setSelectedCountry,
     },
     map: {
       apiData: apiData.map,
       currentTheme,
       openFullscreen,
+      setSelectedCountry,
     },
     country: {
       apiData: apiData.country,
       currentTheme,
+      selectedCountry,
       openFullscreen,
     },
     chart: {
       apiData: apiData.chart,
       currentTheme,
+      selectedCountry,
       openFullscreen,
     },
   };

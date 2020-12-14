@@ -14,4 +14,5 @@ export function updateTextLabel(key, label, textLabel, setTextLabel) {
   updatedTextLabel[key] = label;
 
   setTextLabel(updatedTextLabel);
+  return updatedTextLabel;
 }

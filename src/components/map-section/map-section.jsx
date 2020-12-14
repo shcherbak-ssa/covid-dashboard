@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import './map-section.scss';
 
-import { textLabelDefaultState, updateTextLabel } from '@/tools';
+import { textLabelDefaultState, updateTextLabel, getSearchData } from '../../tools';
 import Section from '../section';
 
 export default function MapSection(props) {
-  const {apiData, currentTheme, openFullscreen} = props;
+  const {currentTheme, openFullscreen, /* setSelectedCountry */} = props;
   const [textLabel, setTextLabel] = useState(textLabelDefaultState);
+  const [searchData, setSearchData] = useState(getSearchData(textLabel));
+  // const [apiData, setApiData] = useState(props.apiData);
+  // console.log(apiData, searchData);
 
   const sectionProps = {
     sectionType: 'map',
@@ -15,8 +18,8 @@ export default function MapSection(props) {
       currentTheme,
       textLabel,
       updateApiData: (key, label) => {
-        console.log(key, label);
-        updateTextLabel(key, label, textLabel, setTextLabel);
+        const updatedTextLabel = updateTextLabel(key, label, textLabel, setTextLabel);
+        setSearchData(getSearchData(updatedTextLabel));
       },
     },
     openFullscreen: () => {

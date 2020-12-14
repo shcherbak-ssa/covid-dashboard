@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import './country-section.scss';
 
-import { COUNTRY_OPTIONS_MENU_TYPE } from '@/constants';
-import { textLabelDefaultState, updateTextLabel } from '@/tools';
+import { COUNTRY_OPTIONS_MENU_TYPE } from '../../constants';
+import { textLabelDefaultState, updateTextLabel, getSearchData } from '../../tools';
 import Section from '../section';
 
 export default function CountrySection(props) {
-  const {apiData, title = 'Global', currentTheme, openFullscreen} = props;
+  const {title = 'Global', currentTheme, openFullscreen, /* selectedCountry */} = props;
   const [textLabel, setTextLabel] = useState(textLabelDefaultState);
+  const [searchData, setSearchData] = useState(getSearchData(textLabel));
+  // const [apiData, setApiData] = useState(props.apiData);
+  // console.log(apiData, searchData);
 
   useEffect(() => {
     updateTextLabel('parameter', '', textLabel, setTextLabel);
@@ -21,8 +24,8 @@ export default function CountrySection(props) {
       textLabel,
       optionsMenuType: COUNTRY_OPTIONS_MENU_TYPE,
       updateApiData: (key, label) => {
-        console.log(key, label);
-        updateTextLabel(key, label, textLabel, setTextLabel);
+        const updatedTextLabel = updateTextLabel(key, label, textLabel, setTextLabel);
+        setSearchData(getSearchData(updatedTextLabel));
       },
     },
     openFullscreen: () => {

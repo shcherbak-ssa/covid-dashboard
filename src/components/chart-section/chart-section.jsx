@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import './chart-section.scss';
 
-import { CHART_OPTIONS_MENU_TYPE } from '@/constants';
-import { textLabelDefaultState, updateTextLabel } from '@/tools';
+import { CHART_OPTIONS_MENU_TYPE } from '../../constants';
+import { textLabelDefaultState, updateTextLabel, getSearchData } from '../../tools';
 import Section from '../section';
 
 export default function ChartSection(props) {
-  const {apiData, currentTheme, openFullscreen} = props;
+  const {currentTheme, openFullscreen, /* selectedCountry */} = props;
   const [textLabel, setTextLabel] = useState(textLabelDefaultState);
+  const [searchData, setSearchData] = useState(getSearchData(textLabel));
+  // const [apiData, setApiData] = useState(props.apiData);
+  // console.log(apiData, searchData);
 
   const sectionProps = {
     sectionType: 'chart',
@@ -17,7 +20,8 @@ export default function ChartSection(props) {
       textLabel,
       optionsMenuType: CHART_OPTIONS_MENU_TYPE,
       updateApiData: (key, label) => {
-        updateTextLabel(key, label, textLabel, setTextLabel);
+        const updatedTextLabel = updateTextLabel(key, label, textLabel, setTextLabel);
+        setSearchData(getSearchData(updatedTextLabel));
       },
     },
     openFullscreen: () => {
