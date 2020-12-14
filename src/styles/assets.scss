@@ -1,4 +1,6 @@
 
+$design-width: 1366;
+
 $dark: #393E46;
 
 $text-on-dark: #fff;
@@ -17,3 +19,8 @@ $main-background-dark-theme: #2D2D2D;
 $footer-background-dark-theme: #222;
 
 $section-background-dark-theme: #393E46;
+
+/** functions */
+@function relativeWidth($width) {
+  @return $width/$design-width * 100%;
+}

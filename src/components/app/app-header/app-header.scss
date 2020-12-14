@@ -9,12 +9,16 @@
   height: 70px;
 
   .dark-theme & {
-    background: $header-background-dark-theme;
+    background: $footer-background-dark-theme;
   }
 
   .header {
     &-title {
-      font: bold 24px/28px 'Montserrat', sans-serif;
+      font-size: 24px;
+
+      @media screen and (max-width: 470px) {
+        font-size: 20px;
+      }
     }
     
     &-toggle {
@@ -41,6 +45,14 @@
 
       .dark-theme & {
         background: $section-background-dark-theme;
+      }
+    }
+
+    &-theme {
+      .base-text-label {
+        @media screen and (max-width: 420px) {
+          display: none;
+        }
       }
     }
   }
