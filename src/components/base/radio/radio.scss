@@ -1,0 +1,49 @@
+
+@import '@style-assets';
+
+.base-radio {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  transition: .2s;
+  -x-font-size: 16px/24px;
+
+  .dark-theme & {
+    color: $text-on-dark;
+  }
+
+  &-label {
+    margin-right: 10px;
+    background: #E3DAF9;
+    -x-size: 24px;
+
+    .dark-theme & {
+      background: rgba(34, 34, 34, 0.6);
+    }
+
+    span {
+      background: #fff;
+      -x-size: 10px;
+    }
+
+    &, span {
+      border-radius: 50%;
+    }
+  }
+
+  &.is-selected, &:hover {
+    background: #F1F1F5;
+
+    .dark-theme & {
+      background: rgba(45, 45, 45, 0.9);
+    }
+
+    &.base-radio-label {
+      background: $dark;
+
+      .dark-theme & {
+        background: #000;
+      }
+    }
+  }
+}
