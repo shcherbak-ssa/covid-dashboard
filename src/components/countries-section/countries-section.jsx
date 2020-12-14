@@ -3,11 +3,12 @@ import './countries-section.scss';
 
 import Section from '../section';
 
-export default function CountriesSection({apiData, openFullscreen}) {
+export default function CountriesSection({apiData, currentTheme, openFullscreen}) {
   const sectionProps = {
     sectionType: 'countries',
     headerProps: {
       title: 'Cases by country',
+      currentTheme,
       textLabel: false,
     },
     openFullscreen: () => {

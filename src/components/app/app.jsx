@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import classnames from 'classnames';
 import './app.scss';
 
@@ -9,6 +9,7 @@ import AppFooter from './app-footer';
 import GlobalSection from '../global-section';
 import Fullscreen from '../fullscreen';
 import CountriesSection from '../countries-section';
+import MapSection from '../map-section';
 
 const DARK_THEME_CLASSNAME = 'dark-theme';
 
@@ -25,6 +26,23 @@ export default function App({apiData}) {
   const appHeaderProps = {
     currentTheme,
     toggleCurrentTheme,
+  };
+
+  const sectionsProps = {
+    global: {
+      apiData: apiData.global,
+      openFullscreen,
+    },
+    countries: {
+      apiData: {},
+      currentTheme,
+      openFullscreen,
+    },
+    map: {
+      apiData: {},
+      currentTheme,
+      openFullscreen,
+    },
   };
 
   const fullscreenProps = {
@@ -53,8 +71,9 @@ export default function App({apiData}) {
       <div className="app-container">
         <AppHeader {...appHeaderProps} />
         <div className="app-main">
-          <GlobalSection apiData={apiData.global} openFullscreen={openFullscreen}/>
-          <CountriesSection apiData={{}} openFullscreen={openFullscreen} />
+          <GlobalSection {...sectionsProps.global} />
+          <CountriesSection {...sectionsProps.countries} />
+          <MapSection {...sectionsProps.map} />
           <Fullscreen {...fullscreenProps} />
         </div>
       </div>

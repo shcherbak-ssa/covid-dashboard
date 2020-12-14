@@ -23,6 +23,15 @@
     }
   }
 
+  &-icons {
+    display: flex;
+    align-items: center;
+
+    .base-text-label {
+      margin-right: 12px;
+    }
+  }
+
   &-content {
     -x-size: 100%;
   }

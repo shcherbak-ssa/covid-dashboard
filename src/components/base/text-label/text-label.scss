@@ -1,4 +1,10 @@
 
+@import '@style-assets';
+
 .base-text-label {
   -x-font-size: 14px/24px;
+
+  .dark-theme & {
+    color: $text-on-dark;
+  }
 }

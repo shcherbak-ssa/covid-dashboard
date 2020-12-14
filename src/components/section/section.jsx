@@ -23,9 +23,10 @@ export default function Section(props) {
   );
 }
 
-function SectionHeader({title, textLabel = true, iconClickHandle}) {
+function SectionHeader({title, currentTheme, textLabel = true, iconClickHandle}) {
   const optionsIconProps = {
     icon: 'options',
+    currentTheme,
     iconClickHandle,
   };
 
