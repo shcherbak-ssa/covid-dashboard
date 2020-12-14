@@ -6,6 +6,7 @@ import './options-menu.scss';
 import {
   IS_OPEN_CLASSNAME,
   COUNTRY_OPTIONS_MENU_TYPE,
+  CHART_OPTIONS_MENU_TYPE,
   MEASUREMENT_TITLE,
 } from '@/constants';
 
@@ -24,6 +25,9 @@ export default function OptionsMenu({isOpen, menuType, updateApiData}) {
     if (menuType === COUNTRY_OPTIONS_MENU_TYPE) {
       const {type, measurement} = clonedOptionsMenu;
       setMenuItems({type, measurement});
+    } else if (menuType === CHART_OPTIONS_MENU_TYPE) {
+      const {parameter, measurement} = clonedOptionsMenu;
+      setMenuItems({parameter, measurement});
     } else {
       setMenuItems(clonedOptionsMenu);
     }

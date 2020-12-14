@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './chart-section.scss';
 
+import { CHART_OPTIONS_MENU_TYPE } from '@/constants';
 import { textLabelDefaultState, updateTextLabel } from '@/tools';
 import Section from '../section';
 
@@ -14,8 +15,8 @@ export default function ChartSection(props) {
       title: 'Chart',
       currentTheme,
       textLabel,
+      optionsMenuType: CHART_OPTIONS_MENU_TYPE,
       updateApiData: (key, label) => {
-        console.log(key, label);
         updateTextLabel(key, label, textLabel, setTextLabel);
       },
     },
