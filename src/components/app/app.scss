@@ -6,6 +6,10 @@
     display: grid;
     grid-template-rows: 70px 1fr;
     height: 100vh;
+
+    @media screen and (max-width: 1023px) {
+      height: auto;
+    }
   }
 
   &-main {
@@ -20,6 +24,17 @@
     grid-gap: 16px;
     padding: 16px;
     position: relative;
+
+    @media screen and (max-width: 1023px) {
+      grid-template-columns: 100%;
+      grid-template-rows: 1fr 4fr 7fr 3fr 5fr;
+      grid-template-areas: 
+        'global'
+        'countries'
+        'map'
+        'country'
+        'chart';
+    }
 
     .dark-theme & {
       background: $main-background-dark-theme;
