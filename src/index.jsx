@@ -11,7 +11,11 @@ import App from './components/app';
 init();
 
 async function init() {
-  await getGlobalCases();
+  const global = await getGlobalCases();
+  
+  const apiData = {
+    global,
+  };
 
-  ReactDOM.render(<App />, document.getElementById('app'));
+  ReactDOM.render(<App apiData={apiData} />, document.getElementById('app'));
 }

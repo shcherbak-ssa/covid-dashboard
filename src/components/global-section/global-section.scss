@@ -18,6 +18,7 @@
       .base-number-view {
         font-weight: bold;
         font-size: 20px;
+        letter-spacing: 2px;
       }
     }
   }
@@ -31,10 +32,17 @@
 
     &-item {
       margin-bottom: 46px;
+      text-align: center;
 
       .base-title {
         font-size: 24px;
         margin-bottom: 20px;
+      }
+
+      .base-number-view {
+        font-weight: bold;
+        font-size: 36px;
+        letter-spacing: 2px;
       }
     }
   }

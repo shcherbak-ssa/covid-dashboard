@@ -1,6 +1,7 @@
 import { request } from './request';
+import { transfromForGlobal } from './transform';
 
 export async function getGlobalCases() {
-  const apiData = await request('all');
-  console.log(apiData);
+  const apiGlobalData = await request('all');
+  return transfromForGlobal(apiGlobalData);
 }

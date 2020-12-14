@@ -11,7 +11,7 @@ import Fullscreen from '../fullscreen';
 
 const DARK_THEME_CLASSNAME = 'dark-theme';
 
-export default function App(props) {
+export default function App({apiData}) {
   const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
   const [fullscreenTitle, setFullscreenTitle] = useState('');
   const [fullscreenContent, setFullscreenContent] = useState('');
@@ -52,7 +52,7 @@ export default function App(props) {
       <div className="app-container">
         <AppHeader {...appHeaderProps} />
         <div className="app-main">
-          <GlobalSection openFullscreen={openFullscreen}/>
+          <GlobalSection apiData={apiData.global} openFullscreen={openFullscreen}/>
           <Fullscreen {...fullscreenProps} />
         </div>
       </div>
