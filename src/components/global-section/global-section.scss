@@ -4,6 +4,10 @@
 .global-section {
   grid-area: global;
 
+  &.section {
+    display: block;
+  }
+
   .section {
     &-header {
       display: none;
