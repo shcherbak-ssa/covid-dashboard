@@ -18,7 +18,7 @@ export default function AppHeader({currentTheme, toggleCurrentTheme}) {
   }
 
   return (
-    <div className="app-header header">
+    <div className="app-header header flex-space-between">
       <div className="header-title title">
         <div className="header-logo"></div>
         COVID-19 Dashboard

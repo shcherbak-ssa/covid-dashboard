@@ -85,16 +85,14 @@ export default function App({apiData}) {
 
   return (
     <div className={classNames}>
-      <div className="app-container">
-        <AppHeader {...appHeaderProps} />
-        <div className="app-main">
-          <GlobalSection {...sectionsProps.global} />
-          <CountriesSection {...sectionsProps.countries} />
-          <MapSection {...sectionsProps.map} />
-          <CountrySection {...sectionsProps.country} />
-          <ChartSection {...sectionsProps.chart} />
-          <Fullscreen {...fullscreenProps} />
-        </div>
+      <AppHeader {...appHeaderProps} />
+      <div className="app-main">
+        <GlobalSection {...sectionsProps.global} />
+        <CountriesSection {...sectionsProps.countries} />
+        <MapSection {...sectionsProps.map} />
+        <CountrySection {...sectionsProps.country} />
+        <ChartSection {...sectionsProps.chart} />
+        <Fullscreen {...fullscreenProps} />
       </div>
       <AppFooter />
     </div>

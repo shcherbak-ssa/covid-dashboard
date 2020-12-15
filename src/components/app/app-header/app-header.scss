@@ -4,9 +4,7 @@
 .app-header {
   background: $header-background-light-theme;
   color: $text-on-dark;
-  justify-content: space-between;
   padding: 0 16px;
-  height: 70px;
 
   .dark-theme & {
     background: $header-background-dark-theme;

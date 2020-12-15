@@ -3,68 +3,51 @@
 
 .app-footer {
   background: $footer-background-light-theme;
-  display: flex;
-  justify-content: space-between;
-  padding: 24px relativeWidth(100);
+  padding: 0 16px;
 
   .dark-theme & {
     background: $footer-background-dark-theme;
   }
 
-  @media screen and (max-width: 730px) {
+  @media screen and (max-width: 740px) {
     flex-direction: column;
+    padding: 24px;
   }
 
   .footer {
     &-links {
-      display: flex;
-
-      @media screen and (max-width: 730px) {
-        flex-direction: column;
-      }
-    }
-
-    &-section {
-      display: flex;
-      flex-direction: column;
-    }
-
-    &-list:not(:last-child) {
-      margin-right: 80px;
-
-      @media screen and (max-width: 730px) {
-        margin-right: 0;
-      }
-    }
-
-    &-list {
-      .base-link:not(:last-child) {
-        margin-bottom: 6px;
-      }
-
-      @media screen and (max-width: 730px) {
-        margin-bottom: 30px;
-      }
-    }
-
-    &-title {
       color: $text-on-dark;
-      font-size: 18px;
-      margin-bottom: 10px;
-      padding-left: 6px;
+      display: flex;
+      align-items: center;
+
+      @media screen and (max-width: 740px) {
+        flex-direction: column;
+        margin-bottom: 20px;
+
+        .base-link {
+          margin-bottom: 6px;
+        }
+      }
+
+      span {
+        margin-right: 4px;
+
+        @media screen and (max-width: 740px) {
+          margin-right: 0;
+          margin-bottom: 10px;
+        }
+      }
     }
 
     &-course {
-      align-items: flex-end;
-
-      @media screen and (max-width: 730px) {
-        align-items: flex-start;
-      }
+      padding: 4px 6px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 4px;
     }
 
     &-course-link {
       display: block;
-      width: 160px;
+      width: 74px;
 
       @media screen and (max-width: 730px) {
         padding-left: 6px;
