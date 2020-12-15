@@ -1,0 +1,53 @@
+
+@import '@style-assets';
+
+.base-checkbox {
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+  height: 40px;
+  transition: .2s;
+  -x-font-size: 16px/24px;
+
+  .dark-theme & {
+    color: $text-on-dark;
+  }
+
+  &-label {
+    margin-right: 10px;
+    background: #E3DAF9;
+    border-radius: 4px;
+    -x-size: 24px;
+
+    .dark-theme & {
+      background: $dark;
+    }
+
+    img {
+      display: none;
+      // -x-size: 10px;
+    }
+  }
+
+  &.is-selected, &:hover {
+    background: #F1F1F5;
+
+    .dark-theme & {
+      background: rgba(45, 45, 45, 0.9);
+    }
+  }
+
+  &.is-selected {
+    .base-checkbox-label {
+      background: $dark;
+
+      img {
+        display: block;
+      }
+
+      .dark-theme & {
+        background: #000;
+      }
+    }
+  }
+}

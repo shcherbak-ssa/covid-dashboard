@@ -1,0 +1,36 @@
+
+@import '@style-assets';
+
+.options-menu {
+  background: $options-menu-background-light-theme;
+  border-radius: 4px;
+  box-shadow: 0 4px 4px rgba(51, 51, 51, 0.04), 0 14px 24px rgba(51, 51, 51, 0.12);
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  padding: 8px 0;
+  width: 240px;
+  z-index: 9;
+
+  .dark-theme & {
+    background: $options-menu-background-dark-theme;
+  }
+
+  &-divider {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding-left: 16px;
+    -x-font-size: 13px/20px;
+
+    .dark-theme & {
+      color: $text-on-dark;
+    }
+  }
+
+  &.is-open {
+    display: flex;
+  }
+}

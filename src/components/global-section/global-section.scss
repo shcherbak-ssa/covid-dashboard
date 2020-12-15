@@ -1,0 +1,49 @@
+
+@import '@style-assets';
+
+.global-section {
+  grid-area: global;
+
+  .section {
+    &-header {
+      display: none;
+    }
+
+    &-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+
+      .base-number-view {
+        font-weight: bold;
+        font-size: 20px;
+        letter-spacing: 2px;
+      }
+    }
+  }
+
+  &-fullscreen {
+    &-content {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    &-item {
+      margin-bottom: 46px;
+      text-align: center;
+
+      .base-title {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      .base-number-view {
+        font-weight: bold;
+        font-size: 36px;
+        letter-spacing: 2px;
+      }
+    }
+  }
+}

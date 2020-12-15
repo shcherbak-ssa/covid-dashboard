@@ -1,0 +1,40 @@
+
+.base-icon {
+  -x-size: 32px;
+
+  img {
+    position: relative;
+    z-index: 1;
+    -x-size: 24px;
+  }
+
+  &::before {
+    background: rgba(228, 229, 230, 0.6);
+    border-radius: 50%;
+    content: '';
+    display: block;
+    transform: translate(-50%, -50%);
+    transition: .2s;
+    -x-size: 0;
+    -x-position: absolute 50% x x 50%;
+
+    .dark-theme & {
+      background: rgba(45, 45, 45, 0.6);
+    }
+  }
+
+  &:hover::before {
+    -x-size: 100%;
+  }
+
+  &.is-active {
+    &::before {
+      background: #E4E5E6;
+      -x-size: 100%;
+
+      .dark-theme & {
+        background: rgba(45, 45, 45, 0.9);
+      }
+    }
+  }
+}

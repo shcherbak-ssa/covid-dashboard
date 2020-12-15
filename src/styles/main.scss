@@ -5,3 +5,39 @@
   margin: 0;
   padding: 0;
 }
+
+@import './assets.scss';
+
+body {
+  color: $dark;
+  font-family: 'Roboto', sans-serif;
+}
+
+.click {
+  cursor: pointer;
+  position: relative;
+
+  &::after {
+    content: '';
+    display: block;
+    -x-position: absolute 0 0 0 0;
+  }
+}
+
+.title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  line-height: 28px;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-space-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

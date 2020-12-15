@@ -1,0 +1,50 @@
+
+@import '@style-assets';
+
+.section {
+  background: $section-background-light-theme;
+  border-radius: 4px;
+  padding: 12px;
+  position: relative;
+
+  .dark-theme & {
+    background: $section-background-dark-theme;
+  }
+
+  &-fullscreen {
+    background: rgba(228, 229, 230, 0.8);
+    border-radius: 50%;
+    opacity: 0;
+    -x-size: 24px;
+    -x-position: absolute -9px -9px x x;
+
+    img {
+      -x-size: 16px;
+    }
+  }
+
+  &-header {
+    position: relative;
+  }
+
+  &-icons {
+    display: flex;
+    align-items: center;
+
+    .base-text-label {
+      margin-right: 12px;
+
+      @media screen and (max-width: 469px) {
+        display: none;
+      }
+    }
+  }
+
+  &-content {
+    width: 100%;
+  }
+
+  &:hover .section-fullscreen {
+    opacity: 1;
+  }
+}

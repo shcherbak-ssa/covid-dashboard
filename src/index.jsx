@@ -1,8 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import './assets/icons';
 import './assets/favicon.ico';
 import './styles/main.scss';
+
+import { loadData } from './api';
 import App from './components/app';
 
-ReactDOM.render(<App />, document.getElementById('app'));
+init();
+
+async function init() {
+  const apiData = await loadData();
+  // console.log(apiData);
+  ReactDOM.render(<App apiData={apiData} />, document.getElementById('app'));
+}

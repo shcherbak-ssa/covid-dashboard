@@ -1,0 +1,43 @@
+
+@import '@style-assets';
+
+.app {
+  &-container {
+    display: grid;
+    grid-template-rows: 70px 1fr;
+    height: 100vh;
+
+    @media screen and (max-width: 1023px) {
+      height: auto;
+    }
+  }
+
+  &-main {
+    background: $main-background-light-theme;
+    display: grid;
+    grid-template-columns: 1fr 3fr 2fr;
+    grid-template-rows: 1fr 2fr 3fr;
+    grid-template-areas: 
+      'global map country'
+      'countries map country'
+      'countries map chart';
+    grid-gap: 12px;
+    padding: 16px;
+    position: relative;
+
+    @media screen and (max-width: 1023px) {
+      grid-template-columns: 100%;
+      grid-template-rows: 1fr 5fr 7fr 3fr 5fr;
+      grid-template-areas: 
+        'global'
+        'countries'
+        'map'
+        'country'
+        'chart';
+    }
+
+    .dark-theme & {
+      background: $main-background-dark-theme;
+    }
+  }
+}
