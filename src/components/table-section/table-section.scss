@@ -1,14 +1,8 @@
 
 @import '@style-assets';
 
-.country-section {
-  grid-area: country;
-
-  .section {
-    &-header {
-      margin-bottom: 10px;
-    }
-  }
+.table-section {
+  grid-area: table;
 
   &-content {
     width: 100%;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './country-section.scss';
+import './table-section.scss';
 
 import { COUNTRY_OPTIONS_MENU_TYPE } from '../../constants';
 import { textLabelDefaultState, updateTextLabel, getSearchData } from '../../tools';
@@ -8,7 +8,7 @@ import Section from '../section';
 
 const DEFAULT_SECTION_TITLE = 'Global';
 
-export default function CountrySection(props) {
+export default function TableSection(props) {
   const {apiData, currentTheme, openFullscreen, selectedCountry} = props;
   const [sectionTitle, setSectionTitle] = useState('');
   const [textLabel, setTextLabel] = useState(textLabelDefaultState);
@@ -27,7 +27,7 @@ export default function CountrySection(props) {
   }, [selectedCountry]);
 
   const sectionProps = {
-    sectionType: 'country',
+    sectionType: 'table',
     headerProps: {
       title: sectionTitle,
       currentTheme,
@@ -42,7 +42,7 @@ export default function CountrySection(props) {
     openFullscreen: () => {
       openFullscreen({
         currentFullscreenTitle: sectionTitle,
-        currentFullscreenContent: CountrySectionFullscreenContent(),
+        currentFullscreenContent: TableSectionFullscreenContent(),
       });
     },
   };
@@ -54,12 +54,12 @@ export default function CountrySection(props) {
   
   return (
     <Section {...sectionProps}>
-      <CountrySectionContent content={content} />
+      <TableSectionContent content={content} />
     </Section>
   );
 }
 
-function CountrySectionContent({content}) {
+function TableSectionContent({content}) {
   const casesProps = {
     type: 'cases',
     title: 'Cases',
@@ -77,26 +77,26 @@ function CountrySectionContent({content}) {
   };
 
   return (
-    <div className="country-section-content">
-      <CountrySectionContentItem {...casesProps} />
-      <CountrySectionContentItem {...deathsProps} />
-      <CountrySectionContentItem {...recoveredProps} />
+    <div className="table-section-content">
+      <TableSectionContentItem {...casesProps} />
+      <TableSectionContentItem {...deathsProps} />
+      <TableSectionContentItem {...recoveredProps} />
     </div>
   );
 }
 
-function CountrySectionContentItem({type, title, number}) {
+function TableSectionContentItem({type, title, number}) {
   return (
-    <div className="country-section-content-item">
-      <div className="country-section-content-title">{title}</div>
+    <div className="table-section-content-item">
+      <div className="table-section-content-title">{title}</div>
       <Base.NumberView type={type} number={number} />
     </div>
   );
 }
 
-function CountrySectionFullscreenContent() {
+function TableSectionFullscreenContent() {
   return (
-    <div className="country-section-fullscreen-content">
+    <div className="table-section-fullscreen-content">
       {/* your code */}
     </div>
   );
