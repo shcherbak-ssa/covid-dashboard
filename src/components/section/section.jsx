@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 import './section.scss';
 
-import { getIconUrl } from '../../tools';
+import { getIconUrl, transformTextLabel } from '../../tools';
 import Base from '../base';
 import OptionsMenu from '../options-menu';
 
@@ -41,19 +41,12 @@ function SectionHeader(props) {
     updateApiData,
   };
 
-  function transformTextLabel() {
-    const {type, parameter, measurement} = textLabel;
-    const measure = measurement ? ` / ${measurement}` : '';
-    const param = parameter ? ` ${parameter}` : '';
-    return type + param + measure;
-  }
-
   return (
     <div className="section-header flex-space-between">
       <Base.Title value={title} />
       <div className="section-icons">
         {headerIcon ? headerIcon : ''}
-        <Base.TextLabel value={transformTextLabel()} />
+        <Base.TextLabel value={transformTextLabel(textLabel)} />
           <Base.Icon {...optionsIconProps} />
         </div>
         <OptionsMenu {...optionsMenuProps} />
