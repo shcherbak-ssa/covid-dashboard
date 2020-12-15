@@ -5,18 +5,6 @@
   grid-area: countries;
 
   .section-header {
-    .section-icons .base-text-label {
-      display: none;
-
-      @media screen and (max-width: 1023px) {
-        display: block;
-      }
-
-      @media screen and (max-width: 469px) {
-        display: none;
-      }
-    }
-
     .options-menu {
       right: -100%;
   

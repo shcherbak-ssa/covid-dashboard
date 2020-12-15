@@ -3,6 +3,7 @@ import './map-section.scss';
 
 import { textLabelDefaultState, updateTextLabel, getSearchData } from '../../tools';
 import Section from '../section';
+import MapLegend from './map-legend';
 
 export default function MapSection(props) {
   const {currentTheme, openFullscreen, /* setSelectedCountry */} = props;
@@ -15,6 +16,7 @@ export default function MapSection(props) {
     sectionType: 'map',
     headerProps: {
       title: 'Map',
+      headerIcon: MapLegend({currentTheme}),
       currentTheme,
       textLabel,
       updateApiData: (key, label) => {

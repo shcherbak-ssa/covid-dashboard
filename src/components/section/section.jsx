@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 import './section.scss';
 
-import { getIconUrl } from '@/tools';
-import Base from '@/components/base';
+import { getIconUrl } from '../../tools';
+import Base from '../base';
 import OptionsMenu from '../options-menu';
 
 export default function Section(props) {
@@ -25,7 +25,7 @@ export default function Section(props) {
 }
 
 function SectionHeader(props) {
-  const {title, currentTheme, optionsMenuType, textLabel, updateApiData} = props;
+  const {title, currentTheme, headerIcon, optionsMenuType, textLabel, updateApiData} = props;
   const [isOptionsMenuOpen, setIsOptionsMenuOpen] = useState(false);
   const optionsIconProps = {
     icon: 'options',
@@ -52,10 +52,11 @@ function SectionHeader(props) {
     <div className="section-header flex-space-between">
       <Base.Title value={title} />
       <div className="section-icons">
-      <Base.TextLabel value={transformTextLabel()} />
-        <Base.Icon {...optionsIconProps} />
-      </div>
-      <OptionsMenu {...optionsMenuProps} />
+        {headerIcon ? headerIcon : ''}
+        <Base.TextLabel value={transformTextLabel()} />
+          <Base.Icon {...optionsIconProps} />
+        </div>
+        <OptionsMenu {...optionsMenuProps} />
     </div>
   );
 }

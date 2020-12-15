@@ -7,3 +7,5 @@ import './fullscreen.svg';
 import './close.svg';
 import './close-dark.svg';
 import './checked.svg';
+import './map-legend.svg';
+import './map-legend-dark.svg';

@@ -33,6 +33,10 @@
 
     .base-text-label {
       margin-right: 12px;
+
+      @media screen and (max-width: 469px) {
+        display: none;
+      }
     }
   }
 
