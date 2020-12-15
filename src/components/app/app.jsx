@@ -10,8 +10,8 @@ import GlobalSection from '../global-section';
 import Fullscreen from '../fullscreen';
 import CountriesSection from '../countries-section';
 import MapSection from '../map-section';
-import CountrySection from '../country-section';
-import ChartSection from '../chart-section/chart-section';
+import TableSection from '../table-section';
+import ChartSection from '../chart-section';
 
 const DARK_THEME_CLASSNAME = 'dark-theme';
 
@@ -48,8 +48,8 @@ export default function App({apiData}) {
       openFullscreen,
       setSelectedCountry,
     },
-    country: {
-      apiData: apiData.country,
+    table: {
+      apiData: apiData.table,
       currentTheme,
       selectedCountry,
       openFullscreen,
@@ -90,7 +90,7 @@ export default function App({apiData}) {
         <GlobalSection {...sectionsProps.global} />
         <CountriesSection {...sectionsProps.countries} />
         <MapSection {...sectionsProps.map} />
-        <CountrySection {...sectionsProps.country} />
+        <TableSection {...sectionsProps.table} />
         <ChartSection {...sectionsProps.chart} />
         <Fullscreen {...fullscreenProps} />
       </div>
