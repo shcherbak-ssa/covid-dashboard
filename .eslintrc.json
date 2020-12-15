@@ -19,13 +19,5 @@
         "react"
     ],
     "rules": {
-    },
-    "settings": {
-        "react": {
-          "createClass": "createReactClass",
-          "pragma": "React",
-          "fragment": "Fragment",
-          "version": "detect"
-        }
     }
 }
