@@ -1,7 +1,6 @@
 import React from 'react';
 import './app-header.scss';
 
-import { LIGHT_THEME } from '@/constants';
 import Base from '../../base';
 
 const DARK_THEME_TEXT_LABEL = 'Dark theme';
