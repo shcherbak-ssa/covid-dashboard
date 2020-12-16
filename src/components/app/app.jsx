@@ -66,7 +66,7 @@ export default function App({apiData}) {
         <CountriesSection {...sectionsProps.countries} />
         <MapSection {...sectionsProps.map} /> */}
         <TableSection {...sectionsProps.table} />
-        {/* <ChartSection {...sectionsProps.chart} /> */}
+        <ChartSection {...sectionsProps.chart} />
       </div>
       <AppFooter />
     </div>

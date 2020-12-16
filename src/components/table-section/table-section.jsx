@@ -9,7 +9,7 @@ import Section from '../section';
 const DEFAULT_SECTION_TITLE = 'Global';
 
 export default function TableSection(props) {
-  const {apiData, currentTheme, openFullscreen, selectedCountry} = props;
+  const {apiData, currentTheme, selectedCountry} = props;
   const [sectionTitle, setSectionTitle] = useState('');
   const [textLabel, setTextLabel] = useState(textLabelDefaultState);
   const [content, setContent] = useState({});
@@ -84,14 +84,6 @@ function TableSectionContentItem({type, title, number}) {
     <div className="table-section-content-item">
       <div className="table-section-content-title">{title}</div>
       <Base.NumberView type={type} number={number} />
-    </div>
-  );
-}
-
-function TableSectionFullscreenContent() {
-  return (
-    <div className="table-section-fullscreen-content">
-      {/* your code */}
     </div>
   );
 }
