@@ -8,8 +8,8 @@
   display: none;
   flex-direction: column;
   position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
+  top: 54px;
+  right: 12px;
   padding: 8px 0;
   width: 240px;
   z-index: 9;
@@ -32,5 +32,33 @@
 
   &.is-open {
     display: flex;
+  }
+
+  @media screen and (min-width: 1023px) {
+    .fullscreen .dark-theme & {
+      background: transparent;
+    }
+
+    .fullscreen .dark-theme &-divider {
+      color: rgba(255, 255, 255, 0.8);
+    }
+  }
+}
+
+@media screen and (min-width: 1023px) {
+  .fullscreen .options-menu {
+    box-shadow: none;
+    width: 100%;
+    padding: 0;
+
+    &-divider {
+      color: rgba(57, 62, 70, 0.8);
+      font-size: 14px;
+    }
+  
+    &-section .base-radio,
+    &-section .base-checkbox {
+      border-radius: 4px;
+    }
   }
 }

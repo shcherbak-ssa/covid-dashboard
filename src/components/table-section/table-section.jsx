@@ -9,7 +9,7 @@ import Section from '../section';
 const DEFAULT_SECTION_TITLE = 'Global';
 
 export default function TableSection(props) {
-  const {apiData, currentTheme, openFullscreen, selectedCountry} = props;
+  const {apiData, isDarkTheme, selectedCountry} = props;
   const [sectionTitle, setSectionTitle] = useState('');
   const [textLabel, setTextLabel] = useState(textLabelDefaultState);
   const [content, setContent] = useState({});
@@ -28,22 +28,16 @@ export default function TableSection(props) {
 
   const sectionProps = {
     sectionType: 'table',
+    optionsMenuType: COUNTRY_OPTIONS_MENU_TYPE,
     headerProps: {
       title: sectionTitle,
-      currentTheme,
+      isDarkTheme,
       textLabel,
-      optionsMenuType: COUNTRY_OPTIONS_MENU_TYPE,
-      updateApiData: (key, label) => {
-        const updatedTextLabel = updateTextLabel(key, label, textLabel, setTextLabel);
-        const searchData = getSearchData(updatedTextLabel);
-        updateContent(searchData);
-      },
     },
-    openFullscreen: () => {
-      openFullscreen({
-        currentFullscreenTitle: sectionTitle,
-        currentFullscreenContent: TableSectionFullscreenContent(),
-      });
+    updateApiData: (key, label) => {
+      const updatedTextLabel = updateTextLabel(key, label, textLabel, setTextLabel);
+      const searchData = getSearchData(updatedTextLabel);
+      updateContent(searchData);
     },
   };
 
@@ -90,14 +84,6 @@ function TableSectionContentItem({type, title, number}) {
     <div className="table-section-content-item">
       <div className="table-section-content-title">{title}</div>
       <Base.NumberView type={type} number={number} />
-    </div>
-  );
-}
-
-function TableSectionFullscreenContent() {
-  return (
-    <div className="table-section-fullscreen-content">
-      {/* your code */}
     </div>
   );
 }
