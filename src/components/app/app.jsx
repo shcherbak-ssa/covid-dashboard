@@ -30,6 +30,7 @@ export default function App({apiData}) {
   const sectionsProps = {
     global: {
       apiData: apiData.global,
+      currentTheme,
     },
     countries: {
       apiData: apiData.countries,
@@ -62,8 +63,8 @@ export default function App({apiData}) {
     <div className={classNames}>
       <AppHeader {...appHeaderProps} />
       <div className="app-main">
-        {/* <GlobalSection {...sectionsProps.global} />
-        <CountriesSection {...sectionsProps.countries} />
+        <GlobalSection {...sectionsProps.global} />
+        {/* <CountriesSection {...sectionsProps.countries} />
         <MapSection {...sectionsProps.map} /> */}
         <TableSection {...sectionsProps.table} />
         <ChartSection {...sectionsProps.chart} />
