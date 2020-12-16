@@ -1,6 +1,3 @@
-const LIGHT_THEME = 'light';
-const DARK_THEME = 'dark';
-
 const IS_ACTIVE_CLASSNAME = 'is-active';
 const IS_OPEN_CLASSNAME = 'is-open';
 const IS_SELECTED_CLASSNAME = 'is-selected';
@@ -21,8 +18,6 @@ const POPULATION_100K = 100000;
 const GLOBAL_SECTION_TYPE = 'global';
 
 export {
-  LIGHT_THEME,
-  DARK_THEME,
   IS_ACTIVE_CLASSNAME,
   IS_OPEN_CLASSNAME,
   IS_SELECTED_CLASSNAME,

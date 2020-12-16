@@ -6,7 +6,7 @@ import { textLabelDefaultState, updateTextLabel, getSearchData } from '../../too
 import Section from '../section';
 
 export default function ChartSection(props) {
-  const {currentTheme, /* selectedCountry */} = props;
+  const {isDarkTheme, /* selectedCountry */} = props;
   const [textLabel, setTextLabel] = useState(textLabelDefaultState);
   const [searchData, setSearchData] = useState(getSearchData(textLabel));
   // const [apiData, setApiData] = useState(props.apiData);
@@ -17,7 +17,7 @@ export default function ChartSection(props) {
     optionsMenuType: CHART_OPTIONS_MENU_TYPE,
     headerProps: {
       title: 'Chart',
-      currentTheme,
+      isDarkTheme,
       textLabel,
     },
     updateApiData: (key, label) => {

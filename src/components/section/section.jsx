@@ -72,18 +72,18 @@ export default function Section(props) {
 }
 
 function SectionHeader(props) {
-  const {title, currentTheme, headerIcon, textLabel} = props;
+  const {title, isDarkTheme, headerIcon, textLabel} = props;
 
   const optionsIconProps = {
     icon: 'options',
-    currentTheme,
+    isDarkTheme,
     iconClickHandle: () => {
       props.toggleOptionsMenu();
     },
   };
 
   const closeIconProps = {
-    currentTheme,
+    isDarkTheme,
     icon: 'close',
     isActionIcon: false,
     iconClickHandle: props.closeFullscreen,

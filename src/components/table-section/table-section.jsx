@@ -9,7 +9,7 @@ import Section from '../section';
 const DEFAULT_SECTION_TITLE = 'Global';
 
 export default function TableSection(props) {
-  const {apiData, currentTheme, selectedCountry} = props;
+  const {apiData, isDarkTheme, selectedCountry} = props;
   const [sectionTitle, setSectionTitle] = useState('');
   const [textLabel, setTextLabel] = useState(textLabelDefaultState);
   const [content, setContent] = useState({});
@@ -31,7 +31,7 @@ export default function TableSection(props) {
     optionsMenuType: COUNTRY_OPTIONS_MENU_TYPE,
     headerProps: {
       title: sectionTitle,
-      currentTheme,
+      isDarkTheme,
       textLabel,
     },
     updateApiData: (key, label) => {

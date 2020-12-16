@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 import './app.scss';
 
-import { DARK_THEME, LIGHT_THEME } from '../../constants';
-
 import AppHeader from './app-header';
 import AppFooter from './app-footer';
 import GlobalSection from '../global-section';
@@ -15,48 +13,47 @@ import ChartSection from '../chart-section';
 const DARK_THEME_CLASSNAME = 'dark-theme';
 
 export default function App({apiData}) {
-  const [currentTheme, setCurrentTheme] = useState(LIGHT_THEME);
+  const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState(null);
 
   const classNames = classnames('app', {
-    [DARK_THEME_CLASSNAME]: currentTheme === DARK_THEME
+    [DARK_THEME_CLASSNAME]: isDarkTheme
   });
 
   const appHeaderProps = {
-    currentTheme,
+    isDarkTheme,
     toggleCurrentTheme,
   };
 
   const sectionsProps = {
     global: {
       apiData: apiData.global,
-      currentTheme,
+      isDarkTheme,
     },
     countries: {
       apiData: apiData.countries,
-      currentTheme,
+      isDarkTheme,
       setSelectedCountry,
     },
     map: {
       apiData: apiData.map,
-      currentTheme,
+      isDarkTheme,
       setSelectedCountry,
     },
     table: {
       apiData: apiData.table,
-      currentTheme,
+      isDarkTheme,
       selectedCountry,
     },
     chart: {
       apiData: apiData.chart,
-      currentTheme,
+      isDarkTheme,
       selectedCountry,
     },
   };
 
   function toggleCurrentTheme() {
-    const nextTheme = currentTheme === LIGHT_THEME ? DARK_THEME : LIGHT_THEME;
-    setCurrentTheme(nextTheme);
+    setIsDarkTheme(!isDarkTheme);
   }
 
   return (
@@ -64,8 +61,8 @@ export default function App({apiData}) {
       <AppHeader {...appHeaderProps} />
       <div className="app-main">
         <GlobalSection {...sectionsProps.global} />
-        {/* <CountriesSection {...sectionsProps.countries} />
-        <MapSection {...sectionsProps.map} /> */}
+        <CountriesSection {...sectionsProps.countries} />
+        <MapSection {...sectionsProps.map} />
         <TableSection {...sectionsProps.table} />
         <ChartSection {...sectionsProps.chart} />
       </div>

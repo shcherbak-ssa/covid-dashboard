@@ -5,7 +5,7 @@ import Base from '../base';
 import Section from '../section';
 import { GLOBAL_SECTION_TYPE } from '../../constants';
 
-export default function GlobalSection({currentTheme, apiData}) {
+export default function GlobalSection({isDarkTheme, apiData}) {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const sectionProps = {
@@ -15,7 +15,7 @@ export default function GlobalSection({currentTheme, apiData}) {
     },
     headerProps: {
       title: 'Global',
-      currentTheme,
+      isDarkTheme,
     },
   };
 
