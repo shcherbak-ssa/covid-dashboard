@@ -4,12 +4,6 @@
 .global-section {
   grid-area: global;
 
-  // @media screen and (min-width: 1023px) {
-  //   &.section {
-  //     display: block;
-  //   }
-  // }
-
   .section {
     &-header {
       display: none;
