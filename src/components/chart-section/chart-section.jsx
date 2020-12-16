@@ -28,7 +28,9 @@ export default function ChartSection(props) {
   
   return (
     <Section {...sectionProps}>
-      {/* your code */}
+      <div className="chart-section-content">
+        {/* your code */}
+      </div>
     </Section>
   );
 }
