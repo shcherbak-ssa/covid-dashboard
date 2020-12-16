@@ -7,32 +7,19 @@ import Base from '../base';
 import OptionsMenu from '../options-menu';
 
 export default function Section(props) {
-  const {sectionType, headerProps, openFullscreen} = props;
-  const classNames = classnames('section', `${sectionType}-section`);
-  const fullscreenIconUrl = getIconUrl('fullscreen');
-
-  return (
-    <div className={classNames}>
-      {headerProps ? <SectionHeader {...headerProps}/> : ''}
-      <div className="section-fullscreen click flex-center" onClick={openFullscreen}>
-        <img src={fullscreenIconUrl} />
-      </div>
-      <div className="section-content">
-        {props.children}
-      </div>
-    </div>
-  );
-}
-
-function SectionHeader(props) {
-  const {title, currentTheme, headerIcon, optionsMenuType, textLabel, updateApiData} = props;
+  const {sectionType, optionsMenuType, updateApiData} = props;
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [isOptionsMenuOpen, setIsOptionsMenuOpen] = useState(false);
-  const optionsIconProps = {
-    icon: 'options',
-    currentTheme,
-    iconClickHandle: () => {
-      setIsOptionsMenuOpen(!isOptionsMenuOpen);
-    },
+
+  const fullscreenIconUrl = getIconUrl('fullscreen');
+  const classNames = classnames('section', `${sectionType}-section`, {
+    'section-fullscreen': isFullscreen,
+  });
+
+  const headerProps = {
+    ...props.headerProps,
+    closeFullscreen,
+    toggleOptionsMenu,
   };
 
   const optionsMenuProps = {
@@ -41,15 +28,65 @@ function SectionHeader(props) {
     updateApiData,
   };
 
+  function openFullscreen() {
+    setIsFullscreen(true);
+    document.body.classList.add('fullscreen');
+  }
+
+  function closeFullscreen() {
+    setIsFullscreen(false);
+    document.body.classList.remove('fullscreen');
+  }
+
+  function toggleOptionsMenu() {
+    setIsOptionsMenuOpen(!isOptionsMenuOpen);
+  }
+
+  return (
+    <div className={classNames}>
+      <div className="section-fullscreen-icon click flex-center" onClick={openFullscreen}>
+        <img src={fullscreenIconUrl} />
+      </div>
+      <SectionHeader {...headerProps} />
+      <div className="section-content">
+        {props.children}
+        <OptionsMenu {...optionsMenuProps} />
+      </div>
+    </div>
+  );
+}
+
+function SectionHeader(props) {
+  const {title, currentTheme, headerIcon, textLabel} = props;
+
+  const optionsIconProps = {
+    icon: 'options',
+    currentTheme,
+    iconClickHandle: () => {
+      props.toggleOptionsMenu();
+    },
+  };
+
+  const closeIconProps = {
+    currentTheme,
+    icon: 'close',
+    isActionIcon: false,
+    iconClickHandle: props.closeFullscreen,
+  }
+
   return (
     <div className="section-header flex-space-between">
       <Base.Title value={title} />
       <div className="section-icons">
         {headerIcon ? headerIcon : ''}
-        <Base.TextLabel value={transformTextLabel(textLabel)} />
+        <div className="section-options-icon">
+          <Base.TextLabel value={transformTextLabel(textLabel)} />
           <Base.Icon {...optionsIconProps} />
         </div>
-        <OptionsMenu {...optionsMenuProps} />
+        <div className="section-fullscreen-close">
+          <Base.Icon {...closeIconProps} />
+        </div>
+      </div>
     </div>
   );
 }

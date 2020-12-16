@@ -28,22 +28,16 @@ export default function TableSection(props) {
 
   const sectionProps = {
     sectionType: 'table',
+    optionsMenuType: COUNTRY_OPTIONS_MENU_TYPE,
     headerProps: {
       title: sectionTitle,
       currentTheme,
       textLabel,
-      optionsMenuType: COUNTRY_OPTIONS_MENU_TYPE,
-      updateApiData: (key, label) => {
-        const updatedTextLabel = updateTextLabel(key, label, textLabel, setTextLabel);
-        const searchData = getSearchData(updatedTextLabel);
-        updateContent(searchData);
-      },
     },
-    openFullscreen: () => {
-      openFullscreen({
-        currentFullscreenTitle: sectionTitle,
-        currentFullscreenContent: TableSectionFullscreenContent(),
-      });
+    updateApiData: (key, label) => {
+      const updatedTextLabel = updateTextLabel(key, label, textLabel, setTextLabel);
+      const searchData = getSearchData(updatedTextLabel);
+      updateContent(searchData);
     },
   };
 

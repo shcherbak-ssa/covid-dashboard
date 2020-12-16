@@ -21,11 +21,14 @@
 
     .dark-theme & {
       background: $dark;
+
+      .fullscreen & {
+        background: rgba(34, 34, 34, 0.6);
+      }
     }
 
     img {
       display: none;
-      // -x-size: 10px;
     }
   }
 
