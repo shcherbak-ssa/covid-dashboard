@@ -15,7 +15,7 @@ export async function loadData() {
 
   return {
     global: getTotal(global),
-    country: transfromForCountrySection(global),
+    table: transfromForTable(global),
     countries: lodash.cloneDeep(transfortedCountries),
     map: lodash.cloneDeep(transfortedCountries),
     chart: transfromForChart(historicalGlobal, global.population),
@@ -62,7 +62,7 @@ function transformForCountry(country, countryHistorical) {
   }
 }
 
-function transfromForCountrySection(global) {
+function transfromForTable(global) {
   return {
     global: {
       [TOTAL_TYPE_OPTION]: getTotal(global),

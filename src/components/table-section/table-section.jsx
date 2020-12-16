@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './country-section.scss';
+import './table-section.scss';
 
 import { COUNTRY_OPTIONS_MENU_TYPE } from '../../constants';
 import { textLabelDefaultState, updateTextLabel, getSearchData } from '../../tools';
@@ -8,8 +8,8 @@ import Section from '../section';
 
 const DEFAULT_SECTION_TITLE = 'Global';
 
-export default function CountrySection(props) {
-  const {apiData, currentTheme, openFullscreen, selectedCountry} = props;
+export default function TableSection(props) {
+  const {apiData, isDarkTheme, selectedCountry} = props;
   const [sectionTitle, setSectionTitle] = useState('');
   const [textLabel, setTextLabel] = useState(textLabelDefaultState);
   const [content, setContent] = useState({});
@@ -27,23 +27,17 @@ export default function CountrySection(props) {
   }, [selectedCountry]);
 
   const sectionProps = {
-    sectionType: 'country',
+    sectionType: 'table',
+    optionsMenuType: COUNTRY_OPTIONS_MENU_TYPE,
     headerProps: {
       title: sectionTitle,
-      currentTheme,
+      isDarkTheme,
       textLabel,
-      optionsMenuType: COUNTRY_OPTIONS_MENU_TYPE,
-      updateApiData: (key, label) => {
-        const updatedTextLabel = updateTextLabel(key, label, textLabel, setTextLabel);
-        const searchData = getSearchData(updatedTextLabel);
-        updateContent(searchData);
-      },
     },
-    openFullscreen: () => {
-      openFullscreen({
-        currentFullscreenTitle: sectionTitle,
-        currentFullscreenContent: CountrySectionFullscreenContent(),
-      });
+    updateApiData: (key, label) => {
+      const updatedTextLabel = updateTextLabel(key, label, textLabel, setTextLabel);
+      const searchData = getSearchData(updatedTextLabel);
+      updateContent(searchData);
     },
   };
 
@@ -54,12 +48,12 @@ export default function CountrySection(props) {
   
   return (
     <Section {...sectionProps}>
-      <CountrySectionContent content={content} />
+      <TableSectionContent content={content} />
     </Section>
   );
 }
 
-function CountrySectionContent({content}) {
+function TableSectionContent({content}) {
   const casesProps = {
     type: 'cases',
     title: 'Cases',
@@ -77,27 +71,19 @@ function CountrySectionContent({content}) {
   };
 
   return (
-    <div className="country-section-content">
-      <CountrySectionContentItem {...casesProps} />
-      <CountrySectionContentItem {...deathsProps} />
-      <CountrySectionContentItem {...recoveredProps} />
+    <div className="table-section-content">
+      <TableSectionContentItem {...casesProps} />
+      <TableSectionContentItem {...deathsProps} />
+      <TableSectionContentItem {...recoveredProps} />
     </div>
   );
 }
 
-function CountrySectionContentItem({type, title, number}) {
+function TableSectionContentItem({type, title, number}) {
   return (
-    <div className="country-section-content-item">
-      <div className="country-section-content-title">{title}</div>
+    <div className="table-section-content-item">
+      <div className="table-section-content-title">{title}</div>
       <Base.NumberView type={type} number={number} />
-    </div>
-  );
-}
-
-function CountrySectionFullscreenContent() {
-  return (
-    <div className="country-section-fullscreen-content">
-      {/* your code */}
     </div>
   );
 }

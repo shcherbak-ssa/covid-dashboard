@@ -20,8 +20,8 @@
     grid-template-columns: 1fr 3fr 2fr;
     grid-template-rows: 1fr 2fr 3fr;
     grid-template-areas: 
-      'global map country'
-      'countries map country'
+      'global map table'
+      'countries map table'
       'countries map chart';
     grid-gap: 12px;
     padding: 16px;
@@ -34,12 +34,20 @@
         'global'
         'countries'
         'map'
-        'country'
+        'table'
         'chart';
     }
 
     .dark-theme & {
       background: $main-background-dark-theme;
+    }
+
+    .fullscreen &::after {
+      background: rgba(57, 62, 70, 0.4);
+      content: '';
+      display: block;
+      -x-size: 100%;
+      -x-position: absolute 0 x x 0;
     }
   }
 }
