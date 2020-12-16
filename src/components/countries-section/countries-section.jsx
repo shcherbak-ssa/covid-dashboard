@@ -6,7 +6,7 @@ import Base from '../base';
 import Section from '../section';
 
 export default function CountriesSection(props) {
-  const {isDarkTheme, /* setSelectedCountry */ } = props;
+  const { isDarkTheme, /* setSelectedCountry */ } = props;
   const [textLabel, setTextLabel] = useState(textLabelDefaultState);
   const [searchData, setSearchData] = useState(getSearchData(textLabel));
   const [apiData, /* setApiData */] = useState(props.apiData);
@@ -36,7 +36,6 @@ export default function CountriesSection(props) {
   );
 }
 
-// взято из раздела таблицы
 function CountriesSectionContent(content) {
   const data = content.apiData;
   const parametres = content.searchData;
@@ -47,7 +46,9 @@ function CountriesSectionContent(content) {
     const flag = datum.countryFlag;
     const key = datum[parametres.key];
     const parameter = key[parametres.parameter];
+    const id = myData.length;
     const obj = {
+      id: id,
       name: name,
       flag: flag,
       parameter: parameter,
@@ -66,13 +67,13 @@ function CountriesSectionContent(content) {
           return CountriesSectionContentItem(item);
         })}
     </div>
-  ); 
+  );
 }
 // <Base.NumberView type={type} number={number} />
 // <div className="countries-section-content-parameter">{item.parameter}</div>
 const CountriesSectionContentItem = (item) => {
   const inside = (
-    <div className="countries-section-content-item" key={item.parameter}>
+    <div className="countries-section-content-item" onClick={() => { clickListItem(item.name); }} key={item.id}>
       <div className="countries-section-content-flag"><img src={item.flag} alt={item.name} /></div>
       <div className="countries-section-content-name">{item.name}</div>
       <Base.NumberView type={item.type} number={item.parameter} />
@@ -80,3 +81,7 @@ const CountriesSectionContentItem = (item) => {
   );
   return inside;
 };
+
+function clickListItem(name) {
+  console.log(`you click on ${name}`);
+}

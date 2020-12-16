@@ -8,6 +8,18 @@
 
 @import './assets.scss';
 
+::-webkit-scrollbar-track {
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2d2d2d;
+}
+
 body {
   color: $dark;
   font-family: 'Roboto', sans-serif;
