@@ -16,13 +16,44 @@
         display: none;
       }
     }
+  }
 
+  .section-content {
     .options-menu {
       right: -100%;
-  
+
       @media screen and (max-width: 1023px) {
-        right: 0;
+        right: 12px;
       }
     }
+
+    display: flex;
+    overflow-y: auto;
+    max-height: 20rem;  /* надо как-то по-другому задать */
+    justify-content: center;
   }
+  &-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    &-item {
+      display: flex;
+      margin-top: 1rem;
+
+      .countries-section-content-flag > img {
+        max-width: 25px;
+        width: 100%;
+      }
+
+      .countries-section-content-name {
+        margin: 0 0.7rem;
+      }
+
+      & > .base-number-view {
+        font-size: 16px;
+        line-height: 120%;
+      }
+    }
+  }  
 }

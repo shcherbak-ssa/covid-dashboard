@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import './countries-section.scss';
 
 import { textLabelDefaultState, updateTextLabel, getSearchData } from '../../tools';
+import Base from '../base';
 import Section from '../section';
 
 export default function CountriesSection(props) {
-  const {currentTheme, openFullscreen, /* setSelectedCountry */ } = props;
+  const {isDarkTheme, /* setSelectedCountry */ } = props;
   const [textLabel, setTextLabel] = useState(textLabelDefaultState);
   const [searchData, setSearchData] = useState(getSearchData(textLabel));
   const [apiData, /* setApiData */] = useState(props.apiData);
@@ -19,23 +20,16 @@ export default function CountriesSection(props) {
     sectionType: 'countries',
     headerProps: {
       title: 'Countries',
-      currentTheme,
-      textLabel,
-      updateApiData: (key, label) => {
-        const updatedTextLabel = updateTextLabel(key, label, textLabel, setTextLabel);
-        setSearchData(getSearchData(updatedTextLabel));
-      }
+      isDarkTheme,
+      textLabel
     },
-    openFullscreen: () => {
-      openFullscreen({
-        currentFullscreenTitle: 'Countries',
-        currentFullscreenContent: CountriesSectionFullscreenContent(),
-      });
+    updateApiData: (key, label) => {
+      const updatedTextLabel = updateTextLabel(key, label, textLabel, setTextLabel);
+      setSearchData(getSearchData(updatedTextLabel));
     }
   };
 
-  return ( // 
-    //{/* your code */}
+  return (// {/* your code */}
     <Section {...sectionProps}>
       <CountriesSectionContent {...content} />
     </Section>
@@ -46,7 +40,7 @@ export default function CountriesSection(props) {
 function CountriesSectionContent(content) {
   const data = content.apiData;
   const parametres = content.searchData;
-  console.log(data, parametres);
+  // console.log(data, parametres);
   const myData = [];
   data.forEach((datum) => {
     const name = datum.countryName;
@@ -56,14 +50,17 @@ function CountriesSectionContent(content) {
     const obj = {
       name: name,
       flag: flag,
-      parameter: parameter
+      parameter: parameter,
+      type: parametres.parameter
     };
     myData.push(obj);
   });
+  // console.log(myData);
 
   return (
     <div className="countries-section-content">
-      {myData.sort((a, b) => a.parameter > b.parameter ? -1 : 1)
+      {myData.sort((a, b) => a.name > b.name)
+        .sort((a, b) => a.parameter > b.parameter ? -1 : 1)
         .map((item) => {
           // console.log(item);
           return CountriesSectionContentItem(item);
@@ -71,24 +68,15 @@ function CountriesSectionContent(content) {
     </div>
   ); 
 }
-
+// <Base.NumberView type={type} number={number} />
+// <div className="countries-section-content-parameter">{item.parameter}</div>
 const CountriesSectionContentItem = (item) => {
   const inside = (
     <div className="countries-section-content-item" key={item.parameter}>
       <div className="countries-section-content-flag"><img src={item.flag} alt={item.name} /></div>
       <div className="countries-section-content-name">{item.name}</div>
-      <div className="countries-section-content-parameter">{item.parameter}</div>
+      <Base.NumberView type={item.type} number={item.parameter} />
     </div>
   );
-  console.log(inside);
   return inside;
-} 
-
-
-function CountriesSectionFullscreenContent() {
-  return (
-    <div className="countries-section-fullscreen-content">
-      {/* your code */}
-    </div>
-  );
-}
+};
