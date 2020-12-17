@@ -1,46 +1,84 @@
 import React, { useState } from 'react';
 import './countries-section.scss';
 
-import { textLabelDefaultState, updateTextLabel, getSearchData } from '../../tools';
+import { getSearchData } from '../../tools';
+import Base from '../base';
 import Section from '../section';
 
 export default function CountriesSection(props) {
-  const {currentTheme, openFullscreen, /* setSelectedCountry */} = props;
-  const [textLabel, setTextLabel] = useState(textLabelDefaultState);
-  const [searchData, setSearchData] = useState(getSearchData(textLabel));
-  // const [apiData, setApiData] = useState(props.apiData);
+  const { isDarkTheme, options, updateOptions, optionMenuItems /* setSelectedCountry */ } = props;
+  // const [searchData] = useState(getSearchData(options));
+  const [apiData, /* setApiData */] = useState(props.apiData);
   // console.log(apiData, searchData);
+  const content = {
+    apiData: apiData,
+    searchData: getSearchData(options)
+  };
 
   const sectionProps = {
     sectionType: 'countries',
     headerProps: {
-      title: 'Cases by country',
-      currentTheme,
-      textLabel,
-      updateApiData: (key, label) => {
-        const updatedTextLabel = updateTextLabel(key, label, textLabel, setTextLabel);
-        setSearchData(getSearchData(updatedTextLabel));
-      },
+      title: 'Countries',
+      isDarkTheme,
+      options
     },
-    openFullscreen: () => {
-      openFullscreen({
-        currentFullscreenTitle: 'Cases by country',
-        currentFullscreenContent: CountriesSectionFullscreenContent(),
-      });
-    },
+    updateOptions, 
+    optionMenuItems,
   };
-  
-  return (
+
+  return (// {/* your code */}
     <Section {...sectionProps}>
-      {/* your code */}
+      <CountriesSectionContent {...content} />
     </Section>
   );
 }
 
-function CountriesSectionFullscreenContent() {
+function CountriesSectionContent(content) {
+  const data = content.apiData;
+  const parametres = content.searchData;
+  // console.log(data, parametres);
+  const myData = [];
+  data.forEach((datum) => {
+    const name = datum.countryName;
+    const flag = datum.countryFlag;
+    const key = datum[parametres.key];
+    const parameter = key[parametres.parameter];
+    const id = myData.length;
+    const obj = {
+      id: id,
+      name: name,
+      flag: flag,
+      parameter: parameter,
+      type: parametres.parameter
+    };
+    myData.push(obj);
+  });
+  // console.log(myData);
+
   return (
-    <div className="countries-section-fullscreen-content">
-      {/* your code */}
+    <div className="countries-section-content">
+      {myData.sort((a, b) => a.name > b.name)
+        .sort((a, b) => a.parameter > b.parameter ? -1 : 1)
+        .map((item) => {
+          // console.log(item);
+          return CountriesSectionContentItem(item);
+        })}
     </div>
   );
+}
+// <Base.NumberView type={type} number={number} />
+// <div className="countries-section-content-parameter">{item.parameter}</div>
+const CountriesSectionContentItem = (item) => {
+  const inside = (
+    <div className="countries-section-content-item" onClick={() => { clickListItem(item.name); }} key={item.id}>
+      <div className="countries-section-content-flag"><img src={item.flag} alt={item.name} /></div>
+      <div className="countries-section-content-name">{item.name}</div>
+      <Base.NumberView type={item.type} number={item.parameter} />
+    </div>
+  );
+  return inside;
+};
+
+function clickListItem(name) {
+  console.log(`you click on ${name}`);
 }
