@@ -5,14 +5,14 @@ import './map-legend.scss';
 import { IS_OPEN_CLASSNAME } from '../../../constants';
 import Base from '../../base';
 
-export default function MapLegend({isDarkTheme}) {
+export default function MapLegend({currentTheme}) {
   const [isContentOpen, setIsContentOpen] = useState(false);
   const mapLegendContentClassNames = classnames('map-legend-content', {
     [IS_OPEN_CLASSNAME]: isContentOpen,
   });
 
   const iconProps = {
-    isDarkTheme,
+    currentTheme,
     icon: 'map-legend',
     iconClickHandle: () => {
       setIsContentOpen(!isContentOpen);

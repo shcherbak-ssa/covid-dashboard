@@ -1,25 +1,33 @@
 import React, { useState } from 'react';
 import './countries-section.scss';
 
-import { getSearchData } from '../../tools';
+import { textLabelDefaultState, updateTextLabel, getSearchData } from '../../tools';
 import Section from '../section';
 
 export default function CountriesSection(props) {
-  const {isDarkTheme, options, updateOptions, optionMenuItems, /* setSelectedCountry */} = props;
-  // const [textLabel, setTextLabel] = useState(textLabelDefaultState);
-  // const [searchData, setSearchData] = useState(getSearchData(textLabel));
+  const {currentTheme, openFullscreen, /* setSelectedCountry */} = props;
+  const [textLabel, setTextLabel] = useState(textLabelDefaultState);
+  const [searchData, setSearchData] = useState(getSearchData(textLabel));
   // const [apiData, setApiData] = useState(props.apiData);
   // console.log(apiData, searchData);
 
   const sectionProps = {
     sectionType: 'countries',
     headerProps: {
-      title: 'Countries',
-      isDarkTheme,
-      options,
+      title: 'Cases by country',
+      currentTheme,
+      textLabel,
+      updateApiData: (key, label) => {
+        const updatedTextLabel = updateTextLabel(key, label, textLabel, setTextLabel);
+        setSearchData(getSearchData(updatedTextLabel));
+      },
     },
-    updateOptions,
-    optionMenuItems,
+    openFullscreen: () => {
+      openFullscreen({
+        currentFullscreenTitle: 'Cases by country',
+        currentFullscreenContent: CountriesSectionFullscreenContent(),
+      });
+    },
   };
   
   return (

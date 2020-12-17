@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import './map-section.scss';
 
-import { getSearchData } from '../../tools';
+import { textLabelDefaultState, updateTextLabel, getSearchData } from '../../tools';
 import Section from '../section';
 import MapLegend from './map-legend';
 
 export default function MapSection(props) {
-  const {isDarkTheme, options, updateOptions, optionMenuItems, /* setSelectedCountry */} = props;
-  // const [textLabel, setTextLabel] = useState(textLabelDefaultState);
-  // const [searchData, setSearchData] = useState(getSearchData(textLabel));
+  const {currentTheme, openFullscreen, /* setSelectedCountry */} = props;
+  const [textLabel, setTextLabel] = useState(textLabelDefaultState);
+  const [searchData, setSearchData] = useState(getSearchData(textLabel));
   // const [apiData, setApiData] = useState(props.apiData);
   // console.log(apiData, searchData);
 
@@ -16,12 +16,20 @@ export default function MapSection(props) {
     sectionType: 'map',
     headerProps: {
       title: 'Map',
-      headerIcon: MapLegend({isDarkTheme}),
-      isDarkTheme,
-      options,
+      headerIcon: MapLegend({currentTheme}),
+      currentTheme,
+      textLabel,
+      updateApiData: (key, label) => {
+        const updatedTextLabel = updateTextLabel(key, label, textLabel, setTextLabel);
+        setSearchData(getSearchData(updatedTextLabel));
+      },
     },
-    updateOptions,
-    optionMenuItems,
+    openFullscreen: () => {
+      openFullscreen({
+        currentFullscreenTitle: 'Map',
+        currentFullscreenContent: MapSectionFullscreenContent(),
+      });
+    },
   };
   
   return (
