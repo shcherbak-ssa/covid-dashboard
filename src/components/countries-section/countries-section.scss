@@ -16,13 +16,50 @@
         display: none;
       }
     }
+  }
 
+  .section-content {
     .options-menu {
       right: -100%;
-  
+
       @media screen and (max-width: 1023px) {
-        right: 0;
+        right: 12px;
       }
     }
+
+    display: flex;
+    overflow-y: auto;
+    justify-content: center;
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+    }
   }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    &-item {
+      display: flex;
+      align-items: center;
+      margin-top: 1rem;
+
+      .countries-section-content-flag > img {
+        max-width: 25px;
+        width: 100%;
+        border: 1px solid $section-title-color-light-theme;
+      }
+
+      .countries-section-content-name {
+        margin: 0 0.7rem;
+      }
+
+      & > .base-number-view {
+        font-size: 16px;
+        line-height: 120%;
+      }
+    }
+  }  
 }
