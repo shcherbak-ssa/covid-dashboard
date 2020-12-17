@@ -11,7 +11,7 @@ import * as am4maps from "@amcharts/amcharts4/maps";
 import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
 am4core.useTheme(am4themes_animated);
 export default function MapSection(props) {
-  const { currentTheme, openFullscreen, /* setSelectedCountry */ } = props;
+  const { isDarkTheme, /* setSelectedCountry */ } = props;
   const [textLabel, setTextLabel] = useState(textLabelDefaultState);
   const [searchData, setSearchData] = useState(getSearchData(textLabel));
   // const [apiData, setApiData] = useState(props.apiData);
@@ -21,19 +21,13 @@ export default function MapSection(props) {
     sectionType: 'map',
     headerProps: {
       title: 'Map',
-      headerIcon: MapLegend({ currentTheme }),
-      currentTheme,
+      headerIcon: MapLegend({ isDarkTheme }),
+      isDarkTheme,
       textLabel,
-      updateApiData: (key, label) => {
-        const updatedTextLabel = updateTextLabel(key, label, textLabel, setTextLabel);
-        setSearchData(getSearchData(updatedTextLabel));
-      },
     },
-    openFullscreen: () => {
-      openFullscreen({
-        currentFullscreenTitle: 'Map',
-        currentFullscreenContent: MapSectionFullscreenContent(),
-      });
+    updateApiData: (key, label) => {
+      const updatedTextLabel = updateTextLabel(key, label, textLabel, setTextLabel);
+      setSearchData(getSearchData(updatedTextLabel));
     },
   };
 
@@ -82,13 +76,5 @@ export default function MapSection(props) {
     <Section {...sectionProps}>
       {<div id="chartdiv" style={{ width: "100%", height: "calc(100% - 32px)" }}></div>}
     </Section>
-  );
-}
-
-function MapSectionFullscreenContent() {
-  return (
-    <div className="map-section-fullscreen-content">
-      {/* your code */}
-    </div>
   );
 }
