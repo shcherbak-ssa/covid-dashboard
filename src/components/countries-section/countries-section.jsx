@@ -7,12 +7,12 @@ import Section from '../section';
 
 export default function CountriesSection(props) {
   const { isDarkTheme, options, updateOptions, optionMenuItems /* setSelectedCountry */ } = props;
-  const [searchData] = useState(getSearchData(options));
+  // const [searchData] = useState(getSearchData(options));
   const [apiData, /* setApiData */] = useState(props.apiData);
   // console.log(apiData, searchData);
   const content = {
     apiData: apiData,
-    searchData: searchData
+    searchData: getSearchData(options)
   };
 
   const sectionProps = {
