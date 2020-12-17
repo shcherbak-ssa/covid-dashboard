@@ -2,18 +2,15 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 import './radio.scss';
 
-import { IS_SELECTED_CLASSNAME } from '@/constants';
+import { IS_SELECTED_CLASSNAME } from '../../../constants';
 
 export default function Radio(props) {
   const {isSelected, value, dataKey, label, index, clickHandle} = props;
-  // const [isRadioSelected, setIsRadioSelected] = useState(isSelected);
-
   const classNames = classnames('base-radio click', {
     [IS_SELECTED_CLASSNAME]: isSelected
   });
 
   function radioClickHandle() {
-    // setIsRadioSelected(!isRadioSelected);
     clickHandle({dataKey, label, index});
   }
 
