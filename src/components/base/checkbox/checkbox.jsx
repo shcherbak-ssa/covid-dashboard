@@ -2,22 +2,21 @@ import React, { useState } from 'react';
 import classnames from 'classnames';
 import './checkbox.scss';
 
-import { IS_SELECTED_CLASSNAME } from '@/constants';
-import { getIconUrl } from '@/tools';
+import { IS_SELECTED_CLASSNAME } from '../../../constants';
+import { getIconUrl } from '../../../tools';
 
 export default function Checkbox(props) {
-  const {isSelected, value, dataKey, label, clickHandle} = props;
-  const [isCheckboxSelected, setIsCheckboxSelected] = useState(isSelected);
+  const {isSelected, value, dataKey, label, index, clickHandle} = props;
 
   const iconUrl = getIconUrl('checked');
   const classNames = classnames('base-checkbox click', {
-    [IS_SELECTED_CLASSNAME]: isCheckboxSelected
+    [IS_SELECTED_CLASSNAME]: isSelected
   });
 
   function checkboxClickHandle() {
-    const nextIsCheckboxSelected = !isCheckboxSelected;
-    setIsCheckboxSelected(nextIsCheckboxSelected);
-    nextIsCheckboxSelected ? clickHandle({dataKey, label}) : clickHandle({dataKey, label: ''});
+    !isSelected
+      ? clickHandle({dataKey, label, index})
+      : clickHandle({dataKey, label: '', index: -1});
   }
 
   return (
