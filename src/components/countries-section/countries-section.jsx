@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import './countries-section.scss';
 
-import { textLabelDefaultState, updateTextLabel, getSearchData } from '../../tools';
+import { getSearchData } from '../../tools';
 import Base from '../base';
 import Section from '../section';
 
 export default function CountriesSection(props) {
-  const { isDarkTheme, /* setSelectedCountry */ } = props;
-  const [textLabel, setTextLabel] = useState(textLabelDefaultState);
-  const [searchData, setSearchData] = useState(getSearchData(textLabel));
+  const { isDarkTheme, options, updateOptions, optionMenuItems /* setSelectedCountry */ } = props;
+  const [searchData] = useState(getSearchData(options));
   const [apiData, /* setApiData */] = useState(props.apiData);
   // console.log(apiData, searchData);
   const content = {
@@ -21,12 +20,10 @@ export default function CountriesSection(props) {
     headerProps: {
       title: 'Countries',
       isDarkTheme,
-      textLabel
+      options
     },
-    updateApiData: (key, label) => {
-      const updatedTextLabel = updateTextLabel(key, label, textLabel, setTextLabel);
-      setSearchData(getSearchData(updatedTextLabel));
-    }
+    updateOptions, 
+    optionMenuItems,
   };
 
   return (// {/* your code */}
