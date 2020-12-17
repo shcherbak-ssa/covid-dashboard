@@ -1,7 +1,8 @@
 import React, { useState, useLayoutEffect, useRef } from 'react';
 import './map-section.scss';
 
-import { textLabelDefaultState, updateTextLabel, getSearchData } from '../../tools';
+// import { textLabelDefaultState, updateTextLabel, getSearchData } from '../../tools';
+import { getIconUrl, transformTextLabel, calculatePerPopulation, getSearchData } from '../../tools';
 import Section from '../section';
 import MapLegend from './map-legend';
 import * as am4core from "@amcharts/amcharts4/core";
@@ -11,9 +12,10 @@ import * as am4maps from "@amcharts/amcharts4/maps";
 import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
 am4core.useTheme(am4themes_animated);
 export default function MapSection(props) {
-  const { isDarkTheme, /* setSelectedCountry */ } = props;
-  const [textLabel, setTextLabel] = useState(textLabelDefaultState);
-  const [searchData, setSearchData] = useState(getSearchData(textLabel));
+  const { apiData, isDarkTheme, options, selectedCountry, optionMenuItems, updateOptions, setSelectedCountry } = props;
+
+
+  const [searchData, setSearchData] = useState(getSearchData(options));
   // const [apiData, setApiData] = useState(props.apiData);
   // console.log(apiData, searchData);
 
@@ -23,12 +25,10 @@ export default function MapSection(props) {
       title: 'Map',
       headerIcon: MapLegend({ isDarkTheme }),
       isDarkTheme,
-      textLabel,
+      options,
     },
-    updateApiData: (key, label) => {
-      const updatedTextLabel = updateTextLabel(key, label, textLabel, setTextLabel);
-      setSearchData(getSearchData(updatedTextLabel));
-    },
+    optionMenuItems,
+    updateOptions,
   };
 
   const chart = useRef(null);
