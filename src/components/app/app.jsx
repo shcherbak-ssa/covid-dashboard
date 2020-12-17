@@ -8,8 +8,8 @@ import { optionsMenu } from '../../data/options-menu';
 import AppHeader from './app-header';
 import AppFooter from './app-footer';
 import GlobalSection from '../global-section';
-// import CountriesSection from '../countries-section';
-// import MapSection from '../map-section';
+import CountriesSection from '../countries-section';
+import MapSection from '../map-section';
 import TableSection from '../table-section';
 import ChartSection from '../chart-section';
 
@@ -82,17 +82,16 @@ export default function App({apiData}) {
   }
 
   function updateOptions({label, dataKey, index}) {
-    if (index !== undefined) {
-      const updatedMenuItems = {...optionMenuItems};
-      updatedMenuItems[dataKey].items.forEach((item, idx) => {
-        item.isSelected = idx === index;
-      });
-  
-      setOptionMenuItems(updatedMenuItems);
-    }
+    const updatedOptionMenuItems = {...optionMenuItems};
+    updatedOptionMenuItems[dataKey].items.forEach((item, idx) => {
+      item.isSelected = idx === index;
+    });
+
+    setOptionMenuItems(updatedOptionMenuItems);
 
     const updatedTextLabel = {...options};
     updatedTextLabel[dataKey] = label;
+
     setOptions(updatedTextLabel);
   }
 
@@ -101,8 +100,8 @@ export default function App({apiData}) {
       <AppHeader {...appHeaderProps} />
       <div className="app-main">
         <GlobalSection {...sectionsProps.global} />
-        {/* <CountriesSection {...sectionsProps.countries} />
-        <MapSection {...sectionsProps.map} /> */}
+        <CountriesSection {...sectionsProps.countries} />
+        <MapSection {...sectionsProps.map} />
         <TableSection {...sectionsProps.table} />
         <ChartSection {...sectionsProps.chart} />
       </div>
