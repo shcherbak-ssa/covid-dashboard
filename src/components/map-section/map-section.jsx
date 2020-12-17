@@ -2,7 +2,7 @@ import React, { useState, useLayoutEffect, useRef } from 'react';
 import './map-section.scss';
 
 // import { textLabelDefaultState, updateTextLabel, getSearchData } from '../../tools';
-import { getIconUrl, transformTextLabel, calculatePerPopulation, getSearchData } from '../../tools';
+import { getSearchData } from '../../tools';
 import Section from '../section';
 import MapLegend from './map-legend';
 import * as am4core from "@amcharts/amcharts4/core";
