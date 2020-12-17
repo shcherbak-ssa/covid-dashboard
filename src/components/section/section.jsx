@@ -8,7 +8,7 @@ import OptionsMenu from '../options-menu';
 import { GLOBAL_SECTION_TYPE } from '../../constants';
 
 export default function Section(props) {
-  const {sectionType, fullscreenViewer, optionsMenuType, updateApiData} = props;
+  const {sectionType, fullscreenViewer, optionsMenuType, updateOptions, optionMenuItems} = props;
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isOptionsMenuOpen, setIsOptionsMenuOpen] = useState(false);
 
@@ -26,7 +26,8 @@ export default function Section(props) {
   const optionsMenuProps = {
     isOpen: isOptionsMenuOpen,
     menuType: optionsMenuType,
-    updateApiData,
+    updateOptions,
+    optionMenuItems,
   };
 
   function openFullscreen() {
@@ -72,7 +73,7 @@ export default function Section(props) {
 }
 
 function SectionHeader(props) {
-  const {title, isDarkTheme, headerIcon, textLabel} = props;
+  const {title, isDarkTheme, headerIcon, options} = props;
 
   const optionsIconProps = {
     icon: 'options',
@@ -94,7 +95,7 @@ function SectionHeader(props) {
       <Base.Title value={title} />
       <div className="section-icons">
         {headerIcon ? headerIcon : ''}
-        {textLabel ? SectionOptionsIcon({textLabel, optionsIconProps}) : ''}
+        {options ? SectionOptionsIcon({options, optionsIconProps}) : ''}
         <div className="section-fullscreen-close">
           <Base.Icon {...closeIconProps} />
         </div>
@@ -103,10 +104,10 @@ function SectionHeader(props) {
   );
 }
 
-function SectionOptionsIcon({textLabel, optionsIconProps}) {
+function SectionOptionsIcon({options, optionsIconProps}) {
   return (
     <div className="section-options-icon">
-      <Base.TextLabel value={transformTextLabel(textLabel)} />
+      <Base.TextLabel value={transformTextLabel(options)} />
       <Base.Icon {...optionsIconProps} />
     </div>
   );

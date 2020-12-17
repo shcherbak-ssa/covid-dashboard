@@ -2,28 +2,24 @@ import React, { useEffect, useState } from 'react';
 import './table-section.scss';
 
 import { COUNTRY_OPTIONS_MENU_TYPE } from '../../constants';
-import { textLabelDefaultState, updateTextLabel, getSearchData } from '../../tools';
 import Base from '../base';
 import Section from '../section';
 
 const DEFAULT_SECTION_TITLE = 'Global';
 
 export default function TableSection(props) {
-  const {apiData, isDarkTheme, selectedCountry} = props;
+  const {apiData, isDarkTheme, options, updateOptions, optionMenuItems, selectedCountry} = props;
   const [sectionTitle, setSectionTitle] = useState('');
-  const [textLabel, setTextLabel] = useState(textLabelDefaultState);
   const [content, setContent] = useState({});
 
   useEffect(() => {
-    updateTextLabel('parameter', '', textLabel, setTextLabel);
-  }, []);
+    updateContent();
+  }, [options]);
 
   useEffect(() => {
     const title = selectedCountry ? selectedCountry.countryName : DEFAULT_SECTION_TITLE;
     setSectionTitle(title);
-
-    const searchData = getSearchData(textLabel);
-    updateContent(searchData);
+    updateContent();
   }, [selectedCountry]);
 
   const sectionProps = {
@@ -32,18 +28,30 @@ export default function TableSection(props) {
     headerProps: {
       title: sectionTitle,
       isDarkTheme,
-      textLabel,
+      options: transformOptions(options),
     },
-    updateApiData: (key, label) => {
-      const updatedTextLabel = updateTextLabel(key, label, textLabel, setTextLabel);
-      const searchData = getSearchData(updatedTextLabel);
-      updateContent(searchData);
-    },
+    updateOptions,
+    optionMenuItems,
   };
 
-  function updateContent(searchData) {
+  function updateContent() {
+    const searchData = getSearchData(options);
     const searchObject = selectedCountry || apiData.global;
     setContent(searchObject[searchData.key]);
+  }
+
+  function transformOptions({type, measurement}) {
+    return {
+      type,
+      parameter: '',
+      measurement,
+    };
+  }
+
+  function getSearchData({type, measurement}) {
+    return {
+      key: type + measurement,
+    };
   }
   
   return (
@@ -81,8 +89,8 @@ function TableSectionContent({content}) {
 
 function TableSectionContentItem({type, title, number}) {
   return (
-    <div className="table-section-content-item">
-      <div className="table-section-content-title">{title}</div>
+    <div className="table-section-item">
+      <div className="table-section-title">{title}</div>
       <Base.NumberView type={type} number={number} />
     </div>
   );
