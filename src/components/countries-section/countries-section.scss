@@ -50,6 +50,7 @@
       .countries-section-content-flag > img {
         max-width: 25px;
         width: 100%;
+        border: 1px solid $section-title-color-light-theme;
       }
 
       .countries-section-content-name {
