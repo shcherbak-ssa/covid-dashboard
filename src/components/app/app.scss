@@ -41,5 +41,13 @@
     .dark-theme & {
       background: $main-background-dark-theme;
     }
+
+    .fullscreen &::after {
+      background: rgba(57, 62, 70, 0.4);
+      content: '';
+      display: block;
+      -x-size: 100%;
+      -x-position: absolute 0 x x 0;
+    }
   }
 }

@@ -1,6 +1,22 @@
 
 @import '@style-assets';
 
-.country-section {
-  grid-area: country;
+.chart-section {
+  grid-area: chart;
+
+  .section-content {
+    @media screen and (min-width: 1023px) {
+      grid-template-columns: 1fr 6fr 4fr 1fr;
+      grid-template-areas: ". content menu .";
+
+      .options-menu {
+        grid-area: menu;
+      }
+    }
+  }
+
+  &-content {
+    width: 100%;
+    grid-area: content;
+  }
 }

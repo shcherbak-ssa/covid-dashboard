@@ -6,7 +6,7 @@ import { textLabelDefaultState, updateTextLabel, getSearchData } from '../../too
 import Section from '../section';
 
 export default function ChartSection(props) {
-  const {currentTheme, openFullscreen, /* selectedCountry */} = props;
+  const {isDarkTheme, /* selectedCountry */} = props;
   const [textLabel, setTextLabel] = useState(textLabelDefaultState);
   const [searchData, setSearchData] = useState(getSearchData(textLabel));
   // const [apiData, setApiData] = useState(props.apiData);
@@ -14,35 +14,23 @@ export default function ChartSection(props) {
 
   const sectionProps = {
     sectionType: 'chart',
+    optionsMenuType: CHART_OPTIONS_MENU_TYPE,
     headerProps: {
       title: 'Chart',
-      currentTheme,
+      isDarkTheme,
       textLabel,
-      optionsMenuType: CHART_OPTIONS_MENU_TYPE,
-      updateApiData: (key, label) => {
-        const updatedTextLabel = updateTextLabel(key, label, textLabel, setTextLabel);
-        setSearchData(getSearchData(updatedTextLabel));
-      },
     },
-    openFullscreen: () => {
-      openFullscreen({
-        currentFullscreenTitle: 'Chart',
-        currentFullscreenContent: ChartSectionFullscreenContent(),
-      });
+    updateApiData: (key, label) => {
+      const updatedTextLabel = updateTextLabel(key, label, textLabel, setTextLabel);
+      setSearchData(getSearchData(updatedTextLabel));
     },
   };
   
   return (
     <Section {...sectionProps}>
-      {/* your code */}
+      <div className="chart-section-content">
+        {/* your code */}
+      </div>
     </Section>
-  );
-}
-
-function ChartSectionFullscreenContent() {
-  return (
-    <div className="chart-section-fullscreen-content">
-      {/* your code */}
-    </div>
   );
 }

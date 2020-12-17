@@ -1,16 +1,15 @@
 import React from 'react';
 import './app-header.scss';
 
-import { LIGHT_THEME } from '@/constants';
 import Base from '../../base';
 
 const DARK_THEME_TEXT_LABEL = 'Dark theme';
 const LIGHT_THEME_TEXT_LABEL = 'Light theme';
 
-export default function AppHeader({currentTheme, toggleCurrentTheme}) {
+export default function AppHeader({isDarkTheme, toggleCurrentTheme}) {
 
   function setThemeTextLabel() {
-    return currentTheme === LIGHT_THEME ? LIGHT_THEME_TEXT_LABEL : DARK_THEME_TEXT_LABEL;
+    return isDarkTheme ? DARK_THEME_TEXT_LABEL : LIGHT_THEME_TEXT_LABEL;
   }
 
   function toggleClickHandle() {

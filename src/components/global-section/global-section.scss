@@ -4,37 +4,28 @@
 .global-section {
   grid-area: global;
 
-  &.section {
-    display: block;
-  }
-
   .section {
     &-header {
       display: none;
     }
+  }
 
-    &-content {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
+  &-content {
+    text-align: center;
 
-      .base-number-view {
-        font-weight: bold;
-        font-size: 20px;
-        letter-spacing: 2px;
-      }
+    .base-number-view {
+      font-weight: bold;
+      font-size: 20px;
+      letter-spacing: 2px;
     }
   }
 
-  &-fullscreen {
-    &-content {
+  &.section-fullscreen {
+    .section-header {
       display: flex;
-      align-items: center;
-      flex-direction: column;
     }
 
-    &-item {
+    .global-section-item {
       margin-bottom: 46px;
       text-align: center;
 
@@ -44,9 +35,7 @@
       }
 
       .base-number-view {
-        font-weight: bold;
         font-size: 36px;
-        letter-spacing: 2px;
       }
     }
   }

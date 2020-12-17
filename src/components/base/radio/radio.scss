@@ -20,6 +20,12 @@
 
     .dark-theme & {
       background: $dark;
+
+      @media screen and (min-width: 1023px) {
+        .fullscreen & {
+          background: rgba(34, 34, 34, 0.6);
+        }
+      }
     }
 
     span {
