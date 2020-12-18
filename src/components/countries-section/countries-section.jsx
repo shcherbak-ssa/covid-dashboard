@@ -54,6 +54,7 @@ function CountriesSectionContent(content) {
     const id = myData.length;
     const obj = {
       id: id,
+      datum: datum,
       name: name,
       flag: flag,
       parameter: parameter,
@@ -83,7 +84,7 @@ function CountriesSectionContent(content) {
 const CountriesSectionContentItem = (item, selectCountry) => {
   // console.log(selectCountry);
   return (
-    <div className="countries-section-content-container-item" onClick={() => { clickListItem(item.name, selectCountry); }} key={item.id}>
+    <div className="countries-section-content-container-item" onClick={() => { clickListItem(item.datum, selectCountry); }} key={item.id}>
       <div className="countries-section-content-container-item-flag"><img src={item.flag} alt={item.name} /></div>
       <div className="countries-section-content-container-item-name">{item.name}</div>
       <Base.NumberView type={item.type} number={item.parameter} />
@@ -93,7 +94,7 @@ const CountriesSectionContentItem = (item, selectCountry) => {
 
 function clickListItem(name, selectCountry) {
   console.log(`you click on ${name}`);
-  // return selectCountry(name);
+  return selectCountry(name);
 }
 
 // какая-то полная хрень, еще и блюр после каждой введенной буквы
