@@ -62,7 +62,7 @@ export default function MapSection(props) {
     // Configure series
     console.log(ab);
 
-    apiData.forEach(element => {
+    apiData.forEach((element) => {
       if (-1 === ab.findIndex((el) => el.name === element.countryName)) {
         console.log('not find ', element);
       }
