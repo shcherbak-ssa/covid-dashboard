@@ -67,7 +67,7 @@ function CountriesSectionContent(content) {
   return (
     <div className="countries-section-content">
       <div className="countries-section-content-search">
-        <InputForCountriesSection {...value} />
+        <InputForCountriesSection value={value} data={myData} />
       </div>
       <div className="countries-section-content-container">
         {myData.sort((a, b) => a.name > b.name)
@@ -82,7 +82,6 @@ function CountriesSectionContent(content) {
 }
 
 const CountriesSectionContentItem = (item, selectCountry) => {
-  // console.log(selectCountry);
   return (
     <div className="countries-section-content-container-item" onClick={() => { clickListItem(item.datum, selectCountry); }} key={item.id}>
       <div className="countries-section-content-container-item-flag"><img src={item.flag} alt={item.name} /></div>
@@ -93,25 +92,29 @@ const CountriesSectionContentItem = (item, selectCountry) => {
 };
 
 function clickListItem(name, selectCountry) {
-  console.log(`you click on ${name}`);
   return selectCountry(name);
 }
 
-// какая-то полная хрень, еще и блюр после каждой введенной буквы
-function InputForCountriesSection(value) {
+function InputForCountriesSection(content) {
   const onChangeHandler = (event) => {
     // event.preventDefault();
-    value.setInputValue(event.target.value);
-    console.log(event.target.value);
+    content.value.setInputValue(event.target.value);
+    // console.log(event.target.value);
+  };
+  const onCliCkHandler = (event) => {
+    event.preventDefault();
   };
 
-  const input = value.inputValue;
+  console.log(content.value.inputValue);
   return (
+    <form className="search-field">
       <input
         className="search-field-input"
         type="text"
-        value={input}
+        value={content.value.inputValue}
         placeholder="Global"
         onChange={onChangeHandler} />
+      <input type="submit" className="search-field-button" value="&#128269;" onClick={onCliCkHandler} />
+    </form>
   );
 }
