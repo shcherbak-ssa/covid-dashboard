@@ -18,8 +18,6 @@ export async function loadData() {
   const historicalCountries = await request('historical');
   const transfortedCountries = transformForCountries(countries, historicalCountries);
 
-  console.log(transfortedCountries);
-
   return {
     global: getTotal(global),
     table: transfromForTable(global),
