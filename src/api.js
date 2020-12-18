@@ -6,6 +6,11 @@ import {
   MEASUREMENT_OPTION,
 } from './constants';
 
+const countriesToRemove = [
+  'Diamond Princess',
+  'MS Zaandam',
+];
+
 export async function loadData() {
   const global = await request('all');
   const countries = await request('countries');
@@ -42,13 +47,14 @@ function transformForCountries(countries, historicalCountries) {
 
       return countryHistorical ? transformForCountry(country, countryHistorical.timeline) : null;
     })
-    .filter((country) => country !== null);
+    .filter((country) => !(country === null || countriesToRemove.includes(country.countryName)));
 }
 
 function transformForCountry(country, countryHistorical) {
   return {
     countryName: country.country,
     countryFlag: country.countryInfo.flag,
+    iso2Id: country.countryInfo.iso2,
     [TOTAL_TYPE_OPTION]: getTotal(country),
     [LAST_DAY_TYPE_OPTION]: getLastDay(country),
     [TOTAL_TYPE_OPTION + MEASUREMENT_OPTION]: getTotalCalculatedPer100K(country),
