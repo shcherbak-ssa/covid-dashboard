@@ -40,7 +40,6 @@ function CountriesSectionContent(content) {
     inputValue: inputValue,
     setInputValue: setInputValue
   };
-
   const data = content.apiData;
   const parametres = content.searchData;
   const selectCountry = content.selectCountry;
@@ -96,16 +95,31 @@ function clickListItem(name, selectCountry) {
 }
 
 function InputForCountriesSection(content) {
+  // console.log(content);
   const onChangeHandler = (event) => {
-    // event.preventDefault();
+    event.preventDefault();
     content.value.setInputValue(event.target.value);
-    // console.log(event.target.value);
+    const value = event.target.value.toLowerCase();
+    const filter = content.data.filter((country) => {
+      return country.name.toLowerCase().includes(value);
+    });
+    console.log(filter);
+    // ок, это нужный фильтр, но как его теперь отправить в контейнер списка?
+    return filter;
   };
-  const onCliCkHandler = (event) => {
+  const onSearchCliCkHandler = (event) => {
     event.preventDefault();
   };
 
-  console.log(content.value.inputValue);
+  const onInputCliCKHandler = (event) => {
+    event.preventDefault();
+    let value = event.target.value;
+    if (value !== '') {
+      value = '';
+      event.target.value = value;
+    }
+  };
+
   return (
     <form className="search-field">
       <input
@@ -113,8 +127,9 @@ function InputForCountriesSection(content) {
         type="text"
         value={content.value.inputValue}
         placeholder="Global"
+        onClick={onInputCliCKHandler}
         onChange={onChangeHandler} />
-      <input type="submit" className="search-field-button" value="&#128269;" onClick={onCliCkHandler} />
+      <input type="submit" className="search-field-button" value="&#128269;" onClick={onSearchCliCkHandler} />
     </form>
   );
 }
