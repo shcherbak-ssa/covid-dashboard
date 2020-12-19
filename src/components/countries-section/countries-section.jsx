@@ -7,7 +7,7 @@ import Section from '../section';
 
 export default function CountriesSection(props) {
   const {
-    isDarkTheme, options, updateOptions, optionMenuItems, setSelectedCountry
+    isDarkTheme, options, updateOptions, optionMenuItems, selectedCountry, setSelectedCountry
   } = props;
   const [apiData /* setApiData */] = useState(props.apiData);
   const content = {
@@ -37,10 +37,9 @@ export default function CountriesSection(props) {
 function CountriesSectionContent(content) {
   const [inputValue, setInputValue] = useState('');
   const [myData, setMyData] = useState([]);
-  const [countId, setCountId] = useState(0);
+  const [archiveData] = useState([]);
   const props = (dataArr) => {
     setMyData(dataArr);
-    setCountId(countId + 185);
   };
   const value = {
     inputValue: inputValue,
@@ -56,7 +55,7 @@ function CountriesSectionContent(content) {
       const flag = datum.countryFlag;
       const key = datum[parametres.key];
       const parameter = key[parametres.parameter];
-      const id = myData.length + countId;
+      const id = myData.length;
       const obj = {
         id: id,
         datum: datum,
@@ -66,6 +65,7 @@ function CountriesSectionContent(content) {
         type: parametres.parameter
       };
       myData.push(obj);
+      archiveData.push(obj);
     });
   } else {
     const data = myData;
@@ -82,7 +82,7 @@ function CountriesSectionContent(content) {
   return (
     <div className="countries-section-content">
       <div className="countries-section-content-search">
-        <InputForCountriesSection value={value} data={myData} fn={props} />
+        <InputForCountriesSection value={value} data={myData} api={archiveData} fn={props} />
       </div>
       <div className="countries-section-content-container">
         {myData.sort((a, b) => a.name > b.name)
@@ -114,14 +114,18 @@ function InputForCountriesSection(content) {
   const onChangeHandler = (event) => {
     event.preventDefault();
     // если набирать буквы, а потом убирать, то не возвращаются все страны из апи
-    content.value.setInputValue(event.target.value);
     const value = event.target.value.toLowerCase();
-    const filter = content.data.filter((country) => country.name.toLowerCase().includes(value));
-    // console.log(filter);
+    console.log('value:' + value);
+    let filter = [];
+    if (value.length > content.value.inputValue.length) {
+      content.value.setInputValue(event.target.value);
+      filter = content.data.filter((country) => country.name.toLowerCase().includes(value));
+    } else {
+      content.value.setInputValue(event.target.value);
+      filter = content.api.filter((country) => country.name.toLowerCase().includes(value));
+    }
     content.fn(filter);
-  };
-  const onSearchCliCkHandler = (event) => {
-    event.preventDefault();
+    // console.log(filter);
   };
 
   const onInputCliCKHandler = (event) => {
@@ -141,7 +145,6 @@ function InputForCountriesSection(content) {
         placeholder="Global"
         onClick={onInputCliCKHandler}
         onChange={onChangeHandler} />
-      <input type="submit" className="search-field-button" value="&#128269;" onClick={onSearchCliCkHandler} />
     </form>
   );
 }

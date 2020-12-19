@@ -59,24 +59,6 @@
           border: 3px solid $main-background-light-theme;
           outline: none;
         }
-
-        &-button {
-          border: none;
-          height: 2rem;
-          width: 2rem;
-          position: absolute;
-          top: 0;
-          right: 0;
-          cursor: pointer;
-          outline: none;
-        }
-
-        &-button::before {
-          content: "\f002";
-          font-family: FontAwesome, sans-serif;
-          font-size: 16px;
-          color: $main-background-light-theme;
-        }
       }
     }
 
