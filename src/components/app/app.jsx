@@ -36,6 +36,14 @@ export default function App({apiData}) {
     toggleCurrentTheme,
   };
 
+  const commonSectionProps = {
+    isDarkTheme,
+    options,
+    updateOptions,
+    optionMenuItems,
+    selectedCountry,
+  };
+
   const sectionsProps = {
     global: {
       apiData: apiData.global,
@@ -43,37 +51,21 @@ export default function App({apiData}) {
     },
     countries: {
       apiData: apiData.countries,
-      isDarkTheme,
-      options,
-      selectedCountry,
-      optionMenuItems,
-      updateOptions,
       setSelectedCountry,
+      ...commonSectionProps,
     },
     map: {
       apiData: apiData.map,
-      isDarkTheme,
-      options,
-      selectedCountry,
-      optionMenuItems,
-      updateOptions,
       setSelectedCountry,
+      ...commonSectionProps,
     },
     table: {
       apiData: apiData.table,
-      isDarkTheme,
-      options,
-      selectedCountry,
-      optionMenuItems,
-      updateOptions,
+      ...commonSectionProps,
     },
     chart: {
       apiData: apiData.chart,
-      isDarkTheme,
-      options,
-      selectedCountry,
-      optionMenuItems,
-      updateOptions,
+      ...commonSectionProps,
     },
   };
 

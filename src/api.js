@@ -14,9 +14,8 @@ const countriesToRemove = [
 export async function loadData() {
   const global = await request('all');
   const countries = await request('countries');
-  const historicalGlobal = await request('historical/all');
-  const historicalCountries = await request('historical');
-  const transfortedCountries = transformForCountries(countries, historicalCountries);
+  const historicalGlobal = await request('historical/all?lastdays=all');
+  const transfortedCountries = transformForCountries(countries);
 
   return {
     global: getTotal(global),
@@ -25,6 +24,23 @@ export async function loadData() {
     map: lodash.cloneDeep(transfortedCountries),
     chart: transfromForChart(historicalGlobal, global.population),
   };
+}
+
+export async function loadTimelineForCountry({iso2Id, population}) {
+  try {
+    const response = await fetch(
+      `https://disease.sh/v3/covid-19/historical/${iso2Id}?lastdays=all`,
+      {
+        method: 'GET',
+        headers: {},
+      }
+    );
+  
+    const historicalCountry = await response.json();
+    return transformForChartCountry(historicalCountry.timeline, population);
+  } catch (error) {
+    return null;
+  }
 }
 
 async function request(type) {
@@ -37,35 +53,27 @@ async function request(type) {
 }
 
 /* transform functions */
-function transformForCountries(countries, historicalCountries) {
+function transformForCountries(countries) {
   return countries
-    .map((country) => {
-      const countryHistorical = historicalCountries.find((historicalCountry) => {
-        if (historicalCountry.country === country.country) return true;
-        else return false;
-      });
-
-      return countryHistorical ? transformForCountry(country, countryHistorical.timeline) : null;
-    })
-    .filter((country) => !(country === null || countriesToRemove.includes(country.countryName)));
+    .map(transformForCountry)
+    .filter(filterCountries);
 }
 
-function transformForCountry(country, countryHistorical) {
+function transformForCountry(country) {
   return {
     countryName: country.country,
     countryFlag: country.countryInfo.flag,
     iso2Id: country.countryInfo.iso2,
+    population: country.population,
     [TOTAL_TYPE_OPTION]: getTotal(country),
     [LAST_DAY_TYPE_OPTION]: getLastDay(country),
     [TOTAL_TYPE_OPTION + MEASUREMENT_OPTION]: getTotalCalculatedPer100K(country),
     [LAST_DAY_TYPE_OPTION + MEASUREMENT_OPTION]: getLastDayCalculatedPer100K(country),
-    timeline: {
-      [TOTAL_TYPE_OPTION]: countryHistorical,
-      [TOTAL_TYPE_OPTION + MEASUREMENT_OPTION]: getTotalCalculatedPer100KTimeline(
-        countryHistorical, country.population
-      ),
-    }
   }
+}
+
+function filterCountries(country) {
+  return !(country === null || countriesToRemove.includes(country.countryName));
 }
 
 function transfromForTable(global) {
@@ -89,6 +97,15 @@ function transfromForChart(historicalGlobal, population) {
       ),
     },
     country: null,
+  };
+}
+
+function transformForChartCountry(timelineCountry, population) {
+  return {
+    [TOTAL_TYPE_OPTION]: timelineCountry,
+    [TOTAL_TYPE_OPTION + MEASUREMENT_OPTION]: getTotalCalculatedPer100KTimeline(
+      timelineCountry, population
+    ),
   };
 }
 
