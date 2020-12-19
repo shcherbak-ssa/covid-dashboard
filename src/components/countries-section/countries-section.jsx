@@ -47,6 +47,7 @@ function CountriesSectionContent(content) {
   };
   const parametres = content.searchData;
   const selectCountry = content.selectCountry;
+  console.log(myData.length);
   if (myData.length === 0) {
     const data = content.apiData;
     data.forEach((datum) => {
@@ -66,7 +67,7 @@ function CountriesSectionContent(content) {
       myData.push(obj);
     });
   }
-  // console.log(myData);
+  console.log(myData);
 
   return (
     <div className="countries-section-content">
@@ -102,6 +103,7 @@ function clickListItem(data, selectCountry) {
 function InputForCountriesSection(content) {
   const onChangeHandler = (event) => {
     event.preventDefault();
+    // если набирать буквы, а потом убирать, то не возвращаются все страны из апи
     content.value.setInputValue(event.target.value);
     const value = event.target.value.toLowerCase();
     const filter = content.data.filter((country) => country.name.toLowerCase().includes(value));
@@ -114,11 +116,10 @@ function InputForCountriesSection(content) {
 
   const onInputCliCKHandler = (event) => {
     event.preventDefault();
-    /* let value = event.target.value;
-    if (value !== '') {
-      value = '';
-      event.target.value = value;
-    } */
+    if (event.target.value !== '') {
+      content.value.setInputValue('');
+      content.fn([]);
+    }
   };
 
   return (
