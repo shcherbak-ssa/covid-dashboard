@@ -26,6 +26,23 @@ export async function loadData() {
   };
 }
 
+export async function loadTimelineForCountry({iso2Id, population}) {
+  try {
+    const response = await fetch(
+      `https://disease.sh/v3/covid-19/historical/${iso2Id}?lastdays=all`,
+      {
+        method: 'GET',
+        headers: {},
+      }
+    );
+  
+    const historicalCountry = await response.json();
+    return transformForChartCountry(historicalCountry.timeline, population);
+  } catch (error) {
+    return null;
+  }
+}
+
 async function request(type) {
   const response = await fetch(`https://disease.sh/v3/covid-19/${type}`, {
     method: 'GET',
@@ -47,6 +64,7 @@ function transformForCountry(country) {
     countryName: country.country,
     countryFlag: country.countryInfo.flag,
     iso2Id: country.countryInfo.iso2,
+    population: country.population,
     [TOTAL_TYPE_OPTION]: getTotal(country),
     [LAST_DAY_TYPE_OPTION]: getLastDay(country),
     [TOTAL_TYPE_OPTION + MEASUREMENT_OPTION]: getTotalCalculatedPer100K(country),
@@ -79,6 +97,15 @@ function transfromForChart(historicalGlobal, population) {
       ),
     },
     country: null,
+  };
+}
+
+function transformForChartCountry(timelineCountry, population) {
+  return {
+    [TOTAL_TYPE_OPTION]: timelineCountry,
+    [TOTAL_TYPE_OPTION + MEASUREMENT_OPTION]: getTotalCalculatedPer100KTimeline(
+      timelineCountry, population
+    ),
   };
 }
 
