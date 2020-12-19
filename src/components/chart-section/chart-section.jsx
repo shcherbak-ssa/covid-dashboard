@@ -13,9 +13,7 @@ export default function ChartSection(props) {
   const [searchData, setSearchData] = useState({});
   const [sectionTitle, setSectionTitle] = useState('');
   const [content, setContent] = useState({});
-  console.log(options);
   const [apiData, setApiData] = useState(props.apiData);
-  console.log(apiData, searchData);
 
   useEffect(() => {
     setSearchData(getSearchData(options));
@@ -51,7 +49,6 @@ export default function ChartSection(props) {
       newDate.value = obj[key];
       newData.push(newDate);
     }
-    console.log(newData);
     chart.data = newData;
     // Create axes
     let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
