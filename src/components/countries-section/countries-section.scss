@@ -41,8 +41,12 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    position: relative;
 
     &-search {
+      position: sticky; // или фиксд
+      top: 0;
+
       .search-field {
         position: relative;
         width: 90%;

@@ -15,7 +15,6 @@ export default function CountriesSection(props) {
     searchData: getSearchData(options),
     selectCountry: setSelectedCountry
   };
-
   const sectionProps = {
     sectionType: 'countries',
     headerProps: {
@@ -36,37 +35,43 @@ export default function CountriesSection(props) {
 
 function CountriesSectionContent(content) {
   const [inputValue, setInputValue] = useState('');
+  const [myData, setMyData] = useState([]);
+  const [countId, setCountId] = useState(0);
+  const props = (dataArr) => {
+    setMyData(dataArr);
+    setCountId(countId + 185);
+  };
   const value = {
     inputValue: inputValue,
     setInputValue: setInputValue
   };
-  const data = content.apiData;
   const parametres = content.searchData;
   const selectCountry = content.selectCountry;
-  // console.log(data, parametres);
-  const myData = [];
-  data.forEach((datum) => {
-    const name = datum.countryName;
-    const flag = datum.countryFlag;
-    const key = datum[parametres.key];
-    const parameter = key[parametres.parameter];
-    const id = myData.length;
-    const obj = {
-      id: id,
-      datum: datum,
-      name: name,
-      flag: flag,
-      parameter: parameter,
-      type: parametres.parameter
-    };
-    myData.push(obj);
-  });
+  if (myData.length === 0) {
+    const data = content.apiData;
+    data.forEach((datum) => {
+      const name = datum.countryName;
+      const flag = datum.countryFlag;
+      const key = datum[parametres.key];
+      const parameter = key[parametres.parameter];
+      const id = myData.length + countId;
+      const obj = {
+        id: id,
+        datum: datum,
+        name: name,
+        flag: flag,
+        parameter: parameter,
+        type: parametres.parameter
+      };
+      myData.push(obj);
+    });
+  }
   // console.log(myData);
 
   return (
     <div className="countries-section-content">
       <div className="countries-section-content-search">
-        <InputForCountriesSection value={value} data={myData} />
+        <InputForCountriesSection value={value} data={myData} fn={props} />
       </div>
       <div className="countries-section-content-container">
         {myData.sort((a, b) => a.name > b.name)
@@ -90,22 +95,18 @@ const CountriesSectionContentItem = (item, selectCountry) => {
   );
 };
 
-function clickListItem(name, selectCountry) {
-  return selectCountry(name);
+function clickListItem(data, selectCountry) {
+  return selectCountry(data);
 }
 
 function InputForCountriesSection(content) {
-  // console.log(content);
   const onChangeHandler = (event) => {
     event.preventDefault();
     content.value.setInputValue(event.target.value);
     const value = event.target.value.toLowerCase();
-    const filter = content.data.filter((country) => {
-      return country.name.toLowerCase().includes(value);
-    });
-    console.log(filter);
-    // ок, это нужный фильтр, но как его теперь отправить в контейнер списка?
-    return filter;
+    const filter = content.data.filter((country) => country.name.toLowerCase().includes(value));
+    // console.log(filter);
+    content.fn(filter);
   };
   const onSearchCliCkHandler = (event) => {
     event.preventDefault();
@@ -113,11 +114,11 @@ function InputForCountriesSection(content) {
 
   const onInputCliCKHandler = (event) => {
     event.preventDefault();
-    let value = event.target.value;
+    /* let value = event.target.value;
     if (value !== '') {
       value = '';
       event.target.value = value;
-    }
+    } */
   };
 
   return (
