@@ -14,9 +14,8 @@ const countriesToRemove = [
 export async function loadData() {
   const global = await request('all');
   const countries = await request('countries');
-  const historicalGlobal = await request('historical/all');
-  const historicalCountries = await request('historical');
-  const transfortedCountries = transformForCountries(countries, historicalCountries);
+  const historicalGlobal = await request('historical/all?lastdays=all');
+  const transfortedCountries = transformForCountries(countries);
 
   return {
     global: getTotal(global),
@@ -37,20 +36,13 @@ async function request(type) {
 }
 
 /* transform functions */
-function transformForCountries(countries, historicalCountries) {
+function transformForCountries(countries) {
   return countries
-    .map((country) => {
-      const countryHistorical = historicalCountries.find((historicalCountry) => {
-        if (historicalCountry.country === country.country) return true;
-        else return false;
-      });
-
-      return countryHistorical ? transformForCountry(country, countryHistorical.timeline) : null;
-    })
-    .filter((country) => !(country === null || countriesToRemove.includes(country.countryName)));
+    .map(transformForCountry)
+    .filter(filterCountries);
 }
 
-function transformForCountry(country, countryHistorical) {
+function transformForCountry(country) {
   return {
     countryName: country.country,
     countryFlag: country.countryInfo.flag,
@@ -59,13 +51,11 @@ function transformForCountry(country, countryHistorical) {
     [LAST_DAY_TYPE_OPTION]: getLastDay(country),
     [TOTAL_TYPE_OPTION + MEASUREMENT_OPTION]: getTotalCalculatedPer100K(country),
     [LAST_DAY_TYPE_OPTION + MEASUREMENT_OPTION]: getLastDayCalculatedPer100K(country),
-    timeline: {
-      [TOTAL_TYPE_OPTION]: countryHistorical,
-      [TOTAL_TYPE_OPTION + MEASUREMENT_OPTION]: getTotalCalculatedPer100KTimeline(
-        countryHistorical, country.population
-      ),
-    }
   }
+}
+
+function filterCountries(country) {
+  return !(country === null || countriesToRemove.includes(country.countryName));
 }
 
 function transfromForTable(global) {

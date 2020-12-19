@@ -13,6 +13,6 @@ init();
 
 async function init() {
   const apiData = await loadData();
-  // console.log(apiData);
+  console.log('apiData', apiData);
   ReactDOM.render(<App apiData={apiData} />, document.getElementById('app'));
 }
