@@ -6,15 +6,15 @@ import Base from '../base';
 import Section from '../section';
 
 export default function CountriesSection(props) {
-  const { isDarkTheme, options, updateOptions, optionMenuItems /* setSelectedCountry */ } = props;
-  // const [searchData] = useState(getSearchData(options));
-  const [apiData, /* setApiData */] = useState(props.apiData);
-  // console.log(apiData, searchData);
+  const {
+    isDarkTheme, options, updateOptions, optionMenuItems, setSelectedCountry
+  } = props;
+  const [apiData /* setApiData */] = useState(props.apiData);
   const content = {
     apiData: apiData,
-    searchData: getSearchData(options)
+    searchData: getSearchData(options),
+    selectCountry: setSelectedCountry
   };
-
   const sectionProps = {
     sectionType: 'countries',
     headerProps: {
@@ -22,11 +22,11 @@ export default function CountriesSection(props) {
       isDarkTheme,
       options
     },
-    updateOptions, 
-    optionMenuItems,
+    updateOptions,
+    optionMenuItems
   };
 
-  return (// {/* your code */}
+  return (
     <Section {...sectionProps}>
       <CountriesSectionContent {...content} />
     </Section>
@@ -34,51 +34,103 @@ export default function CountriesSection(props) {
 }
 
 function CountriesSectionContent(content) {
-  const data = content.apiData;
+  const [inputValue, setInputValue] = useState('');
+  const [myData, setMyData] = useState([]);
+  const [countId, setCountId] = useState(0);
+  const props = (dataArr) => {
+    setMyData(dataArr);
+    setCountId(countId + 185);
+  };
+  const value = {
+    inputValue: inputValue,
+    setInputValue: setInputValue
+  };
   const parametres = content.searchData;
-  // console.log(data, parametres);
-  const myData = [];
-  data.forEach((datum) => {
-    const name = datum.countryName;
-    const flag = datum.countryFlag;
-    const key = datum[parametres.key];
-    const parameter = key[parametres.parameter];
-    const id = myData.length;
-    const obj = {
-      id: id,
-      name: name,
-      flag: flag,
-      parameter: parameter,
-      type: parametres.parameter
-    };
-    myData.push(obj);
-  });
+  const selectCountry = content.selectCountry;
+  if (myData.length === 0) {
+    const data = content.apiData;
+    data.forEach((datum) => {
+      const name = datum.countryName;
+      const flag = datum.countryFlag;
+      const key = datum[parametres.key];
+      const parameter = key[parametres.parameter];
+      const id = myData.length + countId;
+      const obj = {
+        id: id,
+        datum: datum,
+        name: name,
+        flag: flag,
+        parameter: parameter,
+        type: parametres.parameter
+      };
+      myData.push(obj);
+    });
+  }
   // console.log(myData);
 
   return (
     <div className="countries-section-content">
-      {myData.sort((a, b) => a.name > b.name)
-        .sort((a, b) => a.parameter > b.parameter ? -1 : 1)
-        .map((item) => {
-          // console.log(item);
-          return CountriesSectionContentItem(item);
-        })}
+      <div className="countries-section-content-search">
+        <InputForCountriesSection value={value} data={myData} fn={props} />
+      </div>
+      <div className="countries-section-content-container">
+        {myData.sort((a, b) => a.name > b.name)
+          .sort((a, b) => a.parameter > b.parameter ? -1 : 1)
+          .map((item) => {
+            // console.log(item);
+            return CountriesSectionContentItem(item, selectCountry);
+          })}
+      </div>
     </div>
   );
 }
-// <Base.NumberView type={type} number={number} />
-// <div className="countries-section-content-parameter">{item.parameter}</div>
-const CountriesSectionContentItem = (item) => {
-  const inside = (
-    <div className="countries-section-content-item" onClick={() => { clickListItem(item.name); }} key={item.id}>
-      <div className="countries-section-content-flag"><img src={item.flag} alt={item.name} /></div>
-      <div className="countries-section-content-name">{item.name}</div>
+
+const CountriesSectionContentItem = (item, selectCountry) => {
+  return (
+    <div className="countries-section-content-container-item" onClick={() => { clickListItem(item.datum, selectCountry); }} key={item.id}>
+      <div className="countries-section-content-container-item-flag"><img src={item.flag} alt={item.name} /></div>
+      <div className="countries-section-content-container-item-name">{item.name}</div>
       <Base.NumberView type={item.type} number={item.parameter} />
     </div>
   );
-  return inside;
 };
 
-function clickListItem(name) {
-  console.log(`you click on ${name}`);
+function clickListItem(data, selectCountry) {
+  return selectCountry(data);
+}
+
+function InputForCountriesSection(content) {
+  const onChangeHandler = (event) => {
+    event.preventDefault();
+    content.value.setInputValue(event.target.value);
+    const value = event.target.value.toLowerCase();
+    const filter = content.data.filter((country) => country.name.toLowerCase().includes(value));
+    // console.log(filter);
+    content.fn(filter);
+  };
+  const onSearchCliCkHandler = (event) => {
+    event.preventDefault();
+  };
+
+  const onInputCliCKHandler = (event) => {
+    event.preventDefault();
+    /* let value = event.target.value;
+    if (value !== '') {
+      value = '';
+      event.target.value = value;
+    } */
+  };
+
+  return (
+    <form className="search-field">
+      <input
+        className="search-field-input"
+        type="text"
+        value={content.value.inputValue}
+        placeholder="Global"
+        onClick={onInputCliCKHandler}
+        onChange={onChangeHandler} />
+      <input type="submit" className="search-field-button" value="&#128269;" onClick={onSearchCliCkHandler} />
+    </form>
+  );
 }
