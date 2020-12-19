@@ -15,6 +15,7 @@ export default function CountriesSection(props) {
     searchData: getSearchData(options),
     selectCountry: setSelectedCountry
   };
+  // console.log(content);
   const sectionProps = {
     sectionType: 'countries',
     headerProps: {
@@ -66,8 +67,17 @@ function CountriesSectionContent(content) {
       };
       myData.push(obj);
     });
+  } else {
+    const data = myData;
+    const keyForAll = parametres.key; // e g total
+    const paramForAll = parametres.parameter; // e g cases-deaths-recovered
+    data.forEach((datum) => {
+      datum.parameter = datum.datum[keyForAll][paramForAll];
+      datum.type = paramForAll;
+    });
+    // console.log(data);
   }
-  console.log(myData);
+  // console.log(myData);
 
   return (
     <div className="countries-section-content">
