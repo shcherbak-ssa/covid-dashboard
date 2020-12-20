@@ -44,13 +44,11 @@
     position: relative;
 
     &-search {
-      position: sticky; // или фиксд - нет, катается при прокрутке страницы, выглядит крипово
-      top: 0;
       margin-bottom: 20px;
 
       .search-field {
         position: relative;
-        width: 90%;
+        width: 100%;
         margin: 0 auto;
 
         &-input {
