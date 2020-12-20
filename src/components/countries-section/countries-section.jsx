@@ -48,7 +48,7 @@ function CountriesSectionContent(content) {
   };
   const parametres = content.searchData;
   const selectCountry = content.selectCountry;
-  console.log(myData.length);
+  // console.log(myData.length);
   if (myData.length === 0) {
     const data = content.apiData;
     data.forEach((datum) => {
@@ -105,10 +105,10 @@ function CountriesSectionContent(content) {
 
 const SelectedCountry = (country) => {
   let content;
-  console.log(country);
+  // console.log(country);
   if (country.country) {
     // country.discard([]); зацикливается
-    console.log(country.data);
+    // console.log(country.data);
     const item = country.country;
     const key = country.data.key;
     const parameter = country.data.parameter;
@@ -154,7 +154,7 @@ function InputForCountriesSection(content) {
   const onChangeHandler = (event) => {
     event.preventDefault();
     const value = event.target.value.toLowerCase();
-    console.log('value:' + value);
+    // console.log('value:' + value);
     let filter = [];
     content.value.setInputValue(event.target.value);
     // выходит хрень, если получается сочетание, которого нет, а потом убираются буквы
