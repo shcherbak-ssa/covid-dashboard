@@ -88,6 +88,7 @@ function CountriesSectionContent(content) {
       <div className="countries-section-content-selected">
         <SelectedCountry country={content.selectedCountry} data={parametres} fn={selectCountry} />
       </div>
+      <div className="countries-section-content-title">Countries</div>
       <div className="countries-section-content-container">
         {myData.sort((a, b) => a.name > b.name)
           .sort((a, b) => a.parameter > b.parameter ? -1 : 1)

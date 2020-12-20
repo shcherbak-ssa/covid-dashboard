@@ -44,8 +44,9 @@
     position: relative;
 
     &-search {
-      position: sticky; // или фиксд
+      position: sticky; // или фиксд - нет, катается при прокрутке страницы, выглядит крипово
       top: 0;
+      margin-bottom: 20px;
 
       .search-field {
         position: relative;
@@ -58,6 +59,13 @@
           padding-left: 10px;
           border-radius: 4px;
           outline: none;
+          background: #F1F1F5;
+          color: rgba(57, 62, 70, 0.8);
+
+          .dark-theme & {
+            background: rgba(34, 34, 34, 0.8);
+            color: rgba(255, 255, 255, 0.8);
+          }
         }
       }
     }
@@ -148,6 +156,17 @@
         
       }
     }
+    &-title {
+      width: 100%;
+      font-size: 14px;
+      line-height: 200%;
+      margin-bottom: 6px;
+
+      .dark-theme & {
+        color: rgba(255, 255, 255, 0.8);
+      }
+    }
+
     &-container {
       display: flex;
       flex-direction: column;
@@ -181,8 +200,8 @@
   
         & > .base-number-view {
           grid-area: number;
-          // font-size: 16px;
-          // line-height: 120%;
+          font-size: 16px;
+          line-height: 150%;
         }
         .dark-theme & {
           color: rgba(255, 255, 255, 0.8);
