@@ -7,14 +7,16 @@ import Section from '../section';
 
 export default function CountriesSection(props) {
   const {
-    isDarkTheme, options, updateOptions, optionMenuItems, setSelectedCountry
+    isDarkTheme, options, updateOptions, optionMenuItems, selectedCountry, setSelectedCountry
   } = props;
   const [apiData /* setApiData */] = useState(props.apiData);
   const content = {
     apiData: apiData,
     searchData: getSearchData(options),
+    selectedCountry: selectedCountry,
     selectCountry: setSelectedCountry
   };
+  // console.log(content);
   const sectionProps = {
     sectionType: 'countries',
     headerProps: {
@@ -36,10 +38,9 @@ export default function CountriesSection(props) {
 function CountriesSectionContent(content) {
   const [inputValue, setInputValue] = useState('');
   const [myData, setMyData] = useState([]);
-  const [countId, setCountId] = useState(0);
+  const [archiveData] = useState([]);
   const props = (dataArr) => {
     setMyData(dataArr);
-    setCountId(countId + 185);
   };
   const value = {
     inputValue: inputValue,
@@ -47,6 +48,7 @@ function CountriesSectionContent(content) {
   };
   const parametres = content.searchData;
   const selectCountry = content.selectCountry;
+  // console.log(myData.length);
   if (myData.length === 0) {
     const data = content.apiData;
     data.forEach((datum) => {
@@ -54,7 +56,7 @@ function CountriesSectionContent(content) {
       const flag = datum.countryFlag;
       const key = datum[parametres.key];
       const parameter = key[parametres.parameter];
-      const id = myData.length + countId;
+      const id = myData.length;
       const obj = {
         id: id,
         datum: datum,
@@ -64,15 +66,31 @@ function CountriesSectionContent(content) {
         type: parametres.parameter
       };
       myData.push(obj);
+      archiveData.push(obj);
     });
+  } else {
+    const data = myData;
+    const keyForAll = parametres.key; // e g total
+    const paramForAll = parametres.parameter; // e g cases-deaths-recovered
+    data.forEach((datum) => {
+      datum.parameter = datum.datum[keyForAll][paramForAll];
+      datum.type = paramForAll;
+    });
+    // console.log(data);
   }
   // console.log(myData);
 
   return (
     <div className="countries-section-content">
       <div className="countries-section-content-search">
-        <InputForCountriesSection value={value} data={myData} fn={props} />
+        <InputForCountriesSection value={value} data={myData} api={archiveData} fn={props} />
       </div>
+      <div className="countries-section-content-selected">
+        <SelectedCountry
+          country={content.selectedCountry}
+          data={parametres} fn={selectCountry} discard={props} />
+      </div>
+      <div className="countries-section-content-title">Countries</div>
       <div className="countries-section-content-container">
         {myData.sort((a, b) => a.name > b.name)
           .sort((a, b) => a.parameter > b.parameter ? -1 : 1)
@@ -83,6 +101,39 @@ function CountriesSectionContent(content) {
       </div>
     </div>
   );
+}
+
+const SelectedCountry = (country) => {
+  let content;
+  // console.log(country);
+  if (country.country) {
+    // country.discard([]); зацикливается
+    // console.log(country.data);
+    const item = country.country;
+    const key = country.data.key;
+    const parameter = country.data.parameter;
+    const discardCountry = country.fn;
+    content = (
+      <div className="selected-country">
+        <div className="selected-country-title">
+          <div className="selected-country-title-name">Selected</div>
+          <div className="selected-country-title-discard" onClick={() => { clickDiscardSelected(discardCountry); }}></div>
+        </div>
+        <div className="selected-country-item">
+          <div className="selected-country-item-flag"><img src={item.countryFlag} alt={item.countryName} /></div>
+          <div className="selected-country-content-item-name">{item.countryName}</div>
+          <Base.NumberView type={parameter} number={item[key][parameter]} />
+        </div>
+      </div>
+    );
+  } else {
+    content = '';
+  }
+  return content;
+};
+
+function clickDiscardSelected(fn) {
+  fn(null);
 }
 
 const CountriesSectionContentItem = (item, selectCountry) => {
@@ -102,23 +153,26 @@ function clickListItem(data, selectCountry) {
 function InputForCountriesSection(content) {
   const onChangeHandler = (event) => {
     event.preventDefault();
-    content.value.setInputValue(event.target.value);
     const value = event.target.value.toLowerCase();
-    const filter = content.data.filter((country) => country.name.toLowerCase().includes(value));
-    // console.log(filter);
+    // console.log('value:' + value);
+    let filter = [];
+    content.value.setInputValue(event.target.value);
+    // выходит хрень, если получается сочетание, которого нет, а потом убираются буквы
+    if (value.length > content.value.inputValue.length) {
+      filter = content.data.filter((country) => country.name.toLowerCase().includes(value));
+    } else {
+      filter = content.api.filter((country) => country.name.toLowerCase().includes(value));
+    }
     content.fn(filter);
-  };
-  const onSearchCliCkHandler = (event) => {
-    event.preventDefault();
+    // console.log(filter);
   };
 
   const onInputCliCKHandler = (event) => {
     event.preventDefault();
-    /* let value = event.target.value;
-    if (value !== '') {
-      value = '';
-      event.target.value = value;
-    } */
+    if (event.target.value !== '') {
+      content.value.setInputValue('');
+      content.fn([]);
+    }
   };
 
   return (
@@ -127,10 +181,9 @@ function InputForCountriesSection(content) {
         className="search-field-input"
         type="text"
         value={content.value.inputValue}
-        placeholder="Global"
+        placeholder="Search"
         onClick={onInputCliCKHandler}
         onChange={onChangeHandler} />
-      <input type="submit" className="search-field-button" value="&#128269;" onClick={onSearchCliCkHandler} />
     </form>
   );
 }
