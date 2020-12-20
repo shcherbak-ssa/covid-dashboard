@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
 import './chart-section.scss';
@@ -14,7 +14,6 @@ export default function ChartSection(props) {
   const [searchData, setSearchData] = useState({});
   const [apiData] = useState(props.apiData);
   const [countryData, setcountryData] = useState({});
-  console.log(options);
 
   useEffect(() => {
     setSearchData(getSearchData(options));
@@ -27,29 +26,33 @@ export default function ChartSection(props) {
   async function getDataCountry() {
     if (selectedCountry) {
       const countryApiData = await loadTimelineForCountry(selectedCountry);
-      if (countryApiData === null) setcountryData({});
+      if (countryApiData === null) {
+        setcountryData({})
+      }
       else setcountryData(countryApiData);
-    }
+    } else { setcountryData({}) }
   }
 
   useEffect(() => {
     const chart = am4core.create('chartdiv1', am4charts.XYChart);
     const newData = [];
     let obj = {};
-
     if (searchData.key) {
       if (countryData.Total) {
         obj = countryData[searchData.key][searchData.parameter];
       } else {
         obj = apiData.global[searchData.key][searchData.parameter];
       }
-      for (let key in obj) {
-        const newDate = {};
-        newDate.data = key;
-        newDate.value = obj[key];
-        newData.push(newDate);
-      }
+    } else {
+      obj = apiData.global.Total.cases
     }
+    for (let key in obj) {
+      const newDate = {};
+      newDate.data = key;
+      newDate.value = obj[key];
+      newData.push(newDate);
+    }
+
 
     chart.data = newData;
     // Create axes
@@ -76,16 +79,9 @@ export default function ChartSection(props) {
     series.stroke = am4core.color('#C8244D');
     series.columns.template.tooltipText = 'Date: {categoryX}\nValue: {valueY}';
     series.columns.template.fill = am4core.color('#ffffff'); // fill
-    // series.heatRules.push({
-    //   "target": series.columns.template,
-    //   "property": "fill",
-    //   "min": am4core.color("#F5DBCB"),
-    //   "max": am4core.color("#ED7B84"),
-    //   "dataField": "valueY"
-    // });
-    chart.current = chart;
-  });
 
+    chart.current = chart;
+  }, [countryData, searchData.parameter, searchData.key, isDarkTheme]);
   const sectionProps = {
     sectionType: 'chart',
     optionsMenuType: CHART_OPTIONS_MENU_TYPE,
