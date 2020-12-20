@@ -86,7 +86,9 @@ function CountriesSectionContent(content) {
         <InputForCountriesSection value={value} data={myData} api={archiveData} fn={props} />
       </div>
       <div className="countries-section-content-selected">
-        <SelectedCountry country={content.selectedCountry} data={parametres} fn={selectCountry} />
+        <SelectedCountry
+          country={content.selectedCountry}
+          data={parametres} fn={selectCountry} discard={props} />
       </div>
       <div className="countries-section-content-title">Countries</div>
       <div className="countries-section-content-container">
@@ -105,6 +107,7 @@ const SelectedCountry = (country) => {
   let content;
   console.log(country);
   if (country.country) {
+    // country.discard([]); зацикливается
     console.log(country.data);
     const item = country.country;
     const key = country.data.key;
@@ -114,7 +117,7 @@ const SelectedCountry = (country) => {
       <div className="selected-country">
         <div className="selected-country-title">
           <div className="selected-country-title-name">Selected</div>
-          <div className="selected-country-title-discard" onClick={() => {clickDiscardSelected(discardCountry)}}></div>
+          <div className="selected-country-title-discard" onClick={() => { clickDiscardSelected(discardCountry); }}></div>
         </div>
         <div className="selected-country-item">
           <div className="selected-country-item-flag"><img src={item.countryFlag} alt={item.countryName} /></div>
@@ -150,15 +153,14 @@ function clickListItem(data, selectCountry) {
 function InputForCountriesSection(content) {
   const onChangeHandler = (event) => {
     event.preventDefault();
-    // если набирать буквы, а потом убирать, то не возвращаются все страны из апи
     const value = event.target.value.toLowerCase();
     console.log('value:' + value);
     let filter = [];
+    content.value.setInputValue(event.target.value);
+    // выходит хрень, если получается сочетание, которого нет, а потом убираются буквы
     if (value.length > content.value.inputValue.length) {
-      content.value.setInputValue(event.target.value);
       filter = content.data.filter((country) => country.name.toLowerCase().includes(value));
     } else {
-      content.value.setInputValue(event.target.value);
       filter = content.api.filter((country) => country.name.toLowerCase().includes(value));
     }
     content.fn(filter);

@@ -171,6 +171,7 @@
       display: flex;
       flex-direction: column;
       height: 100%;
+      overflow-y: auto;
 
       &-item {
         display: grid;
@@ -206,6 +207,9 @@
         .dark-theme & {
           color: rgba(255, 255, 255, 0.8);
         }
+      }
+      &::-webkit-scrollbar-thumb {
+        border-radius: 4px;
       }
     }
   }  
