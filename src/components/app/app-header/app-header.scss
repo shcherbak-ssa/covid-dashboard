@@ -18,6 +18,12 @@
         font-size: 20px;
       }
     }
+
+    &-date {
+      @media screen and (max-width: 690px) {
+        display: none;
+      }
+    }
     
     &-toggle {
       background: $section-background-light-theme;
