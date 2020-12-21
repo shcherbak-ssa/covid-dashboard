@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react';
+import React, { useEffect, useState, useLayoutEffect, useRef } from 'react';
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
 import './chart-section.scss';
@@ -14,14 +14,19 @@ export default function ChartSection(props) {
   const [searchData, setSearchData] = useState({});
   const [apiData] = useState(props.apiData);
   const [countryData, setcountryData] = useState({});
-
+  const [valueData, setValueData] = useState({});
+  const chart = useRef(null);
   useEffect(() => {
     setSearchData(getSearchData(options));
-  }, [options]);
+  }, [options.parameter, options.measurement]);
 
   useEffect(() => {
     getDataCountry();
   }, [selectedCountry]);
+
+  useEffect(() => {
+    setValueData(getDataValue());
+  }, [countryData, searchData.parameter, searchData.key]);
 
   async function getDataCountry() {
     if (selectedCountry) {
@@ -33,8 +38,77 @@ export default function ChartSection(props) {
     } else { setcountryData({}) }
   }
 
+  useLayoutEffect(() => {
+    const schedule = am4core.create('chartdiv1', am4charts.XYChart);
+    schedule.numberFormatter.numberFormat = '#a';
+    schedule.numberFormatter.bigNumberPrefixes = [
+      { 'number': 1e+3, 'suffix': 'K' },
+      { 'number': 1e+6, 'suffix': 'M' },
+      { 'number': 1e+9, 'suffix': 'B' }
+    ];
+    // Create axes
+    let categoryAxis = schedule.xAxes.push(new am4charts.CategoryAxis());
+    categoryAxis.dataFields.category = 'data';
+    categoryAxis.renderer.labels.template.fontSize = 14;
+
+    // categoryAxis.title.text = "Countries";
+
+    let valueAxis = schedule.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.renderer.labels.template.fontSize = 14;
+
+
+    // Create series
+    let series = schedule.series.push(new am4charts.ColumnSeries());
+    series.dataFields.valueY = 'value';
+    series.dataFields.categoryX = 'data';
+    series.name = 'Sales';
+    series.stroke = am4core.color('#C8244D');
+    series.columns.template.tooltipText = 'Date: {categoryX}\nValue: {valueY}';
+    series.columns.template.fill = am4core.color('#ffffff'); // fill
+    chart.current = schedule;
+    return () => {
+      schedule.dispose();
+    };
+  }, []);
+  useLayoutEffect(() => {
+    chart.current.data = valueData;
+    if (isDarkTheme) {
+      chart.current._xAxes._values[0].renderer.labels.template.fill = am4core.color('#ffffff');
+      chart.current._yAxes._values[0].renderer.labels.template.fill = am4core.color('#ffffff');
+      chart.current._yAxes._values[0].renderer.grid.template.stroke = am4core.color('#ffffff');
+      chart.current._xAxes._values[0].renderer.grid.template.stroke = am4core.color('#ffffff');
+    } else {
+      chart.current._xAxes._values[0].renderer.labels.template.fill = am4core.color('#393e46');
+      chart.current._yAxes._values[0].renderer.labels.template.fill = am4core.color('#393e46');
+      chart.current._yAxes._values[0].renderer.grid.template.stroke = am4core.color('#393e46');
+      chart.current._xAxes._values[0].renderer.grid.template.stroke = am4core.color('#393e46');
+    }
+  }, [valueData, isDarkTheme]);
+
   useEffect(() => {
-    const chart = am4core.create('chartdiv1', am4charts.XYChart);
+    setValueData(getDataValue());
+  }, [countryData, searchData.parameter, searchData.key]);
+
+  const sectionProps = {
+    sectionType: 'chart',
+    optionsMenuType: CHART_OPTIONS_MENU_TYPE,
+    headerProps: {
+      title: 'Chart',
+      isDarkTheme,
+      options: transformOptions(options),
+    },
+    updateOptions,
+    optionMenuItems
+  };
+
+  function transformOptions({ parameter, measurement }) {
+    return {
+      type: TOTAL_TYPE_OPTION,
+      parameter,
+      measurement
+    };
+  }
+  function getDataValue() {
     const newData = [];
     let obj = {};
     if (searchData.key) {
@@ -48,60 +122,17 @@ export default function ChartSection(props) {
     }
     for (let key in obj) {
       const newDate = {};
-      newDate.data = key;
+      let correctDate = key.split('/');
+      if (correctDate[0].length === 1) correctDate[0] = 0 + correctDate[0];
+      if (correctDate[1].length === 1) correctDate[1] = 0 + correctDate[1];
+      [correctDate[0], correctDate[1]] = [correctDate[1], correctDate[0]];
+
+      newDate.data = correctDate.join('.') + '20';
       newDate.value = obj[key];
       newData.push(newDate);
     }
-
-
-    chart.data = newData;
-    // Create axes
-    let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-    categoryAxis.dataFields.category = 'data';
-    categoryAxis.renderer.labels.template.fontSize = 14;
-
-    // categoryAxis.title.text = "Countries";
-
-    let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-    valueAxis.renderer.labels.template.fontSize = 14;
-
-    if (isDarkTheme) {
-      categoryAxis.renderer.labels.template.fill = am4core.color('#ffffff');
-      valueAxis.renderer.labels.template.fill = am4core.color('#ffffff');
-      valueAxis.renderer.grid.template.stroke = am4core.color('#ffffff');
-      categoryAxis.renderer.grid.template.stroke = am4core.color('#ffffff');
-    }
-    // Create series
-    let series = chart.series.push(new am4charts.ColumnSeries());
-    series.dataFields.valueY = 'value';
-    series.dataFields.categoryX = 'data';
-    series.name = 'Sales';
-    series.stroke = am4core.color('#C8244D');
-    series.columns.template.tooltipText = 'Date: {categoryX}\nValue: {valueY}';
-    series.columns.template.fill = am4core.color('#ffffff'); // fill
-
-    chart.current = chart;
-  }, [countryData, searchData.parameter, searchData.key, isDarkTheme]);
-  const sectionProps = {
-    sectionType: 'chart',
-    optionsMenuType: CHART_OPTIONS_MENU_TYPE,
-    headerProps: {
-      title: 'Chart',
-      isDarkTheme,
-      options: transformOptions(options)
-    },
-    updateOptions,
-    optionMenuItems
-  };
-
-  function transformOptions({ parameter, measurement }) {
-    return {
-      type: TOTAL_TYPE_OPTION,
-      parameter,
-      measurement
-    };
+    return newData;
   }
-
   function getSearchData({ parameter, measurement }) {
     return {
       key: TOTAL_TYPE_OPTION + measurement,
