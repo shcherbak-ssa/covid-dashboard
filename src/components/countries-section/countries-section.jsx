@@ -91,14 +91,15 @@ const SelectedCountry = (country) => {
     const key = country.data.key;
     const parameter = country.data.parameter;
     const discardCountry = country.fn;
+
+    const clickDiscardHandler = () => clickDiscardSelected(discardCountry);
+
     content = (
       <div className="selected-country">
         <div className="selected-country-title">
           <div className="selected-country-title-name">Selected</div>
           <div className="selected-country-title-discard"
-            onClick={() => {
-              clickDiscardSelected(discardCountry);
-            }}></div>
+            onClick={clickDiscardHandler}></div>
         </div>
         <div className="selected-country-item">
           <div className="selected-country-item-flag">
@@ -122,11 +123,11 @@ function clickDiscardSelected(fn) {
 }
 
 const CountriesSectionContentItem = (data, item, selectCountry, key, type, api, fn, value) => {
+  const clickListHandler = () => clickListItem(item, selectCountry, api, fn, value);
+
   return (
     <div className="countries-section-content-container-item"
-      onClick={() => {
-        clickListItem(item, selectCountry, api, fn, value);
-      }}
+      onClick={clickListHandler}
       key={data.indexOf(item)}>
       <div className="countries-section-content-container-item-flag">
         <img src={item.countryFlag} alt={item.countryName} />
