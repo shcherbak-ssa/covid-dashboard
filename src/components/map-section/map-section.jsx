@@ -21,6 +21,9 @@ const OCEAN_COLOR_LIGHT = '#aaeaff';
 const OCEAN_COLOR_DARK = '#4c5564';
 const FONT_COLOR_LIGHT = '#393E46';
 const FONT_COLOR_DARK = '#FFFFFF';
+const FEEL_MAX_CASES_COLOR = '#ED7B84';
+const FEEL_MAX_DEATH_COLOR = '#444444';
+const FEEL_MAX_RECOVERED_COLOR = '#70a800';
 
 function getDataTitle(options) {
   return `${options.type} ${options.parameter} ${options.measurement ? ` relative ${options.measurement}` : ''}`;
@@ -34,7 +37,18 @@ function getDataInnerPropName(options) {
   return `${options.parameter}`;
 }
 
+function getHeatRuleColor(options) {
+  if (options.parameter === 'deaths') {
+    return FEEL_MAX_DEATH_COLOR;
+  }
+  if (options.parameter === 'cases') {
+    return FEEL_MAX_CASES_COLOR;
+  }
+  return FEEL_MAX_RECOVERED_COLOR;
+}
+
 export default function MapSection(props) {
+  // const fTime = Date.now();
   const { apiData, isDarkTheme, options, selectedCountry, optionMenuItems, updateOptions, setSelectedCountry } = props;
 
   const [searchData, setSearchData] = useState(getSearchData(options));
@@ -71,7 +85,6 @@ export default function MapSection(props) {
   });
 
   const chart = useRef(null);
-  // const map = useRef(null);
 
   /*  part of the code for this component is taken from the library documentation
       https://www.amcharts.com/docs/v4/chart-types/map/
@@ -102,7 +115,6 @@ export default function MapSection(props) {
     // console.log('setSelectedCountry', setSelectedCountry);
 
     map.homeZoomLevel = 1;
-    // console.log('am4geodataWorldLow', am4geodataWorldLow);
 
     const dataArray = am4geodataWorldLow.features.map((el) => {
       return { id: el.properties.id, name: el.properties.name };
@@ -117,33 +129,17 @@ export default function MapSection(props) {
         mapElement.value = 'No data from API';
       } else {
         mapElement.apiInd = apiInd;
-        // mapElement.value = apiData[apiInd].Total.cases;
         mapElement.value = apiData[mapElement.apiInd][getDataPropName(options)][getDataInnerPropName(options)];
-        // mapElement.title = 'title';
       }
-      mapElement.title = getDataTitle(options);
+      // mapElement.title = getDataTitle(options);
     });
 
-    // ab.forEach((el, index) => {
-    //   el.value = (index - 100);
-    //   el.title = 'food';
-    // });
-    // ab.data = [{
-    //   'id': 'US',
-    //   'name': 'Unated States',
-    //   'value': '53',
-    //   'title': 'Total food',
-    // }, {
-    //   'id': 'FR',
-    //   'name': 'France',
-    //   'value': 12,
-    //   'title': 'Total food',
-    // }];
     polygonSeries.data = dataArray;
 
     const polygonTemplate = polygonSeries.mapPolygons.template;
     componentContainer.current.polygonTemplate = polygonTemplate;
-    polygonTemplate.tooltipText = '{name}: {value}\n{title}';
+    // polygonTemplate.tooltipText = '{name}: {value}\n{title}';
+    polygonTemplate.tooltipText = `{name}: {value}\n${getDataTitle(options)}`;
     // polygonTemplate.fill = am4core.color('#aac4e7');
 
     // Create hover state and set alternative fill color
@@ -155,7 +151,7 @@ export default function MapSection(props) {
     const activeState = polygonTemplate.states.create('active');
     componentContainer.current.activeState = activeState;
     activeState.properties.fill = am4core.color('#ff0000');
-
+    activeState.properties.stroke = am4core.color('#FF0000');
     // Remove Antarctica
     polygonSeries.exclude = ['AQ'];
 
@@ -182,48 +178,21 @@ export default function MapSection(props) {
     button.icon = new am4core.Sprite();
     button.icon.path = 'M16,8 L14,8 L14,16 L10,16 L10,10 L6,10 L6,16 L2,16 L2,8 L0,8 L8,0 L16,8 Z M16,8';
 
-    /* non logarithmic example
-
-    // Create a heat rule
-    polygonSeries.heatRules.push({
-      "target": polygonSeries.mapPolygons.template,
-      "property": "fill",
-      "min": am4core.color("#F5DBCB"),
-      "max": am4core.color("#ED7B84"),
-      // logarithmic: true
-    });
-
-    // Create a heat legend;
-    const heatLegend = map.createChild(am4maps.HeatLegend);
-    heatLegend.series = polygonSeries;
-    heatLegend.width = am4core.percent(70);
-    heatLegend.valueAxis.renderer.labels.template.fontSize = 9;
-    heatLegend.valueAxis.renderer.minGridDistance = 30;
-
-    // Set up heat legend tooltips;
-    polygonSeries.mapPolygons.template.events.on("over", function (ev) {
-      if (!isNaN(ev.target.dataItem.value)) {
-        heatLegend.valueAxis.showTooltipAt(ev.target.dataItem.value)
-      }
-      else {
-        heatLegend.valueAxis.hideTooltip();
-      }
-    });
-
-    polygonSeries.mapPolygons.template.events.on("out", function (ev) {
-      heatLegend.valueAxis.hideTooltip();
-    });
-
-    */
-
-    // Add heat map with logarithmic scale and legend
-    polygonSeries.heatRules.push({
-      property: 'fill',
-      target: polygonSeries.mapPolygons.template,
+    componentContainer.current.heatRulesData = {
+      property: 'fill', // TODO: check next line
+      target: componentContainer.current.polygonSeries.mapPolygons.template,
       min: am4core.color('#aac4e7'),
-      max: am4core.color('#ED7B84'),
-      // logarithmic: true
-    });
+      max: am4core.color(getHeatRuleColor(options)),
+    };
+    // Add heat map with logarithmic scale and legend
+    // polygonSeries.heatRules.push({
+    //   property: 'fill',
+    //   target: polygonSeries.mapPolygons.template,
+    //   min: am4core.color('#aac4e7'),
+    //   max: am4core.color('#ED7B84'),
+    //   // logarithmic: true
+    // });
+    polygonSeries.heatRules.push(componentContainer.current.heatRulesData);
 
     // Legend options
     const heatLegend = map.createChild(am4maps.HeatLegend);
@@ -253,11 +222,8 @@ export default function MapSection(props) {
     heatLegend.valueAxis.renderer.labels.template.adapter.add('text', () => {
       return '';
     });
-
-    // heatLegend.fill = am4core.color('#0F0');
-    // console.log(heatLegend.labels.template);
-    // heatLegend.valueAxis.renderer.labels.template.propertyFields.fill = am4core.color('#0F0');
-    // Update heat legend value labels
+    heatLegend.valueAxis.renderer.labels.template.fill = am4core.color(FONT_COLOR_LIGHT);
+    // heatLegend.valueAxis.renderer.labels.template.stroke = am4core.color(FONT_COLOR_LIGHT);
 
     polygonSeries.events.on('datavalidated', (ev) => {
       const evHeatLegend = ev.target.map.getKey('heatLegend');
@@ -274,17 +240,6 @@ export default function MapSection(props) {
 
     // Bind 'fill' property to 'fill' key in data
     // polygonTemplate.propertyFields.fill = 'fill';
-
-    // let imageSeries = new am4maps.MapImageSeries();
-    // map.series.push(imageSeries);
-    // let imageSeriesTemplate = imageSeries.mapImages.template;
-    // let circle = imageSeriesTemplate.createChild(am4core.Circle);
-    // circle.radius = 4;
-    // circle.fill = am4core.color('#B27799');
-    // circle.stroke = am4core.color('#FFFFFF');
-    // circle.strokeWidth = 2;
-    // circle.nonScaling = true;
-    // circle.tooltipText = '{name}';
 
     // Create an event to toggle 'active' state
     polygonTemplate.events.on('hit', (event) => {
@@ -316,16 +271,23 @@ export default function MapSection(props) {
   useEffect(() => {
     if (updateState.current.updateData) {
       // componentDidUpdate
+      // const startTime = Date.now();
       componentContainer.current.dataArray.forEach((e) => {
         const mapElement = e;
-        mapElement.title = getDataTitle(options);
+        // mapElement.title = getDataTitle(options);
+        componentContainer.current.polygonTemplate.tooltipText = `{name}: {value}\n${getDataTitle(options)}`;
         if (mapElement.apiInd !== null) {
           mapElement.value = apiData[mapElement.apiInd][getDataPropName(options)][getDataInnerPropName(options)];
         } else {
           mapElement.value = 'No data from API';
         }
       });
+      // console.log('useUpdateMapData', Date.now() - startTime);
       componentContainer.current.polygonSeries.invalidateData();
+      // console.log('useInvalidateData', Date.now() - startTime);
+      componentContainer.current.heatRulesData.max = am4core.color(getHeatRuleColor(options));
+
+      componentContainer.current.heatLegend.maxColor = am4core.color(getHeatRuleColor(options));
     } else {
       // componentDidMount
       updateState.current.updateData = true;
@@ -336,22 +298,28 @@ export default function MapSection(props) {
   useEffect(() => {
     if (updateState.current.updateTheme) {
       // componentDidUpdate
+      // const startTime = Date.now();
       if (isDarkTheme) {
         componentContainer.current.map.background.fill = am4core.color(MAP_BACKGROUND_COLOR_DARK);
         componentContainer.current.map.backgroundSeries.mapPolygons.template.polygon.fill = am4core.color(OCEAN_COLOR_DARK);
+        componentContainer.current.heatLegend.valueAxis.renderer.labels.template.fill = am4core.color(FONT_COLOR_DARK);
+        // componentContainer.current.heatLegend.valueAxis.renderer.labels.template.stroke = am4core.color(FONT_COLOR_DARK);
       } else {
         componentContainer.current.map.background.fill = am4core.color(MAP_BACKGROUND_COLOR_LIGHT);
         componentContainer.current.map.backgroundSeries.mapPolygons.template.polygon.fill = am4core.color(OCEAN_COLOR_LIGHT);
+        componentContainer.current.heatLegend.valueAxis.renderer.labels.template.fill = am4core.color(FONT_COLOR_LIGHT);
+        // componentContainer.current.heatLegend.valueAxis.renderer.labels.template.stroke = am4core.color(FONT_COLOR_LIGHT);
       }
+      // console.log('useUpdateTheme', Date.now() - startTime);
     } else {
       // componentDidMount
       updateState.current.updateTheme = true;
     }
   }, [isDarkTheme]);
-
+  // console.log('updateComponentMap', Date.now() - fTime);
   return (
     <Section {...sectionProps}>
-      {<div id='divMapChartContainer' style={{ width: '100%', height: 'calc(100% - 32px)' }}></div>}
+      {<div className='map-container' id='divMapChartContainer' style={{ width: '100%', height: 'calc(100% - 32px)' }}></div>}
     </Section>
   );
 }
