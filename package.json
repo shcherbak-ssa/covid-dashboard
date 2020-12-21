@@ -3,14 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "dev": "npm run lint && webpack --watch --env isDev",
     "dev-test": "webpack --watch --env isDev",
     "build": "npm run lint && webpack",
     "server": "static dev -H",
     "lint": "node node_modules/eslint/bin/eslint.js ./src/index.jsx",
-    "test": "jest tests"
+    "test": "jest test"
   },
   "repository": {
     "type": "git",
