@@ -12,6 +12,7 @@ import CountriesSection from '../countries-section';
 import MapSection from '../map-section';
 import TableSection from '../table-section';
 import ChartSection from '../chart-section';
+import { transformDate } from '../../tools';
 
 const DARK_THEME_CLASSNAME = 'dark-theme';
 
@@ -33,6 +34,7 @@ export default function App({apiData}) {
 
   const appHeaderProps = {
     isDarkTheme,
+    lastDay: transformDate(apiData.lastDay),
     toggleCurrentTheme,
   };
 
