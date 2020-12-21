@@ -20,6 +20,7 @@ export default function ChartSection(props) {
 
   const FONT_COLOR_LIGHT = am4core.color('#ffffff');
   const FONT_COLOR_DARK = am4core.color('#393E46');
+  const FONT_COLOR_RED = am4core.color('#FF2105');
 
   useEffect(() => {
     setSearchData(getSearchData(options));
@@ -65,9 +66,9 @@ export default function ChartSection(props) {
     series.dataFields.valueY = 'value';
     series.dataFields.categoryX = 'data';
     series.name = 'Sales';
-    series.stroke = am4core.color('#C8244D');
+    series.stroke = FONT_COLOR_RED;
     series.columns.template.tooltipText = 'Date: {categoryX}\nValue: {valueY}';
-    series.columns.template.fill = am4core.color('#ffffff'); // fill
+    series.columns.template.fill = FONT_COLOR_LIGHT; // fill
     chart.current = schedule;
     return () => {
       schedule.dispose();
