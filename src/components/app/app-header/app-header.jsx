@@ -22,7 +22,10 @@ export default function AppHeader({isDarkTheme, lastDay, toggleCurrentTheme}) {
         <div className="header-logo"></div>
         COVID-19 Dashboard
       </div>
-      <div className="header-date">{lastDay}</div>
+      <div className="header-date">
+        <span className="header-label">Latest update: </span>
+        {lastDay}
+      </div>
       <div className="header-theme">
         <Base.TextLabel value={setThemeTextLabel()} />
         <div className="header-toggle click" onClick={toggleClickHandle}>
