@@ -18,6 +18,7 @@ export async function loadData() {
   const transfortedCountries = transformForCountries(countries);
 
   return {
+    lastDay: new Date(global.updated),
     global: getTotal(global),
     table: transfromForTable(global),
     countries: lodash.cloneDeep(transfortedCountries),
