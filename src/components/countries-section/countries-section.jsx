@@ -38,7 +38,7 @@ export default function CountriesSection(props) {
 function CountriesSectionContent(content) {
   const [inputValue, setInputValue] = useState('');
   const [allData, setAllData] = useState(content.apiData);
-  const archiveData = content.apiData; // для сброса
+  const archiveData = content.apiData;
   const value = {
     inputValue: inputValue,
     setInputValue: setInputValue
@@ -51,11 +51,17 @@ function CountriesSectionContent(content) {
   return (
     <div className="countries-section-content">
       <div className="countries-section-content-search">
-        <InputForCountriesSection value={value} data={allData} api={archiveData} fn={setAllData} />
+        <InputForCountriesSection
+          value={value}
+          data={allData}
+          api={archiveData}
+          fn={setAllData} />
       </div>
       <div className="countries-section-content-selected">
         <SelectedCountry
-          country={content.selectedCountry} data={parametres} fn={selectCountry} />
+          country={content.selectedCountry}
+          data={parametres}
+          fn={selectCountry} />
       </div>
       <div className="countries-section-content-title">Countries</div>
       <div className="countries-section-content-container">
@@ -63,10 +69,11 @@ function CountriesSectionContent(content) {
           .sort((a, b) => a[key][type] > b[key][type] ? -1 : 1)
           .map((item) => {
             let result;
-            // console.log(item);
             if (allData.length > 0) {
-              result = CountriesSectionContentItem(allData, item, selectCountry,
-                key, type, archiveData, setAllData, value);
+              result = CountriesSectionContentItem(
+                allData, item, selectCountry,
+                key, type, archiveData, setAllData, value
+              );
             } else {
               result = (<p></p>);
             }
@@ -79,7 +86,6 @@ function CountriesSectionContent(content) {
 
 const SelectedCountry = (country) => {
   let content;
-  // console.log(country);
   if (country.country) {
     const item = country.country;
     const key = country.data.key;
@@ -90,12 +96,18 @@ const SelectedCountry = (country) => {
         <div className="selected-country-title">
           <div className="selected-country-title-name">Selected</div>
           <div className="selected-country-title-discard"
-            onClick={() => { clickDiscardSelected(discardCountry); }}></div>
+            onClick={() => {
+              clickDiscardSelected(discardCountry);
+            }}></div>
         </div>
         <div className="selected-country-item">
-          <div className="selected-country-item-flag"><img src={item.countryFlag} alt={item.countryName} /></div>
+          <div className="selected-country-item-flag">
+            <img src={item.countryFlag} alt={item.countryName} />
+          </div>
           <div className="selected-country-content-item-name">{item.countryName}</div>
-          <Base.NumberView type={parameter} number={item[key][parameter]} />
+          <Base.NumberView
+            type={parameter}
+            number={item[key][parameter]} />
         </div>
       </div>
     );
@@ -112,12 +124,17 @@ function clickDiscardSelected(fn) {
 const CountriesSectionContentItem = (data, item, selectCountry, key, type, api, fn, value) => {
   return (
     <div className="countries-section-content-container-item"
-      onClick={() => { clickListItem(item, selectCountry, api, fn, value); }} key={data.indexOf(item)}>
+      onClick={() => {
+        clickListItem(item, selectCountry, api, fn, value);
+      }}
+      key={data.indexOf(item)}>
       <div className="countries-section-content-container-item-flag">
         <img src={item.countryFlag} alt={item.countryName} />
       </div>
       <div className="countries-section-content-container-item-name">{item.countryName}</div>
-      <Base.NumberView type={type} number={item[key][type]} />
+      <Base.NumberView
+        type={type}
+        number={item[key][type]} />
     </div>
   );
 };
@@ -132,6 +149,7 @@ function InputForCountriesSection(content) {
   const onChangeHandler = (event) => {
     event.preventDefault();
     const value = event.target.value.toLowerCase();
+
     let filter = [];
     content.value.setInputValue(event.target.value);
     if (value.length > content.value.inputValue.length) {
@@ -139,7 +157,7 @@ function InputForCountriesSection(content) {
     } else {
       filter = content.api.filter((country) => country.countryName.toLowerCase().includes(value));
     }
-    content.fn(filter);
+    return content.fn(filter);
   };
 
   const onInputCliCKHandler = (event) => {
