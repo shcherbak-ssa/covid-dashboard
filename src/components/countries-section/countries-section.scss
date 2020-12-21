@@ -196,12 +196,11 @@
         padding: 6px;
         border-radius: 2px;
         background: rgba(228, 229, 230, 0);
-        transition: 0.7s;
+        transition: background 0.3s;
+        cursor: pointer;
 
         &:hover {
-          cursor: pointer;
           background: rgba(228, 229, 230, 0.6);
-          transition: 0.7s;
 
           .dark-theme & {
             background: rgba(45, 45, 45, 0.6);
@@ -209,9 +208,7 @@
         }
 
         &:active {
-          cursor: pointer;
           background: #E4E5E6;
-          transition: 0.7s;
 
           .dark-theme & {
             background: rgba(45, 45, 45, 0.9);
