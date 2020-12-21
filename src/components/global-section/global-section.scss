@@ -8,6 +8,12 @@
     &-header {
       display: none;
     }
+
+    &-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 
   &-content {
@@ -21,8 +27,16 @@
   }
 
   &.section-fullscreen {
-    .section-header {
-      display: flex;
+    .section {
+      &-header {
+        display: flex;
+      }
+
+      &-container {
+        display: grid;
+        align-items: normal;
+        justify-content: normal;
+      }
     }
 
     .global-section-item {
