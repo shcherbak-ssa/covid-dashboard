@@ -3,4 +3,26 @@
 
 .map-section {
   grid-area: map;
+  .section-content {
+    @media screen and (min-width: 1023px) {
+      grid-template-columns: 1fr 190px;
+      grid-template-areas: "map menu";
+  
+      .options-menu {
+        grid-area: menu;
+      }
+      .map-container{
+          width: 100%;
+          grid-area: map;
+      
+      }
+
+    }
+  }
+  
+  // &-content {
+  //   width: 100%;
+  //   grid-area: map;
+  // }
 }
+

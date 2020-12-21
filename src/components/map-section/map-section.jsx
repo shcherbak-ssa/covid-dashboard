@@ -35,6 +35,7 @@ function getDataInnerPropName(options) {
 }
 
 export default function MapSection(props) {
+  const fTime = Date.now();
   const { apiData, isDarkTheme, options, selectedCountry, optionMenuItems, updateOptions, setSelectedCountry } = props;
 
   const [searchData, setSearchData] = useState(getSearchData(options));
@@ -253,11 +254,19 @@ export default function MapSection(props) {
     heatLegend.valueAxis.renderer.labels.template.adapter.add('text', () => {
       return '';
     });
+    heatLegend.valueAxis.renderer.labels.template.fill = am4core.color(FONT_COLOR_LIGHT);
+    // heatLegend.valueAxis.renderer.labels.template.stroke = am4core.color(FONT_COLOR_LIGHT);
 
     // heatLegend.fill = am4core.color('#0F0');
     // console.log(heatLegend.labels.template);
     // heatLegend.valueAxis.renderer.labels.template.propertyFields.fill = am4core.color('#0F0');
     // Update heat legend value labels
+
+    //
+    /*
+
+    */
+
 
     polygonSeries.events.on('datavalidated', (ev) => {
       const evHeatLegend = ev.target.map.getKey('heatLegend');
@@ -316,6 +325,7 @@ export default function MapSection(props) {
   useEffect(() => {
     if (updateState.current.updateData) {
       // componentDidUpdate
+      // const startTime = Date.now();
       componentContainer.current.dataArray.forEach((e) => {
         const mapElement = e;
         mapElement.title = getDataTitle(options);
@@ -325,7 +335,9 @@ export default function MapSection(props) {
           mapElement.value = 'No data from API';
         }
       });
+      // console.log('useUpdateMapData', Date.now() - startTime);
       componentContainer.current.polygonSeries.invalidateData();
+      // console.log('useInvalidateData', Date.now() - startTime);
     } else {
       // componentDidMount
       updateState.current.updateData = true;
@@ -336,22 +348,28 @@ export default function MapSection(props) {
   useEffect(() => {
     if (updateState.current.updateTheme) {
       // componentDidUpdate
+      // const startTime = Date.now();
       if (isDarkTheme) {
         componentContainer.current.map.background.fill = am4core.color(MAP_BACKGROUND_COLOR_DARK);
         componentContainer.current.map.backgroundSeries.mapPolygons.template.polygon.fill = am4core.color(OCEAN_COLOR_DARK);
+        componentContainer.current.heatLegend.valueAxis.renderer.labels.template.fill = am4core.color(FONT_COLOR_DARK);
+        // componentContainer.current.heatLegend.valueAxis.renderer.labels.template.stroke = am4core.color(FONT_COLOR_DARK);
       } else {
         componentContainer.current.map.background.fill = am4core.color(MAP_BACKGROUND_COLOR_LIGHT);
         componentContainer.current.map.backgroundSeries.mapPolygons.template.polygon.fill = am4core.color(OCEAN_COLOR_LIGHT);
+        componentContainer.current.heatLegend.valueAxis.renderer.labels.template.fill = am4core.color(FONT_COLOR_LIGHT);
+        // componentContainer.current.heatLegend.valueAxis.renderer.labels.template.stroke = am4core.color(FONT_COLOR_LIGHT);
       }
+      // console.log('useUpdateTheme', Date.now() - startTime);
     } else {
       // componentDidMount
       updateState.current.updateTheme = true;
     }
   }, [isDarkTheme]);
-
+  console.log('updateComponentMap', Date.now() - fTime);
   return (
     <Section {...sectionProps}>
-      {<div id='divMapChartContainer' style={{ width: '100%', height: 'calc(100% - 32px)' }}></div>}
+      {<div className='map-container' id='divMapChartContainer' style={{ width: '100%', height: 'calc(100% - 32px)' }}></div>}
     </Section>
   );
 }
