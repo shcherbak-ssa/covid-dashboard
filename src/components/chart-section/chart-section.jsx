@@ -1,4 +1,6 @@
-import React, { useEffect, useState, useLayoutEffect, useRef } from 'react';
+import React, {
+  useEffect, useState, useLayoutEffect, useRef
+} from 'react';
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
 import './chart-section.scss';
@@ -12,10 +14,13 @@ export default function ChartSection(props) {
     isDarkTheme, options, updateOptions, optionMenuItems, selectedCountry, apiData
   } = props;
   const [searchData, setSearchData] = useState({});
-  // const [apiData] = useState(props.apiData);
   const [countryData, setcountryData] = useState({});
   const [valueData, setValueData] = useState({});
   const chart = useRef(null);
+
+  const FONT_COLOR_LIGHT = am4core.color('#ffffff');
+  const FONT_COLOR_DARK = am4core.color('#393E46');
+
   useEffect(() => {
     setSearchData(getSearchData(options));
   }, [options.parameter, options.measurement]);
@@ -32,19 +37,18 @@ export default function ChartSection(props) {
     if (selectedCountry) {
       const countryApiData = await loadTimelineForCountry(selectedCountry);
       if (countryApiData === null) {
-        setcountryData({})
-      }
-      else setcountryData(countryApiData);
-    } else { setcountryData({}) }
+        setcountryData({});
+      } else setcountryData(countryApiData);
+    } else { setcountryData({}); }
   }
 
   useLayoutEffect(() => {
     const schedule = am4core.create('chartdiv1', am4charts.XYChart);
     schedule.numberFormatter.numberFormat = '#a';
     schedule.numberFormatter.bigNumberPrefixes = [
-      { 'number': 1e+3, 'suffix': 'K' },
-      { 'number': 1e+6, 'suffix': 'M' },
-      { 'number': 1e+9, 'suffix': 'B' }
+      { number: 1e+3, suffix: 'K' },
+      { number: 1e+6, suffix: 'M' },
+      { number: 1e+9, suffix: 'B' }
     ];
     // Create axes
     let categoryAxis = schedule.xAxes.push(new am4charts.CategoryAxis());
@@ -55,7 +59,6 @@ export default function ChartSection(props) {
 
     let valueAxis = schedule.yAxes.push(new am4charts.ValueAxis());
     valueAxis.renderer.labels.template.fontSize = 14;
-
 
     // Create series
     let series = schedule.series.push(new am4charts.ColumnSeries());
@@ -70,18 +73,24 @@ export default function ChartSection(props) {
       schedule.dispose();
     };
   }, []);
+
   useLayoutEffect(() => {
     chart.current.data = valueData;
+    const xAxeslabels = chart.current._xAxes._values[0].renderer.labels.template;
+    const xAxesGrid = chart.current._xAxes._values[0].renderer.grid.template;
+    const yAxeslabels = chart.current._yAxes._values[0].renderer.labels.template;
+    const yAxesGrid = chart.current._yAxes._values[0].renderer.grid.template;
     if (isDarkTheme) {
-      chart.current._xAxes._values[0].renderer.labels.template.fill = am4core.color('#ffffff');
-      chart.current._yAxes._values[0].renderer.labels.template.fill = am4core.color('#ffffff');
-      chart.current._yAxes._values[0].renderer.grid.template.stroke = am4core.color('#ffffff');
-      chart.current._xAxes._values[0].renderer.grid.template.stroke = am4core.color('#ffffff');
+      console.log(123);
+      xAxeslabels.fill = FONT_COLOR_LIGHT;
+      yAxeslabels.fill = FONT_COLOR_LIGHT;
+      yAxesGrid.stroke = FONT_COLOR_LIGHT;
+      xAxesGrid.stroke = FONT_COLOR_LIGHT;
     } else {
-      chart.current._xAxes._values[0].renderer.labels.template.fill = am4core.color('#393e46');
-      chart.current._yAxes._values[0].renderer.labels.template.fill = am4core.color('#393e46');
-      chart.current._yAxes._values[0].renderer.grid.template.stroke = am4core.color('#393e46');
-      chart.current._xAxes._values[0].renderer.grid.template.stroke = am4core.color('#393e46');
+      xAxeslabels.fill = FONT_COLOR_DARK;
+      yAxeslabels.fill = FONT_COLOR_DARK;
+      yAxesGrid.stroke = FONT_COLOR_DARK;
+      xAxesGrid.stroke = FONT_COLOR_DARK;
     }
   }, [valueData, isDarkTheme]);
 
@@ -95,7 +104,7 @@ export default function ChartSection(props) {
     headerProps: {
       title: 'Chart',
       isDarkTheme,
-      options: transformOptions(options),
+      options: transformOptions(options)
     },
     updateOptions,
     optionMenuItems
@@ -118,7 +127,7 @@ export default function ChartSection(props) {
         obj = apiData.global[searchData.key][searchData.parameter];
       }
     } else {
-      obj = apiData.global.Total.cases
+      obj = apiData.global.Total.cases;
     }
     for (let key in obj) {
       const newDate = {};
