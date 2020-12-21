@@ -19,6 +19,12 @@
       }
     }
 
+    &-label {
+      @media screen and (max-width: 800px) {
+        display: none;
+      }
+    }
+
     &-date {
       @media screen and (max-width: 690px) {
         display: none;
