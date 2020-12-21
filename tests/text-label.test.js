@@ -1,9 +1,13 @@
 import { transformTextLabel } from '../src/tools';
 
+const TYPE_TEST_FIELD = 'type';
+const PARAMETER_TEST_FIELD = 'parameter';
+const MEASUREMENT_TEST_FIELD = 'measurement';
+
 describe('Text label tranformation', () => {
   it('Only type field', () => {
     const testTextLabel = {
-      type: 'only type field',
+      type: TYPE_TEST_FIELD,
     };
     const expectTextLabel = testTextLabel.type;
 
@@ -13,8 +17,8 @@ describe('Text label tranformation', () => {
 
   it('Type and parameter fields', () => {
     const testTextLabel = {
-      type: 'type',
-      parameter: 'parameter',
+      type: TYPE_TEST_FIELD,
+      parameter: PARAMETER_TEST_FIELD,
     };
     const expectTextLabel = `${testTextLabel.type} ${testTextLabel.parameter}`;
 
@@ -24,8 +28,8 @@ describe('Text label tranformation', () => {
 
   it('Type and measurement fields', () => {
     const testTextLabel = {
-      type: 'type',
-      measurement: 'measurement',
+      type: TYPE_TEST_FIELD,
+      measurement: MEASUREMENT_TEST_FIELD,
     };
     const expectTextLabel = `${testTextLabel.type} / ${testTextLabel.measurement}`;
 
@@ -35,9 +39,9 @@ describe('Text label tranformation', () => {
 
   it('All fields', () => {
     const testTextLabel = {
-      type: 'type',
-      parameter: 'parameter',
-      measurement: 'measurement',
+      type: TYPE_TEST_FIELD,
+      parameter: PARAMETER_TEST_FIELD,
+      measurement: MEASUREMENT_TEST_FIELD,
     };
     const expectTextLabel = `${testTextLabel.type} ${testTextLabel.parameter} / ${testTextLabel.measurement}`;
 
