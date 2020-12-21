@@ -9,10 +9,10 @@ import { loadTimelineForCountry } from '../../api';
 
 export default function ChartSection(props) {
   const {
-    isDarkTheme, options, updateOptions, optionMenuItems, selectedCountry
+    isDarkTheme, options, updateOptions, optionMenuItems, selectedCountry, apiData
   } = props;
   const [searchData, setSearchData] = useState({});
-  const [apiData] = useState(props.apiData);
+  // const [apiData] = useState(props.apiData);
   const [countryData, setcountryData] = useState({});
   const [valueData, setValueData] = useState({});
   const chart = useRef(null);
