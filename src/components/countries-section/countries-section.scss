@@ -194,7 +194,29 @@
         align-items: center;
         color: #393E46;
         padding: 6px;
-        cursor: pointer;
+        border-radius: 2px;
+        background: rgba(228, 229, 230, 0);
+        transition: 0.7s;
+
+        &:hover {
+          cursor: pointer;
+          background: rgba(228, 229, 230, 0.6);
+          transition: 0.7s;
+
+          .dark-theme & {
+            background: rgba(45, 45, 45, 0.6);
+          }
+        }
+
+        &:active {
+          cursor: pointer;
+          background: #E4E5E6;
+          transition: 0.7s;
+
+          .dark-theme & {
+            background: rgba(45, 45, 45, 0.9);
+          }
+        }
   
         &-flag > img {
           grid-area: flag;
