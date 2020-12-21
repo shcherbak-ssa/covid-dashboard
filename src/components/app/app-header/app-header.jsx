@@ -23,7 +23,7 @@ export default function AppHeader({isDarkTheme, lastDay, toggleCurrentTheme}) {
         COVID-19 Dashboard
       </div>
       <div className="header-date">
-        <span className="header-label">Last update: </span>
+        <span className="header-label">Latest update: </span>
         {lastDay}
       </div>
       <div className="header-theme">
