@@ -20,7 +20,7 @@ export default function ChartSection(props) {
 
   const FONT_COLOR_LIGHT = am4core.color('#ffffff');
   const FONT_COLOR_DARK = am4core.color('#393E46');
-  const FONT_COLOR_RED = am4core.color('#FF2105');
+  const FONT_COLOR_RED = am4core.color('#C8244D');
 
   useEffect(() => {
     setSearchData(getSearchData(options));
