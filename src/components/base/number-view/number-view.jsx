@@ -1,15 +1,12 @@
 import React from 'react';
 import './number-view.scss';
 
-export default function NumberView({type, number}) {
-  function transformNumber() {
-    return `${number}`.split('').reverse().map((item, index) => {
-      if ((index + 1) % 3 === 0) return ` ${item}`;
-      return item;
-    }).reverse().join('');
-  }
+import { transformNumber } from '../../../tools';
 
+export default function NumberView({type, number}) {
   return (
-    <div className="base-number-view" data-number-type={type}>{transformNumber()}</div>
+    <div className="base-number-view" data-number-type={type}>
+      {transformNumber(number)}
+    </div>
   );
 }
