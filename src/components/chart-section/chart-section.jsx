@@ -121,6 +121,7 @@ export default function ChartSection(props) {
   function getDataValue() {
     const newData = [];
     let obj = {};
+    let startValue = 0;
     if (searchData.key) {
       if (countryData.Total) {
         obj = countryData[searchData.key][searchData.parameter];
@@ -130,7 +131,24 @@ export default function ChartSection(props) {
     } else {
       obj = apiData.global.Total.cases;
     }
+    if (true) {
+      for (let key in obj) {
+
+        const newDate = {};
+        let correctDate = key.split('/');
+        if (correctDate[0].length === 1) correctDate[0] = 0 + correctDate[0];
+        if (correctDate[1].length === 1) correctDate[1] = 0 + correctDate[1];
+        [correctDate[0], correctDate[1]] = [correctDate[1], correctDate[0]];
+
+        newDate.data = correctDate.join('.') + '20';
+        newDate.value = obj[key] - startValue;
+        startValue = obj[key];
+        console.log(newDate.value);
+        // newData.push(newDate);
+      }
+    }
     for (let key in obj) {
+
       const newDate = {};
       let correctDate = key.split('/');
       if (correctDate[0].length === 1) correctDate[0] = 0 + correctDate[0];
