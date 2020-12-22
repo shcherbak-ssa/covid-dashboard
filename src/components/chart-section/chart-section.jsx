@@ -30,9 +30,11 @@ export default function ChartSection(props) {
   useEffect(() => {
     getDataCountry();
   }, [selectedCountry]);
-
   useEffect(() => {
-    setAvailableData(true);
+    if (selectedCountry && !countryData) {
+      setAvailableData(false);
+    } else setAvailableData(true);
+
     setValueData(getDataValue());
   }, [countryData, searchData.parameter, searchData.key]);
 
@@ -40,7 +42,7 @@ export default function ChartSection(props) {
     if (selectedCountry) {
       const countryApiData = await loadTimelineForCountry(selectedCountry);
       if (countryApiData === null) {
-        // setCountryData({});
+        setCountryData(false);
         setAvailableData(false);
       } else {
         setCountryData(countryApiData);
