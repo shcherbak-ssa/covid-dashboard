@@ -5,7 +5,6 @@ import './options-menu.scss';
 import {
   IS_OPEN_CLASSNAME,
   COUNTRY_OPTIONS_MENU_TYPE,
-  CHART_OPTIONS_MENU_TYPE,
   MEASUREMENT_TITLE,
 } from '../../constants';
 
@@ -20,15 +19,11 @@ export default function OptionsMenu(props) {
   });
 
   useEffect(() => {
-    switch (menuType) {
-      case COUNTRY_OPTIONS_MENU_TYPE:
-        setMenuItems({
-          type: optionMenuItems.type, 
-          measurement: optionMenuItems.measurement,
-        });
-        break;
-      default:
-        setMenuItems(optionMenuItems);
+    if (menuType === COUNTRY_OPTIONS_MENU_TYPE) {
+      const {type, measurement} = optionMenuItems;
+      setMenuItems({type, measurement});
+    } else {
+      setMenuItems(optionMenuItems);
     }
   }, [optionMenuItems]);
 
