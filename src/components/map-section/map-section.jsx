@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 /* eslint-disable comma-dangle */
@@ -7,7 +6,6 @@ import React, {
 } from 'react';
 import './map-section.scss';
 
-// import { textLabelDefaultState, updateTextLabel, getSearchData } from '../../tools';
 import { getSearchData } from '../../tools';
 import Section from '../section';
 import MapLegend from './map-legend';
@@ -39,32 +37,6 @@ import am4themesAnimated from '@amcharts/amcharts4/themes/animated';
 import * as am4maps from '@amcharts/amcharts4/maps';
 import am4geodataWorldLow from '@amcharts/amcharts4-geodata/worldLow';
 am4core.useTheme(am4themesAnimated);
-
-// const MAP_BACKGROUND_COLOR_LIGHT = '#aadaff';
-// const MAP_BACKGROUND_COLOR_DARK = '#393e46';
-// const OCEAN_COLOR_LIGHT = '#aaeaff';
-// const OCEAN_COLOR_DARK = '#4c5564';
-// const FONT_COLOR_LIGHT = '#393E46';
-// const FONT_COLOR_DARK = '#FFFFFF';
-// const FILL_MAX_CASES_COLOR = '#FF2105';
-// const FILL_MAX_DEATH_COLOR = '#393E46';
-// const FILL_MAX_RECOVERED_COLOR = '#70a800';
-
-// const FILL_MIN_ALL_COLOR = '#aac4e7';
-// const FILL_MIN_CASES_COLOR = '#dcb1a4';
-// const FILL_MIN_DEATH_COLOR = '#d4d4d4';
-// const FILL_MIN_RECOVERED_COLOR = '#7ebfb3';
-
-// const FILL_ACTIVE_COUNTRY_CASES_COLOR = '#ffff00';
-// const FILL_ACTIVE_COUNTRY_DEATH_COLOR = '#ffff00';
-// const FILL_ACTIVE_COUNTRY_RECOVERED_COLOR = '#ffff00';
-
-// const STROKE_ACTIVE_COUNTRY_CASES_COLOR = '#ff00ff';
-// const STROKE_ACTIVE_COUNTRY_DEATH_COLOR = '#ff00ff';
-// const STROKE_ACTIVE_COUNTRY_RECOVERED_COLOR = '#ff00ff';
-
-// const FILL_HOVER_COUNTRY_COLOR = '#67b7dc';
-// const STROKE_FILL_HOVER_COUNTRY_COLOR = '#37c8ff';
 
 function getDataTitle(options) {
   return `${options.type} ${options.parameter} ${options.measurement ? ` relative ${options.measurement}` : ''}`;
@@ -117,7 +89,6 @@ function getActiveCountryColor(options) {
 }
 
 export default function MapSection(props) {
-  // const fTime = Date.now();
   const {
     apiData, isDarkTheme, options, selectedCountry, optionMenuItems, updateOptions, setSelectedCountry,
   } = props;
@@ -172,19 +143,12 @@ export default function MapSection(props) {
 
     // Set projection
     map.projection = new am4maps.projections.Miller();
+    // some enother variation of projection settings;
     // map.panBehavior = 'rotateLong';
     // map.projection = new am4maps.projections.Orthographic();
     // map.panBehavior = 'rotateLongLat';
 
     map.zoomControl = new am4maps.ZoomControl();
-
-    // console.log('apiData', apiData);
-    // console.log('isDarkTheme', isDarkTheme);
-    // console.log('options', options);
-    // console.log('selectedCountry', selectedCountry);
-    // console.log('optionMenuItems', optionMenuItems);
-    // console.log('updateOptions', updateOptions);
-    // console.log('setSelectedCountry', setSelectedCountry);
 
     map.homeZoomLevel = 1;
 
@@ -209,7 +173,6 @@ export default function MapSection(props) {
 
     const polygonTemplate = polygonSeries.mapPolygons.template;
     componentContainer.current.polygonTemplate = polygonTemplate;
-    // polygonTemplate.tooltipText = '{name}: {value}\n{title}';
     polygonTemplate.tooltipText = `{name}: {value}\n${getDataTitle(options)}`;
 
     // Create hover state and set alternative fill color
@@ -341,10 +304,8 @@ export default function MapSection(props) {
   useEffect(() => {
     if (updateState.current.updateData) {
       // componentDidUpdate
-      // const startTime = Date.now();
       componentContainer.current.dataArray.forEach((e) => {
         const mapElement = e;
-        // mapElement.title = getDataTitle(options);
         componentContainer.current.polygonTemplate.tooltipText = `{name}: {value}\n${getDataTitle(options)}`;
         if (mapElement.apiInd !== null) {
           mapElement.value = apiData[mapElement.apiInd][getDataPropName(options)][getDataInnerPropName(options)];
@@ -352,9 +313,7 @@ export default function MapSection(props) {
           mapElement.value = 'No data from API';
         }
       });
-      // console.log('useUpdateMapData', Date.now() - startTime);
       componentContainer.current.polygonSeries.invalidateData();
-      // console.log('useInvalidateData', Date.now() - startTime);
       componentContainer.current.heatRulesData.max = am4core.color(getHeatRuleColor(options).max);
       componentContainer.current.heatLegend.maxColor = am4core.color(getHeatRuleColor(options).max);
       componentContainer.current.heatRulesData.min = am4core.color(getHeatRuleColor(options).min);
@@ -369,7 +328,6 @@ export default function MapSection(props) {
   useEffect(() => {
     if (updateState.current.updateTheme) {
       // componentDidUpdate
-      // const startTime = Date.now();
       if (isDarkTheme) {
         componentContainer.current.map.background.fill = am4core.color(MAP_BACKGROUND_COLOR_DARK);
         componentContainer.current.map.backgroundSeries.mapPolygons.template.polygon.fill = am4core.color(OCEAN_COLOR_DARK);
@@ -381,7 +339,6 @@ export default function MapSection(props) {
         componentContainer.current.heatLegend.valueAxis.renderer.labels.template.fill = am4core.color(FONT_COLOR_LIGHT);
         // componentContainer.current.heatLegend.valueAxis.renderer.labels.template.stroke = am4core.color(FONT_COLOR_LIGHT);
       }
-      // console.log('useUpdateTheme', Date.now() - startTime);
     } else {
       // componentDidMount
       updateState.current.updateTheme = true;
@@ -423,7 +380,6 @@ export default function MapSection(props) {
   }
   */
 
-  // console.log('updateComponentMap', Date.now() - fTime);
   return (
     <Section {...sectionProps}>
       {<div className='map-container' id='divMapChartContainer' style={{ width: '100%', height: 'calc(100% - 32px)' }}></div>}
