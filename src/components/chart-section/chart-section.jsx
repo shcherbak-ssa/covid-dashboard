@@ -14,9 +14,9 @@ export default function ChartSection(props) {
     isDarkTheme, options, updateOptions, optionMenuItems, selectedCountry, apiData
   } = props;
   const [searchData, setSearchData] = useState({});
-  const [countryData, setcountryData] = useState({});
+  const [countryData, setCountryData] = useState({});
   const [valueData, setValueData] = useState({});
-  const [avalibleData, setAvalibleData] = useState({});
+  const [availableData, setAvailableData] = useState({});
   const chart = useRef(null);
 
   const FONT_COLOR_LIGHT = am4core.color('#ffffff');
@@ -30,9 +30,11 @@ export default function ChartSection(props) {
   useEffect(() => {
     getDataCountry();
   }, [selectedCountry]);
-
   useEffect(() => {
-    setAvalibleData(true);
+    if (selectedCountry && !countryData) {
+      setAvailableData(false);
+    } else setAvailableData(true);
+
     setValueData(getDataValue());
   }, [countryData, searchData.parameter, searchData.key]);
 
@@ -40,13 +42,13 @@ export default function ChartSection(props) {
     if (selectedCountry) {
       const countryApiData = await loadTimelineForCountry(selectedCountry);
       if (countryApiData === null) {
-        // setcountryData({});
-        setAvalibleData(false);
+        setCountryData(false);
+        setAvailableData(false);
       } else {
-        setcountryData(countryApiData);
-        setAvalibleData(true);
+        setCountryData(countryApiData);
+        setAvailableData(true);
       }
-    } else { setcountryData({}); }
+    } else { setCountryData({}); }
   }
   useLayoutEffect(() => {
 
@@ -160,8 +162,8 @@ export default function ChartSection(props) {
     return newData;
   }
   function changeChart() {
-    if (!avalibleData) {
-      return (<div className='chart-section-layout'> data is not avalible</div>)
+    if (!availableData) {
+      return (<div className='chart-section-layout'> Data is not available</div>)
     }
 
   }
