@@ -5,9 +5,9 @@ import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
 import './chart-section.scss';
 
-import { CHART_OPTIONS_MENU_TYPE, TOTAL_TYPE_OPTION } from '../../constants';
 import Section from '../section';
 import { loadTimelineForCountry } from '../../api';
+import { getSearchData } from '../../tools';
 
 export default function ChartSection(props) {
   const {
@@ -101,23 +101,15 @@ export default function ChartSection(props) {
 
   const sectionProps = {
     sectionType: 'chart',
-    optionsMenuType: CHART_OPTIONS_MENU_TYPE,
     headerProps: {
       title: 'Chart',
       isDarkTheme,
-      options: transformOptions(options)
+      options
     },
     updateOptions,
     optionMenuItems
   };
 
-  function transformOptions({ parameter, measurement }) {
-    return {
-      type: TOTAL_TYPE_OPTION,
-      parameter,
-      measurement
-    };
-  }
   function getDataValue() {
     const newData = [];
     let obj = {};
@@ -160,12 +152,6 @@ export default function ChartSection(props) {
       newData.push(newDate);
     }
     return newData;
-  }
-  function getSearchData({ parameter, measurement }) {
-    return {
-      key: TOTAL_TYPE_OPTION + measurement,
-      parameter
-    };
   }
 
   return (

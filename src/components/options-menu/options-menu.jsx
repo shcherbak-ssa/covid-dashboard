@@ -27,12 +27,6 @@ export default function OptionsMenu(props) {
           measurement: optionMenuItems.measurement,
         });
         break;
-      case CHART_OPTIONS_MENU_TYPE:
-        setMenuItems({
-          parameter: optionMenuItems.parameter, 
-          measurement: optionMenuItems.measurement,
-        });
-        break;
       default:
         setMenuItems(optionMenuItems);
     }
