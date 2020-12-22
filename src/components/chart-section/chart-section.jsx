@@ -17,9 +17,7 @@ export default function ChartSection(props) {
   const [countryData, setcountryData] = useState({});
   const [valueData, setValueData] = useState({});
   const chart = useRef(null);
-  console.log(options);
-  console.log(apiData);
-  console.log(searchData);
+
   const FONT_COLOR_LIGHT = am4core.color('#ffffff');
   const FONT_COLOR_DARK = am4core.color('#393E46');
   const FONT_COLOR_RED = am4core.color('#C8244D');
