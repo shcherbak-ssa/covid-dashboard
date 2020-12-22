@@ -9,10 +9,10 @@ describe('Text label tranformation', () => {
     const testTextLabel = {
       type: TYPE_TEST_FIELD,
     };
-    const expectTextLabel = testTextLabel.type;
+    const expectedTextLabel = testTextLabel.type;
 
     const transformedTextLabel = transformTextLabel(testTextLabel);
-    expect(transformedTextLabel).toBe(expectTextLabel);
+    expect(transformedTextLabel).toBe(expectedTextLabel);
   });
 
   it('Type and parameter fields', () => {
@@ -20,10 +20,10 @@ describe('Text label tranformation', () => {
       type: TYPE_TEST_FIELD,
       parameter: PARAMETER_TEST_FIELD,
     };
-    const expectTextLabel = `${testTextLabel.type} ${testTextLabel.parameter}`;
+    const expectedTextLabel = `${testTextLabel.type} ${testTextLabel.parameter}`;
 
     const transformedTextLabel = transformTextLabel(testTextLabel);
-    expect(transformedTextLabel).toBe(expectTextLabel);
+    expect(transformedTextLabel).toBe(expectedTextLabel);
   });
 
   it('Type and measurement fields', () => {
@@ -31,10 +31,10 @@ describe('Text label tranformation', () => {
       type: TYPE_TEST_FIELD,
       measurement: MEASUREMENT_TEST_FIELD,
     };
-    const expectTextLabel = `${testTextLabel.type} / ${testTextLabel.measurement}`;
+    const expectedTextLabel = `${testTextLabel.type} / ${testTextLabel.measurement}`;
 
     const transformedTextLabel = transformTextLabel(testTextLabel);
-    expect(transformedTextLabel).toBe(expectTextLabel);
+    expect(transformedTextLabel).toBe(expectedTextLabel);
   });
 
   it('All fields', () => {
@@ -43,9 +43,9 @@ describe('Text label tranformation', () => {
       parameter: PARAMETER_TEST_FIELD,
       measurement: MEASUREMENT_TEST_FIELD,
     };
-    const expectTextLabel = `${testTextLabel.type} ${testTextLabel.parameter} / ${testTextLabel.measurement}`;
+    const expectedTextLabel = `${testTextLabel.type} ${testTextLabel.parameter} / ${testTextLabel.measurement}`;
 
     const transformedTextLabel = transformTextLabel(testTextLabel);
-    expect(transformedTextLabel).toBe(expectTextLabel);
+    expect(transformedTextLabel).toBe(expectedTextLabel);
   });
 });

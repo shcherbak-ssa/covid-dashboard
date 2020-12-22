@@ -1,5 +1,5 @@
 export function transformNumber(number) {
-  return `${number}`.split('').reverse().map(addSpaces).reverse().join('');
+  return `${number}`.split('').reverse().map(addSpaces).reverse().join('').trim();
 }
 
 function addSpaces(item, index) {
