@@ -16,6 +16,7 @@ export default function ChartSection(props) {
   const [searchData, setSearchData] = useState({});
   const [countryData, setcountryData] = useState({});
   const [valueData, setValueData] = useState({});
+  const [avalibleData, setAvalibleData] = useState({});
   const chart = useRef(null);
 
   const FONT_COLOR_LIGHT = am4core.color('#ffffff');
@@ -31,6 +32,7 @@ export default function ChartSection(props) {
   }, [selectedCountry]);
 
   useEffect(() => {
+    setAvalibleData(true);
     setValueData(getDataValue());
   }, [countryData, searchData.parameter, searchData.key]);
 
@@ -38,12 +40,16 @@ export default function ChartSection(props) {
     if (selectedCountry) {
       const countryApiData = await loadTimelineForCountry(selectedCountry);
       if (countryApiData === null) {
-        setcountryData({});
-      } else setcountryData(countryApiData);
+        // setcountryData({});
+        setAvalibleData(false);
+      } else {
+        setcountryData(countryApiData);
+        setAvalibleData(true);
+      }
     } else { setcountryData({}); }
   }
-
   useLayoutEffect(() => {
+
     const schedule = am4core.create('chartdiv1', am4charts.XYChart);
     schedule.numberFormatter.numberFormat = '#a';
     schedule.numberFormatter.bigNumberPrefixes = [
@@ -153,12 +159,19 @@ export default function ChartSection(props) {
     }
     return newData;
   }
+  function changeChart() {
+    if (!avalibleData) {
+      return (<div className='chart-section-layout'> data is not avalible</div>)
+    }
 
+  }
+  const content = changeChart();
   return (
     <Section {...sectionProps}>
       <div className="chart-section-content">
         <div id="chartdiv1" style={{ width: '100%', height: '100%' }}></div>
+        {content}
       </div>
-    </Section>
-  );
+    </Section>)
+
 }
