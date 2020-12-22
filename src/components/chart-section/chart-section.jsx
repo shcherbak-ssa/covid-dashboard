@@ -24,7 +24,7 @@ export default function ChartSection(props) {
 
   useEffect(() => {
     setSearchData(getSearchData(options));
-  }, [options.parameter, options.measurement]);
+  }, [options]);
 
   useEffect(() => {
     getDataCountry();
@@ -76,13 +76,11 @@ export default function ChartSection(props) {
   }, []);
 
   useLayoutEffect(() => {
-    chart.current.data = valueData;
     const xAxeslabels = chart.current._xAxes._values[0].renderer.labels.template;
     const xAxesGrid = chart.current._xAxes._values[0].renderer.grid.template;
     const yAxeslabels = chart.current._yAxes._values[0].renderer.labels.template;
     const yAxesGrid = chart.current._yAxes._values[0].renderer.grid.template;
     if (isDarkTheme) {
-      console.log(123);
       xAxeslabels.fill = FONT_COLOR_LIGHT;
       yAxeslabels.fill = FONT_COLOR_LIGHT;
       yAxesGrid.stroke = FONT_COLOR_LIGHT;
@@ -93,11 +91,13 @@ export default function ChartSection(props) {
       yAxesGrid.stroke = FONT_COLOR_DARK;
       xAxesGrid.stroke = FONT_COLOR_DARK;
     }
-  }, [valueData, isDarkTheme]);
-
+  }, [isDarkTheme]);
+  useLayoutEffect(() => {
+    chart.current.data = valueData;
+  }, [valueData]);
   useEffect(() => {
     setValueData(getDataValue());
-  }, [countryData, searchData.parameter, searchData.key]);
+  }, [countryData, searchData]);
 
   const sectionProps = {
     sectionType: 'chart',
@@ -113,15 +113,28 @@ export default function ChartSection(props) {
   function getDataValue() {
     const newData = [];
     let obj = {};
+    let startValue = 0;
+
     if (searchData.key) {
       if (countryData.Total) {
-        obj = countryData[searchData.key][searchData.parameter];
+        if (searchData.key === 'Last day') {
+          obj = countryData.Total[searchData.parameter];
+        } else if (searchData.key === 'Last day100k') {
+          obj = countryData.Total100k[searchData.parameter];
+        } else {
+          obj = countryData[searchData.key][searchData.parameter];
+        }
+      } else if (searchData.key === 'Last day') {
+        obj = apiData.global.Total[searchData.parameter];
+      } else if (searchData.key === 'Last day100k') {
+        obj = apiData.global.Total100k[searchData.parameter];
       } else {
         obj = apiData.global[searchData.key][searchData.parameter];
       }
     } else {
       obj = apiData.global.Total.cases;
     }
+
     for (let key in obj) {
       const newDate = {};
       let correctDate = key.split('/');
@@ -130,7 +143,12 @@ export default function ChartSection(props) {
       [correctDate[0], correctDate[1]] = [correctDate[1], correctDate[0]];
 
       newDate.data = correctDate.join('.') + '20';
-      newDate.value = obj[key];
+      if (searchData.key === 'Last day' || searchData.key === 'Last day100k') {
+        newDate.value = obj[key] - startValue < 0 ? 0 : obj[key] - startValue;
+        startValue = obj[key];
+      } else {
+        newDate.value = obj[key];
+      }
       newData.push(newDate);
     }
     return newData;
