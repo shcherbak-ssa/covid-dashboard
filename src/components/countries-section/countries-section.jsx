@@ -9,10 +9,9 @@ export default function CountriesSection(props) {
   const {
     isDarkTheme, options, updateOptions, optionMenuItems, selectedCountry, setSelectedCountry
   } = props;
-  const [apiData, setApiData] = useState(props.apiData);
+  const [apiData] = useState(props.apiData);
   const content = {
     apiData: apiData,
-    setData: setApiData,
     searchData: getSearchData(options),
     selectedCountry: selectedCountry,
     selectCountry: setSelectedCountry
