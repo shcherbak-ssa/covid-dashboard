@@ -1,29 +1,70 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
-/* eslint-disable no-console */
 /* eslint-disable comma-dangle */
-import React, { useState, useLayoutEffect, useRef, useEffect } from 'react';
+import React, {
+  useState, useLayoutEffect, useRef, useEffect,
+} from 'react';
 import './map-section.scss';
 
 // import { textLabelDefaultState, updateTextLabel, getSearchData } from '../../tools';
 import { getSearchData } from '../../tools';
 import Section from '../section';
 import MapLegend from './map-legend';
+import {
+  MAP_BACKGROUND_COLOR_LIGHT,
+  MAP_BACKGROUND_COLOR_DARK,
+  OCEAN_COLOR_LIGHT,
+  OCEAN_COLOR_DARK,
+  FONT_COLOR_LIGHT,
+  FONT_COLOR_DARK,
+  FILL_MAX_CASES_COLOR,
+  FILL_MAX_DEATH_COLOR,
+  FILL_MAX_RECOVERED_COLOR,
+  FILL_MIN_ALL_COLOR,
+  FILL_MIN_CASES_COLOR,
+  FILL_MIN_DEATH_COLOR,
+  FILL_MIN_RECOVERED_COLOR,
+  FILL_ACTIVE_COUNTRY_CASES_COLOR,
+  FILL_ACTIVE_COUNTRY_DEATH_COLOR,
+  FILL_ACTIVE_COUNTRY_RECOVERED_COLOR,
+  STROKE_ACTIVE_COUNTRY_CASES_COLOR,
+  STROKE_ACTIVE_COUNTRY_DEATH_COLOR,
+  STROKE_ACTIVE_COUNTRY_RECOVERED_COLOR,
+  FILL_HOVER_COUNTRY_COLOR,
+  STROKE_FILL_HOVER_COUNTRY_COLOR,
+} from './../../constants';
 import * as am4core from '@amcharts/amcharts4/core';
-// import * as am4charts from '@amcharts/amcharts4/charts';
 import am4themesAnimated from '@amcharts/amcharts4/themes/animated';
 import * as am4maps from '@amcharts/amcharts4/maps';
 import am4geodataWorldLow from '@amcharts/amcharts4-geodata/worldLow';
 am4core.useTheme(am4themesAnimated);
 
-const MAP_BACKGROUND_COLOR_LIGHT = '#aadaff';
-const MAP_BACKGROUND_COLOR_DARK = '#393e46';
-const OCEAN_COLOR_LIGHT = '#aaeaff';
-const OCEAN_COLOR_DARK = '#4c5564';
-const FONT_COLOR_LIGHT = '#393E46';
-const FONT_COLOR_DARK = '#FFFFFF';
-const FEEL_MAX_CASES_COLOR = '#ED7B84';
-const FEEL_MAX_DEATH_COLOR = '#444444';
-const FEEL_MAX_RECOVERED_COLOR = '#70a800';
+// const MAP_BACKGROUND_COLOR_LIGHT = '#aadaff';
+// const MAP_BACKGROUND_COLOR_DARK = '#393e46';
+// const OCEAN_COLOR_LIGHT = '#aaeaff';
+// const OCEAN_COLOR_DARK = '#4c5564';
+// const FONT_COLOR_LIGHT = '#393E46';
+// const FONT_COLOR_DARK = '#FFFFFF';
+// const FILL_MAX_CASES_COLOR = '#FF2105';
+// const FILL_MAX_DEATH_COLOR = '#393E46';
+// const FILL_MAX_RECOVERED_COLOR = '#70a800';
+
+// const FILL_MIN_ALL_COLOR = '#aac4e7';
+// const FILL_MIN_CASES_COLOR = '#dcb1a4';
+// const FILL_MIN_DEATH_COLOR = '#d4d4d4';
+// const FILL_MIN_RECOVERED_COLOR = '#7ebfb3';
+
+// const FILL_ACTIVE_COUNTRY_CASES_COLOR = '#ffff00';
+// const FILL_ACTIVE_COUNTRY_DEATH_COLOR = '#ffff00';
+// const FILL_ACTIVE_COUNTRY_RECOVERED_COLOR = '#ffff00';
+
+// const STROKE_ACTIVE_COUNTRY_CASES_COLOR = '#ff00ff';
+// const STROKE_ACTIVE_COUNTRY_DEATH_COLOR = '#ff00ff';
+// const STROKE_ACTIVE_COUNTRY_RECOVERED_COLOR = '#ff00ff';
+
+// const FILL_HOVER_COUNTRY_COLOR = '#67b7dc';
+// const STROKE_FILL_HOVER_COUNTRY_COLOR = '#37c8ff';
 
 function getDataTitle(options) {
   return `${options.type} ${options.parameter} ${options.measurement ? ` relative ${options.measurement}` : ''}`;
@@ -39,17 +80,47 @@ function getDataInnerPropName(options) {
 
 function getHeatRuleColor(options) {
   if (options.parameter === 'deaths') {
-    return FEEL_MAX_DEATH_COLOR;
+    return {
+      min: FILL_MIN_DEATH_COLOR,
+      max: FILL_MAX_DEATH_COLOR,
+    };
   }
   if (options.parameter === 'cases') {
-    return FEEL_MAX_CASES_COLOR;
+    return {
+      min: FILL_MIN_CASES_COLOR,
+      max: FILL_MAX_CASES_COLOR,
+    };
   }
-  return FEEL_MAX_RECOVERED_COLOR;
+  return {
+    min: FILL_MIN_RECOVERED_COLOR,
+    max: FILL_MAX_RECOVERED_COLOR,
+  };
+}
+
+function getActiveCountryColor(options) {
+  if (options.parameter === 'deaths') {
+    return {
+      fill: FILL_ACTIVE_COUNTRY_DEATH_COLOR,
+      stroke: STROKE_ACTIVE_COUNTRY_DEATH_COLOR,
+    };
+  }
+  if (options.parameter === 'cases') {
+    return {
+      fill: FILL_ACTIVE_COUNTRY_CASES_COLOR,
+      stroke: STROKE_ACTIVE_COUNTRY_CASES_COLOR,
+    };
+  }
+  return {
+    fill: FILL_ACTIVE_COUNTRY_RECOVERED_COLOR,
+    stroke: STROKE_ACTIVE_COUNTRY_RECOVERED_COLOR,
+  };
 }
 
 export default function MapSection(props) {
   // const fTime = Date.now();
-  const { apiData, isDarkTheme, options, selectedCountry, optionMenuItems, updateOptions, setSelectedCountry } = props;
+  const {
+    apiData, isDarkTheme, options, selectedCountry, optionMenuItems, updateOptions, setSelectedCountry,
+  } = props;
 
   const [searchData, setSearchData] = useState(getSearchData(options));
 
@@ -82,6 +153,7 @@ export default function MapSection(props) {
     heatLegend: null,
     heatLegendMinRange: null,
     heatLegendMaxRange: null,
+    activeCountryObj: null,
   });
 
   const chart = useRef(null);
@@ -131,7 +203,6 @@ export default function MapSection(props) {
         mapElement.apiInd = apiInd;
         mapElement.value = apiData[mapElement.apiInd][getDataPropName(options)][getDataInnerPropName(options)];
       }
-      // mapElement.title = getDataTitle(options);
     });
 
     polygonSeries.data = dataArray;
@@ -140,25 +211,25 @@ export default function MapSection(props) {
     componentContainer.current.polygonTemplate = polygonTemplate;
     // polygonTemplate.tooltipText = '{name}: {value}\n{title}';
     polygonTemplate.tooltipText = `{name}: {value}\n${getDataTitle(options)}`;
-    // polygonTemplate.fill = am4core.color('#aac4e7');
 
     // Create hover state and set alternative fill color
     const hoverState = polygonTemplate.states.create('hover');
     componentContainer.current.hoverState = hoverState;
-    hoverState.properties.fill = map.colors.getIndex(0);
+    hoverState.properties.fill = am4core.color(FILL_HOVER_COUNTRY_COLOR);
+    hoverState.properties.stroke = am4core.color(STROKE_FILL_HOVER_COUNTRY_COLOR);
 
     // Create active state
     const activeState = polygonTemplate.states.create('active');
     componentContainer.current.activeState = activeState;
-    activeState.properties.fill = am4core.color('#ff0000');
-    activeState.properties.stroke = am4core.color('#FF0000');
+    activeState.properties.fill = am4core.color(getActiveCountryColor(options).fill);
+    activeState.properties.stroke = am4core.color(getActiveCountryColor(options).stroke);
+
     // Remove Antarctica
     polygonSeries.exclude = ['AQ'];
 
     map.background.fillOpacity = 1;
     map.backgroundSeries.mapPolygons.template.polygon.fillOpacity = 1;
 
-    // map background aadaff aaffda aaeaff   //dark theme   393e46
     if (isDarkTheme) {
       map.background.fill = am4core.color(MAP_BACKGROUND_COLOR_DARK);
       map.backgroundSeries.mapPolygons.template.polygon.fill = am4core.color(OCEAN_COLOR_DARK);
@@ -181,17 +252,10 @@ export default function MapSection(props) {
     componentContainer.current.heatRulesData = {
       property: 'fill', // TODO: check next line
       target: componentContainer.current.polygonSeries.mapPolygons.template,
-      min: am4core.color('#aac4e7'),
-      max: am4core.color(getHeatRuleColor(options)),
+      min: am4core.color(getHeatRuleColor(options).min),
+      max: am4core.color(getHeatRuleColor(options).max),
+      // logarithmic: true  // lorarithmics does not work if the values are zero or below
     };
-    // Add heat map with logarithmic scale and legend
-    // polygonSeries.heatRules.push({
-    //   property: 'fill',
-    //   target: polygonSeries.mapPolygons.template,
-    //   min: am4core.color('#aac4e7'),
-    //   max: am4core.color('#ED7B84'),
-    //   // logarithmic: true
-    // });
     polygonSeries.heatRules.push(componentContainer.current.heatRulesData);
 
     // Legend options
@@ -210,6 +274,7 @@ export default function MapSection(props) {
     heatLegend.background.fillOpacity = 0.35;
     heatLegend.padding(5, 20, 5, 20);
     heatLegend.margin(5, 20, 5, 20);
+
     // Set up custom heat map legend labels using axis ranges
     const hlMinRange = heatLegend.valueAxis.axisRanges.create();
     hlMinRange.label.horizontalCenter = 'left';
@@ -225,6 +290,10 @@ export default function MapSection(props) {
     heatLegend.valueAxis.renderer.labels.template.fill = am4core.color(FONT_COLOR_LIGHT);
     // heatLegend.valueAxis.renderer.labels.template.stroke = am4core.color(FONT_COLOR_LIGHT);
 
+    if (selectedCountry) {
+      // Blank for set default country active state;
+    }
+
     polygonSeries.events.on('datavalidated', (ev) => {
       const evHeatLegend = ev.target.map.getKey('heatLegend');
       const min = evHeatLegend.series.dataItem.values.value.low;
@@ -238,6 +307,7 @@ export default function MapSection(props) {
       evMaxRange.label.text = '' + evHeatLegend.numberFormatter.format(max);
     });
 
+    // Example how to bind polygon property to key in data
     // Bind 'fill' property to 'fill' key in data
     // polygonTemplate.propertyFields.fill = 'fill';
 
@@ -285,9 +355,10 @@ export default function MapSection(props) {
       // console.log('useUpdateMapData', Date.now() - startTime);
       componentContainer.current.polygonSeries.invalidateData();
       // console.log('useInvalidateData', Date.now() - startTime);
-      componentContainer.current.heatRulesData.max = am4core.color(getHeatRuleColor(options));
-
-      componentContainer.current.heatLegend.maxColor = am4core.color(getHeatRuleColor(options));
+      componentContainer.current.heatRulesData.max = am4core.color(getHeatRuleColor(options).max);
+      componentContainer.current.heatLegend.maxColor = am4core.color(getHeatRuleColor(options).max);
+      componentContainer.current.heatRulesData.min = am4core.color(getHeatRuleColor(options).min);
+      componentContainer.current.heatLegend.minColor = am4core.color(getHeatRuleColor(options).min);
     } else {
       // componentDidMount
       updateState.current.updateData = true;
@@ -316,6 +387,42 @@ export default function MapSection(props) {
       updateState.current.updateTheme = true;
     }
   }, [isDarkTheme]);
+
+  // Country change blank useEffect
+  // update CountryState
+  /* Not working.  Application crushing!!!! Danger!
+  if (0) {
+    useEffect(() => {
+      if (updateState.current.updateCountry) {
+        // componentDidUpdate
+        if (componentContainer.current.activeCountryObj) {
+          componentContainer.current.activeCountryObj.isActive = false;
+          componentContainer.current.activeCountryObj = null;
+        }
+        if (selectedCountry) {
+          const poly = componentContainer.current.polygonSeries;
+          const countryIndex = poly._children._values.findIndex((el) => {
+            let result;
+            try {
+              result = el.dataItem.dataContext.id === selectedCountry.iso2Id;
+            } catch {
+              result = false;
+            }
+            return result;
+          });
+          if (countryIndex >= 0) {
+            componentContainer.current.activeCountryObj = poly._children._values[countryIndex];
+            componentContainer.current.activeCountryObj.isActive = true;
+          }
+        }
+      } else {
+        // componentDidMount
+        updateState.current.updateCountry = true;
+      }
+    }, [selectedCountry]);
+  }
+  */
+
   // console.log('updateComponentMap', Date.now() - fTime);
   return (
     <Section {...sectionProps}>
