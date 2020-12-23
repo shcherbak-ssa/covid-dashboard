@@ -7,7 +7,6 @@ import {
   COUNTRY_OPTIONS_MENU_TYPE,
   MEASUREMENT_TITLE,
 } from '../../constants';
-
 import Base from '../base';
 
 export default function OptionsMenu(props) {

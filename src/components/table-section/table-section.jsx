@@ -6,6 +6,7 @@ import Base from '../base';
 import Section from '../section';
 
 const DEFAULT_SECTION_TITLE = 'Global';
+const TABLE_SECTION_TYPE = 'table';
 
 export default function TableSection(props) {
   const {apiData, isDarkTheme, options, updateOptions, optionMenuItems, selectedCountry} = props;
@@ -23,7 +24,7 @@ export default function TableSection(props) {
   }, [selectedCountry]);
 
   const sectionProps = {
-    sectionType: 'table',
+    sectionType: TABLE_SECTION_TYPE,
     optionsMenuType: COUNTRY_OPTIONS_MENU_TYPE,
     headerProps: {
       title: sectionTitle,
