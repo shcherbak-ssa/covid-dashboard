@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import './app.scss';
 
 import { TOTAL_TYPE_OPTION, CASES_PARAMETER_OPTION } from '../../constants';
+import { KEYBOARD_DOCUMENT_ID } from '../../keyboard/constants';
 import { optionsMenu } from '../../data/options-menu';
 
 import AppHeader from './app-header';
@@ -73,6 +74,7 @@ export default function App({apiData}) {
 
   function toggleCurrentTheme() {
     setIsDarkTheme(!isDarkTheme);
+    document.getElementById(KEYBOARD_DOCUMENT_ID).classList.toggle(DARK_THEME_CLASSNAME);
   }
 
   function updateOptions({label, dataKey, index}) {

@@ -1,4 +1,4 @@
-import { keyboardLayout } from '../data/keyboard-layout';
+import { keyboardLayout, keyLayoutTemplate } from '../data/keyboard-layout';
 
 export function createKeyboard() {
   const keyboard = document.createElement("div");
@@ -16,13 +16,6 @@ export function createKeyboard() {
 function createKeys() {
   const keys = [];
   const keyLayout = keyboardLayout;
-  const keyLayoutTemplate = [
-    'Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Digit6', 'Digit7', 'Digit8', 'Digit9', 'Digit0', 'Minus', 'Equal', 'Backspace',
-    'KeyQ', 'KeyW', 'KeyE', 'KeyR', 'KeyT', 'KeyY', 'KeyU', 'KeyI', 'KeyO', 'KeyP', 'BracketLeft', 'BracketRight',
-    'CapsLock', 'KeyA', 'KeyS', 'KeyD', 'KeyF', 'KeyG', 'KeyH', 'KeyJ', 'KeyK', 'KeyL', 'Semicolon', 'Quote', 'Backslash',
-    'ShiftLeft', 'IntlBackslash', 'KeyZ', 'KeyX', 'KeyC', 'KeyV', 'KeyB', 'KeyN', 'KeyM', 'Comma', 'Period', 'Slash',
-    'Space', 'ArrowLeft', 'ArrowRight',
-  ];
 
   keyLayoutTemplate.forEach((keyCode) => {
     const keyData = getKeyData(keyCode, keyLayout);
