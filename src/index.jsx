@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import './assets/icons';
 import './assets/favicon.ico';
 import './styles/main.scss';
+import './styles/keyboard.css';
 
 import { loadData } from './api';
 import App from './components/app';
@@ -13,6 +14,5 @@ init();
 
 async function init() {
   const apiData = await loadData();
-  // console.log('apiData', apiData);
   ReactDOM.render(<App apiData={apiData} />, document.getElementById('app'));
 }
