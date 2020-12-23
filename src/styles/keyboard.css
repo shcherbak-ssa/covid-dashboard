@@ -5,10 +5,14 @@
   bottom: 0;
   width: 100%;
   padding: 5px 0;
-  background: #004134;
+  background: #393E46;
   box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
   user-select: none;
   transition: bottom .4s;
+}
+
+.dark-theme .keyboard {
+  background: #222;
 }
 
 .keyboard--hidden {
@@ -65,8 +69,7 @@
   background: #08ff00;
 }
 
-.keyboard__key--dark,
-.keyboard__key:active,
-.is-active {
+.keyboard__key--dark .is-active,
+.keyboard__key:active .is-active {
   background: rgba(0, 0, 0, 0.25);
 }
