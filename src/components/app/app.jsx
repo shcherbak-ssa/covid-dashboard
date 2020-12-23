@@ -73,6 +73,7 @@ export default function App({apiData}) {
 
   function toggleCurrentTheme() {
     setIsDarkTheme(!isDarkTheme);
+    document.getElementById('keyboard').classList.toggle(DARK_THEME_CLASSNAME);
   }
 
   function updateOptions({label, dataKey, index}) {
