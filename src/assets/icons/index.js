@@ -9,3 +9,5 @@ import './close-dark.svg';
 import './checked.svg';
 import './map-legend.svg';
 import './map-legend-dark.svg';
+import './keyboard.svg';
+import './keyboard-dark.svg';
