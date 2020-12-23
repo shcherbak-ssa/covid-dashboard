@@ -35,16 +35,16 @@ export default function CountriesSection(props) {
   );
 }
 
-function CountriesSectionContent(content) {
+function CountriesSectionContent(props) {
   const [inputValue, setInputValue] = useState('');
-  const [allData, setAllData] = useState(content.apiData);
-  const archiveData = content.apiData;
+  const [allData, setAllData] = useState(props.apiData);
+  const archiveData = props.apiData;
   const value = {
     inputValue: inputValue,
     setInputValue: setInputValue
   };
-  const parametres = content.searchData;
-  const selectCountry = content.selectCountry;
+  const parametres = props.searchData;
+  const selectCountry = props.selectCountry;
   const key = parametres.key;
   const type = parametres.parameter;
 
@@ -54,7 +54,7 @@ function CountriesSectionContent(content) {
 
   const keyboardIconProps = {
     icon: 'keyboard',
-    isDarkTheme: content.isDarkTheme,
+    isDarkTheme: props.isDarkTheme,
     isActionIcon: false,
     iconClickHandle: () => {
       const nextIsKeyboardOpen = !isKeyboardOpen;
@@ -62,11 +62,11 @@ function CountriesSectionContent(content) {
 
       if (nextIsKeyboardOpen) {
         countryInput.current.focus();
-        keyboard.show()
+        keyboard.show();
       } else {
         keyboard.hide();
       }
-    },
+    }
   };
 
   const inputProps = {
@@ -74,7 +74,7 @@ function CountriesSectionContent(content) {
     value,
     data: allData,
     api: archiveData,
-    fn: setAllData,
+    fn: setAllData
   };
 
   useEffect(() => {
@@ -82,9 +82,9 @@ function CountriesSectionContent(content) {
     setKeyboard(createdKeyboard);
   }, []);
 
-  function updateCountryInputValue(value) {
-    setInputValue(value);
-    searchFilter(value.toLowerCase(), inputProps);
+  function updateCountryInputValue(newValue) {
+    setInputValue(newValue);
+    searchFilter(inputValue.toLowerCase(), inputProps);
   }
 
   return (
@@ -97,7 +97,7 @@ function CountriesSectionContent(content) {
       </div>
       <div className="countries-section-content-selected">
         <SelectedCountry
-          country={content.selectedCountry}
+          country={props.selectedCountry}
           data={parametres}
           fn={selectCountry} />
       </div>
@@ -122,13 +122,13 @@ function CountriesSectionContent(content) {
   );
 }
 
-const SelectedCountry = (country) => {
+const SelectedCountry = (props) => {
   let content;
-  if (country.country) {
-    const item = country.country;
-    const key = country.data.key;
-    const parameter = country.data.parameter;
-    const discardCountry = country.fn;
+  if (props.country) {
+    const item = props.country;
+    const key = props.data.key;
+    const parameter = props.data.parameter;
+    const discardCountry = props.fn;
 
     const clickDiscardHandler = () => clickDiscardSelected(discardCountry);
 
@@ -187,7 +187,7 @@ function clickListItem(data, selectCountry, api, fn, value) {
 function InputForCountriesSection(content) {
   const onChangeHandler = (event) => {
     event.preventDefault();
-    
+
     content.value.setInputValue(event.target.value);
 
     const value = event.target.value.toLowerCase();
