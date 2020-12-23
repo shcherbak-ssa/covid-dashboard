@@ -1,15 +1,21 @@
-/* eslint-disable no-underscore-dangle */
 import React, {
   useEffect, useState, useLayoutEffect, useRef
 } from 'react';
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
 import './chart-section.scss';
+import {
+  FONT_COLOR_LIGHT,
+  FONT_COLOR_DARK
+
+} from './../../constants';
 
 import Section from '../section';
 import { loadTimelineForCountry } from '../../api';
 import { getSearchData } from '../../tools';
-
+import {
+  getDataValue, getRuleColor
+} from './chart-section-moduls';
 export default function ChartSection(props) {
   const {
     isDarkTheme, options, updateOptions, optionMenuItems, selectedCountry, apiData
@@ -21,9 +27,7 @@ export default function ChartSection(props) {
 
   const chart = useRef(null);
 
-  const FONT_COLOR_LIGHT = am4core.color('#ffffff');
-  const FONT_COLOR_DARK = am4core.color('#393E46');
-  const FONT_COLOR_RED = am4core.color('#C8244D');
+  const FONT_SIZE_CHART_LABEL = 14;
 
   useEffect(() => {
     setSearchData(getSearchData(options));
@@ -37,7 +41,7 @@ export default function ChartSection(props) {
       setAvailableData(false);
     } else setAvailableData(true);
 
-    setValueData(getDataValue());
+    setValueData(getDataValue(searchData, countryData, apiData));
   }, [countryData, searchData.parameter, searchData.key]);
 
   async function getDataCountry() {
@@ -60,36 +64,31 @@ export default function ChartSection(props) {
       { number: 1e+6, suffix: 'M' },
       { number: 1e+9, suffix: 'B' }
     ];
-    // Create axes
     let categoryAxis = schedule.xAxes.push(new am4charts.CategoryAxis());
     categoryAxis.dataFields.category = 'data';
-    categoryAxis.renderer.labels.template.fontSize = 14;
-
-    // categoryAxis.title.text = "Countries";
+    categoryAxis.renderer.labels.template.fontSize = FONT_SIZE_CHART_LABEL;
 
     let valueAxis = schedule.yAxes.push(new am4charts.ValueAxis());
-    valueAxis.renderer.labels.template.fontSize = 14;
+    valueAxis.renderer.labels.template.fontSize = FONT_SIZE_CHART_LABEL;
 
-    // Create series
     let series = schedule.series.push(new am4charts.ColumnSeries());
     series.dataFields.valueY = 'value';
     series.dataFields.categoryX = 'data';
     series.name = 'Sales';
-    series.stroke = FONT_COLOR_RED;
     series.columns.template.tooltipText = 'Date: {categoryX}\nValue: {valueY}';
-    series.columns.template.fill = FONT_COLOR_LIGHT; // fill
+    series.columns.template.fill = FONT_COLOR_DARK;
     chart.current = schedule;
     return () => {
       schedule.dispose();
     };
   }, []);
 
-  useLayoutEffect(() => {
-    const xAxeslabels = chart.current._xAxes._values[0].renderer.labels.template;
-    const xAxesGrid = chart.current._xAxes._values[0].renderer.grid.template;
-    const yAxeslabels = chart.current._yAxes._values[0].renderer.labels.template;
-    const yAxesGrid = chart.current._yAxes._values[0].renderer.grid.template;
-    if (isDarkTheme) {
+  useEffect(() => {
+    const xAxeslabels = chart.current.xAxes.values[0].renderer.labels.template;
+    const xAxesGrid = chart.current.xAxes.values[0].renderer.grid.template;
+    const yAxeslabels = chart.current.yAxes.values[0].renderer.labels.template;
+    const yAxesGrid = chart.current.yAxes.values[0].renderer.grid.template;
+    if (!isDarkTheme) {
       xAxeslabels.fill = FONT_COLOR_LIGHT;
       yAxeslabels.fill = FONT_COLOR_LIGHT;
       yAxesGrid.stroke = FONT_COLOR_LIGHT;
@@ -101,11 +100,14 @@ export default function ChartSection(props) {
       xAxesGrid.stroke = FONT_COLOR_DARK;
     }
   }, [isDarkTheme]);
-  useLayoutEffect(() => {
-    chart.current.data = valueData;
-  }, [valueData]);
+
   useEffect(() => {
-    setValueData(getDataValue());
+    chart.current.data = valueData;
+    chart.current.series.values[0].stroke = getRuleColor(options);
+  }, [valueData]);
+
+  useEffect(() => {
+    setValueData(getDataValue(searchData, countryData, apiData));
   }, [countryData, searchData]);
 
   const sectionProps = {
@@ -119,48 +121,6 @@ export default function ChartSection(props) {
     optionMenuItems
   };
 
-  function getDataValue() {
-    const newData = [];
-    let obj = {};
-    let startValue = 0;
-
-    if (searchData.key) {
-      if (countryData.Total) {
-        if (searchData.key === 'Last day') {
-          obj = countryData.Total[searchData.parameter];
-        } else if (searchData.key === 'Last day100k') {
-          obj = countryData.Total100k[searchData.parameter];
-        } else {
-          obj = countryData[searchData.key][searchData.parameter];
-        }
-      } else if (searchData.key === 'Last day') {
-        obj = apiData.global.Total[searchData.parameter];
-      } else if (searchData.key === 'Last day100k') {
-        obj = apiData.global.Total100k[searchData.parameter];
-      } else {
-        obj = apiData.global[searchData.key][searchData.parameter];
-      }
-    } else {
-      obj = apiData.global.Total.cases;
-    }
-    Object.keys(obj).forEach(key => {
-      const newDate = {};
-      let correctDate = key.split('/');
-      if (correctDate[0].length === 1) correctDate[0] = 0 + correctDate[0];
-      if (correctDate[1].length === 1) correctDate[1] = 0 + correctDate[1];
-      [correctDate[0], correctDate[1]] = [correctDate[1], correctDate[0]];
-
-      newDate.data = correctDate.join('.') + '20';
-      if (searchData.key === 'Last day' || searchData.key === 'Last day100k') {
-        newDate.value = obj[key] - startValue < 0 ? 0 : obj[key] - startValue;
-        startValue = obj[key];
-      } else {
-        newDate.value = obj[key];
-      }
-      newData.push(newDate);
-    });
-    return newData;
-  }
   function changeChart() {
     if (!availableData) {
       return (<div className='chart-section-layout'> Data is not available</div>);
