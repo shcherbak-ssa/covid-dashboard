@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './countries-section.scss';
 
 import { getSearchData } from '../../tools';
 import Base from '../base';
 import Section from '../section';
+import { createKeyboard } from '../../keyboard/keyboard';
 
 export default function CountriesSection(props) {
   const {
     isDarkTheme, options, updateOptions, optionMenuItems, selectedCountry, setSelectedCountry
   } = props;
   const content = {
+    isDarkTheme,
     apiData: props.apiData,
     searchData: getSearchData(options),
     selectedCountry: selectedCountry,
@@ -46,14 +48,52 @@ function CountriesSectionContent(content) {
   const key = parametres.key;
   const type = parametres.parameter;
 
+  const countryInput = useRef(null);
+  const [keyboard, setKeyboard] = useState(null);
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+
+  const keyboardIconProps = {
+    icon: 'keyboard',
+    isDarkTheme: content.isDarkTheme,
+    isActionIcon: false,
+    iconClickHandle: () => {
+      const nextIsKeyboardOpen = !isKeyboardOpen;
+      setIsKeyboardOpen(nextIsKeyboardOpen);
+
+      if (nextIsKeyboardOpen) {
+        countryInput.current.focus();
+        keyboard.show()
+      } else {
+        keyboard.hide();
+      }
+    },
+  };
+
+  const inputProps = {
+    refCountryInput: countryInput,
+    value,
+    data: allData,
+    api: archiveData,
+    fn: setAllData,
+  };
+
+  useEffect(() => {
+    const createdKeyboard = createKeyboard(countryInput.current, updateCountryInputValue);
+    setKeyboard(createdKeyboard);
+  }, []);
+
+  function updateCountryInputValue(value) {
+    setInputValue(value);
+    searchFilter(value.toLowerCase(), inputProps);
+  }
+
   return (
     <div className="countries-section-content">
       <div className="countries-section-content-search">
-        <InputForCountriesSection
-          value={value}
-          data={allData}
-          api={archiveData}
-          fn={setAllData} />
+        <InputForCountriesSection {...inputProps} />
+        <div className="countries-section-keyboard">
+          <Base.Icon {...keyboardIconProps} />
+        </div>
       </div>
       <div className="countries-section-content-selected">
         <SelectedCountry
@@ -147,16 +187,11 @@ function clickListItem(data, selectCountry, api, fn, value) {
 function InputForCountriesSection(content) {
   const onChangeHandler = (event) => {
     event.preventDefault();
-    const value = event.target.value.toLowerCase();
-
-    let filter = [];
+    
     content.value.setInputValue(event.target.value);
-    if (value.length > content.value.inputValue.length) {
-      filter = content.data.filter((country) => country.countryName.toLowerCase().includes(value));
-    } else {
-      filter = content.api.filter((country) => country.countryName.toLowerCase().includes(value));
-    }
-    return content.fn(filter);
+
+    const value = event.target.value.toLowerCase();
+    searchFilter(value, content);
   };
 
   const onInputCliCKHandler = (event) => {
@@ -170,6 +205,7 @@ function InputForCountriesSection(content) {
   return (
     <form className="search-field">
       <input
+        ref={content.refCountryInput}
         className="search-field-input"
         type="text"
         value={content.value.inputValue}
@@ -178,4 +214,14 @@ function InputForCountriesSection(content) {
         onChange={onChangeHandler} />
     </form>
   );
+}
+
+function searchFilter(value, props) {
+  let filter = [];
+  if (value.length > props.value.inputValue.length) {
+    filter = props.data.filter((country) => country.countryName.toLowerCase().includes(value));
+  } else {
+    filter = props.api.filter((country) => country.countryName.toLowerCase().includes(value));
+  }
+  props.fn(filter);
 }
