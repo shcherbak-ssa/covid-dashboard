@@ -10,9 +10,14 @@ import './styles/keyboard.css';
 import { loadData } from './api';
 import App from './components/app';
 
+const ROOT_ELEMENT_ID = 'app';
+
 init();
 
 async function init() {
   const apiData = await loadData();
-  ReactDOM.render(<App apiData={apiData} />, document.getElementById('app'));
+  ReactDOM.render(
+    <App apiData={apiData} />,
+    document.getElementById(ROOT_ELEMENT_ID)
+  );
 }

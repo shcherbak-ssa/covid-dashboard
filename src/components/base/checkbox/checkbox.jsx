@@ -5,10 +5,12 @@ import './checkbox.scss';
 import { IS_SELECTED_CLASSNAME } from '../../../constants';
 import { getIconUrl } from '../../../tools';
 
+const CHECKED_ICON = 'checked';
+
 export default function Checkbox(props) {
   const {isSelected, value, dataKey, label, index, clickHandle} = props;
 
-  const iconUrl = getIconUrl('checked');
+  const iconUrl = getIconUrl(CHECKED_ICON);
   const classNames = classnames('base-checkbox click', {
     [IS_SELECTED_CLASSNAME]: isSelected
   });

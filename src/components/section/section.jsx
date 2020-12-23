@@ -7,12 +7,16 @@ import Base from '../base';
 import OptionsMenu from '../options-menu';
 import { GLOBAL_SECTION_TYPE } from '../../constants';
 
+const FULLSCREEN_LABEL = 'fullscreen';
+const OPTIONS_ICON = 'options';
+const CLOSE_ICON = 'close';
+
 export default function Section(props) {
   const {sectionType, fullscreenViewer, optionsMenuType, updateOptions, optionMenuItems} = props;
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isOptionsMenuOpen, setIsOptionsMenuOpen] = useState(false);
 
-  const fullscreenIconUrl = getIconUrl('fullscreen');
+  const fullscreenIconUrl = getIconUrl(FULLSCREEN_LABEL);
   const classNames = classnames('section', `${sectionType}-section`, {
     'section-fullscreen': isFullscreen,
   });
@@ -33,7 +37,7 @@ export default function Section(props) {
   function openFullscreen() {
     setIsFullscreen(true);
 
-    document.body.classList.add('fullscreen');
+    document.body.classList.add(FULLSCREEN_LABEL);
     document.body.style.overflow = 'hidden';
 
     if (fullscreenViewer) {
@@ -44,7 +48,7 @@ export default function Section(props) {
   function closeFullscreen() {
     setIsFullscreen(false);
 
-    document.body.classList.remove('fullscreen');
+    document.body.classList.remove(FULLSCREEN_LABEL);
     document.body.style.overflow = '';
 
     if (fullscreenViewer) {
@@ -76,7 +80,7 @@ function SectionHeader(props) {
   const {title, isDarkTheme, options} = props;
 
   const optionsIconProps = {
-    icon: 'options',
+    icon: OPTIONS_ICON,
     isDarkTheme,
     iconClickHandle: () => {
       props.toggleOptionsMenu();
@@ -85,7 +89,7 @@ function SectionHeader(props) {
 
   const closeIconProps = {
     isDarkTheme,
-    icon: 'close',
+    icon: CLOSE_ICON,
     isActionIcon: false,
     iconClickHandle: props.closeFullscreen,
   }
