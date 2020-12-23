@@ -45,6 +45,11 @@
     }
   }
 
+  &-keyboard {
+    transform: translateY(-50%);
+    -x-position: absolute 50% 5px x x;
+  }
+
   &-content {
     grid-area: content;
     display: flex;
@@ -59,6 +64,7 @@
 
     &-search {
       margin-bottom: 20px;
+      position: relative;
 
       .search-field {
         position: relative;

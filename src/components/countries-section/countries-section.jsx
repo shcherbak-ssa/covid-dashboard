@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './countries-section.scss';
 
 import { getSearchData } from '../../tools';
 import Base from '../base';
 import Section from '../section';
+import { createKeyboard } from '../../keyboard/keyboard';
 
 export default function CountriesSection(props) {
   const {
     isDarkTheme, options, updateOptions, optionMenuItems, selectedCountry, setSelectedCountry
   } = props;
   const content = {
+    isDarkTheme,
     apiData: props.apiData,
     searchData: getSearchData(options),
     selectedCountry: selectedCountry,
@@ -33,31 +35,69 @@ export default function CountriesSection(props) {
   );
 }
 
-function CountriesSectionContent(props) {
+function CountriesSectionContent(content) {
   const [inputValue, setInputValue] = useState('');
-  const [allData, setAllData] = useState(props.apiData);
-  const archiveData = props.apiData;
+  const [allData, setAllData] = useState(content.apiData);
+  const archiveData = content.apiData;
   const value = {
     inputValue: inputValue,
     setInputValue: setInputValue
   };
-  const parametres = props.searchData;
-  const selectCountry = props.selectCountry;
+  const parametres = content.searchData;
+  const selectCountry = content.selectCountry;
   const key = parametres.key;
   const type = parametres.parameter;
+
+  const countryInput = useRef(null);
+  const [keyboard, setKeyboard] = useState(null);
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+
+  const keyboardIconProps = {
+    icon: 'keyboard',
+    isDarkTheme: content.isDarkTheme,
+    isActionIcon: false,
+    iconClickHandle: () => {
+      const nextIsKeyboardOpen = !isKeyboardOpen;
+      setIsKeyboardOpen(nextIsKeyboardOpen);
+
+      if (nextIsKeyboardOpen) {
+        countryInput.current.focus();
+        keyboard.show()
+      } else {
+        keyboard.hide();
+      }
+    },
+  };
+
+  const inputProps = {
+    refCountryInput: countryInput,
+    value,
+    data: allData,
+    api: archiveData,
+    fn: setAllData,
+  };
+
+  useEffect(() => {
+    const createdKeyboard = createKeyboard(countryInput.current, updateCountryInputValue);
+    setKeyboard(createdKeyboard);
+  }, []);
+
+  function updateCountryInputValue(value) {
+    setInputValue(value);
+    searchFilter(value.toLowerCase(), inputProps);
+  }
 
   return (
     <div className="countries-section-content">
       <div className="countries-section-content-search">
-        <InputForCountriesSection
-          value={value}
-          data={allData}
-          api={archiveData}
-          fn={setAllData} />
+        <InputForCountriesSection {...inputProps} />
+        <div className="countries-section-keyboard">
+          <Base.Icon {...keyboardIconProps} />
+        </div>
       </div>
       <div className="countries-section-content-selected">
         <SelectedCountry
-          country={props.selectedCountry}
+          country={content.selectedCountry}
           data={parametres}
           fn={selectCountry} />
       </div>
@@ -82,13 +122,13 @@ function CountriesSectionContent(props) {
   );
 }
 
-const SelectedCountry = (props) => {
+const SelectedCountry = (country) => {
   let content;
-  if (props.country) {
-    const item = props.country;
-    const key = props.data.key;
-    const parameter = props.data.parameter;
-    const discardCountry = props.fn;
+  if (country.country) {
+    const item = country.country;
+    const key = country.data.key;
+    const parameter = country.data.parameter;
+    const discardCountry = country.fn;
 
     const clickDiscardHandler = () => clickDiscardSelected(discardCountry);
 
@@ -144,43 +184,44 @@ function clickListItem(data, selectCountry, api, fn, value) {
   return selectCountry(data);
 }
 
-function InputForCountriesSection(props) {
+function InputForCountriesSection(content) {
   const onChangeHandler = (event) => {
     event.preventDefault();
-    const value = event.target.value.toLowerCase();
+    
+    content.value.setInputValue(event.target.value);
 
-    let filter = [];
-    props.value.setInputValue(event.target.value);
-    if (value.length > props.value.inputValue.length) {
-      filter = props.data.filter((country) => country.countryName.toLowerCase().includes(value));
-    } else {
-      filter = props.api.filter((country) => country.countryName.toLowerCase().includes(value));
-    }
-    return props.fn(filter);
+    const value = event.target.value.toLowerCase();
+    searchFilter(value, content);
   };
 
   const onInputCliCKHandler = (event) => {
     event.preventDefault();
     if (event.target.value !== '') {
-      props.value.setInputValue('');
-      props.fn(props.api);
+      content.value.setInputValue('');
+      content.fn(content.api);
     }
   };
 
-  const submitHandler = (event) => {
-    event.preventDefault();
-  };
-
   return (
-    <form className="search-field"
-      onSubmit={submitHandler}>
+    <form className="search-field">
       <input
+        ref={content.refCountryInput}
         className="search-field-input"
         type="text"
-        value={props.value.inputValue}
+        value={content.value.inputValue}
         placeholder="Search"
         onClick={onInputCliCKHandler}
         onChange={onChangeHandler} />
     </form>
   );
+}
+
+function searchFilter(value, props) {
+  let filter = [];
+  if (value.length > props.value.inputValue.length) {
+    filter = props.data.filter((country) => country.countryName.toLowerCase().includes(value));
+  } else {
+    filter = props.api.filter((country) => country.countryName.toLowerCase().includes(value));
+  }
+  props.fn(filter);
 }

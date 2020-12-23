@@ -8,7 +8,6 @@ import './map-section.scss';
 
 import { getSearchData } from '../../tools';
 import Section from '../section';
-import MapLegend from './map-legend';
 import {
   MAP_BACKGROUND_COLOR_LIGHT,
   MAP_BACKGROUND_COLOR_DARK,
@@ -99,7 +98,6 @@ export default function MapSection(props) {
     sectionType: 'map',
     headerProps: {
       title: 'Map',
-      headerIcon: MapLegend({ isDarkTheme }),
       isDarkTheme,
       options,
     },

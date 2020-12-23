@@ -73,7 +73,7 @@ export default function Section(props) {
 }
 
 function SectionHeader(props) {
-  const {title, isDarkTheme, headerIcon, options} = props;
+  const {title, isDarkTheme, options} = props;
 
   const optionsIconProps = {
     icon: 'options',
@@ -94,7 +94,6 @@ function SectionHeader(props) {
     <div className="section-header flex-space-between">
       <Base.Title value={title} />
       <div className="section-icons">
-        {headerIcon ? headerIcon : ''}
         {options ? SectionOptionsIcon({options, optionsIconProps}) : ''}
         <div className="section-fullscreen-close">
           <Base.Icon {...closeIconProps} />
