@@ -7,6 +7,7 @@ import './chart-section.scss';
 import {
   FONT_COLOR_LIGHT,
   FONT_COLOR_DARK
+
 } from './../../constants';
 
 import Section from '../section';

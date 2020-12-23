@@ -1,23 +1,27 @@
 import {
   FILL_MAX_CASES_COLOR,
   FILL_MAX_DEATH_COLOR,
-  FILL_MAX_RECOVERED_COLOR
+  FILL_MAX_RECOVERED_COLOR,
+  LAST_DAY_TYPE_OPTION,
+  LAST_DAY_MEASUREMENT_OPTION,
+  CASES_PARAMETER_OPTION,
+  DEATHS_PARAMETER_OPTION
 } from './../../constants';
 
 function getDataValue(searchData, countryData, apiData) {
   let obj = {};
   if (searchData.key) {
     if (countryData.Total) {
-      if (searchData.key === 'Last day') {
+      if (searchData.key === LAST_DAY_TYPE_OPTION) {
         obj = countryData.Total[searchData.parameter];
-      } else if (searchData.key === 'Last day100k') {
+      } else if (searchData.key === LAST_DAY_MEASUREMENT_OPTION) {
         obj = countryData.Total100k[searchData.parameter];
       } else {
         obj = countryData[searchData.key][searchData.parameter];
       }
-    } else if (searchData.key === 'Last day') {
+    } else if (searchData.key === LAST_DAY_TYPE_OPTION) {
       obj = apiData.global.Total[searchData.parameter];
-    } else if (searchData.key === 'Last day100k') {
+    } else if (searchData.key === LAST_DAY_MEASUREMENT_OPTION) {
       obj = apiData.global.Total100k[searchData.parameter];
     } else {
       obj = apiData.global[searchData.key][searchData.parameter];
@@ -38,7 +42,7 @@ function convertDataValue(obj, searchData) {
     [correctDate[0], correctDate[1]] = [correctDate[1], correctDate[0]];
 
     newDate.data = correctDate.join('.') + '20';
-    if (searchData.key === 'Last day' || searchData.key === 'Last day100k') {
+    if (searchData.key === LAST_DAY_TYPE_OPTION || searchData.key === LAST_DAY_MEASUREMENT_OPTION) {
       newDate.value = obj[key] - startValue < 0 ? 0 : obj[key] - startValue;
       startValue = obj[key];
     } else {
@@ -49,10 +53,10 @@ function convertDataValue(obj, searchData) {
   return newData;
 }
 function getRuleColor(options) {
-  if (options.parameter === 'deaths') {
+  if (options.parameter === DEATHS_PARAMETER_OPTION) {
     return FILL_MAX_DEATH_COLOR;
   }
-  if (options.parameter === 'cases') {
+  if (options.parameter === CASES_PARAMETER_OPTION) {
     return FILL_MAX_CASES_COLOR;
   }
   return FILL_MAX_RECOVERED_COLOR;
