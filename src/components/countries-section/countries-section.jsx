@@ -5,6 +5,7 @@ import { getSearchData } from '../../tools';
 import Base from '../base';
 import Section from '../section';
 import { createKeyboard } from '../../keyboard/keyboard';
+import { clickDiscardSelected, clickListItem, searchFilter } from './countries-settings';
 
 export default function CountriesSection(props) {
   const {
@@ -156,10 +157,6 @@ const SelectedCountry = (props) => {
   return content;
 };
 
-function clickDiscardSelected(fn) {
-  fn(null);
-}
-
 const CountriesSectionContentItem = (data, item, selectCountry, key, type, api, fn, value) => {
   const clickListHandler = () => clickListItem(item, selectCountry, api, fn, value);
 
@@ -177,12 +174,6 @@ const CountriesSectionContentItem = (data, item, selectCountry, key, type, api, 
     </div>
   );
 };
-
-function clickListItem(data, selectCountry, api, fn, value) {
-  fn(api);
-  value.setInputValue('');
-  return selectCountry(data);
-}
 
 function InputForCountriesSection(content) {
   const onChangeHandler = (event) => {
@@ -214,14 +205,4 @@ function InputForCountriesSection(content) {
         onChange={onChangeHandler} />
     </form>
   );
-}
-
-function searchFilter(value, props) {
-  let filter = [];
-  if (value.length > props.value.inputValue.length) {
-    filter = props.data.filter((country) => country.countryName.toLowerCase().includes(value));
-  } else {
-    filter = props.api.filter((country) => country.countryName.toLowerCase().includes(value));
-  }
-  props.fn(filter);
 }
