@@ -40,8 +40,6 @@ export default class KeysEvents {
         return this.capsListener;
       case SPACE_KEY:
         return this.spaceListener;
-      case DONE_KEY:
-        return this.doneListener;
       case SHIFT_KEY:
         return this.shiftListener;
       case ARROW_LEFT_KEY:
@@ -60,6 +58,7 @@ export default class KeysEvents {
 
   capsListener() {
     this.properties.toggleCapsLock();
+    this.properties.countryInput.focus();
     this.keyboardView.toggleCapsLockView();
   }
 
@@ -68,12 +67,9 @@ export default class KeysEvents {
     this.removeShiftIfIsActive();
   }
 
-  doneListener() {
-    this.keyboardView.hide();
-  }
-
   shiftListener() {
     this.properties.toggleShift();
+    this.properties.countryInput.focus();
     this.keyboardView.toggleShiftView();
   }
 

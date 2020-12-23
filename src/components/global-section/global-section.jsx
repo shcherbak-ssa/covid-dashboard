@@ -5,6 +5,8 @@ import Base from '../base';
 import Section from '../section';
 import { GLOBAL_SECTION_TYPE } from '../../constants';
 
+const GLOBAL_SECTION_TITLE = 'Global';
+
 export default function GlobalSection({isDarkTheme, apiData}) {
   const [isFullscreen, setIsFullscreen] = useState(false);
 
@@ -14,7 +16,7 @@ export default function GlobalSection({isDarkTheme, apiData}) {
       setIsFullscreen(isFullscreenActive);
     },
     headerProps: {
-      title: 'Global',
+      title: GLOBAL_SECTION_TITLE,
       isDarkTheme,
     },
   };
@@ -41,11 +43,17 @@ export default function GlobalSection({isDarkTheme, apiData}) {
     <Section {...sectionProps}>
       <div className="global-section-content">
         <GlobalSectionItem {...casesProps} />
-        {isFullscreen ? <GlobalSectionItem {...deathsProps} /> : ''}
-        {isFullscreen ? <GlobalSectionItem {...recoveredProps} /> : ''}
+        {isFullscreen ? getFullscreenItems(deathsProps, recoveredProps) : ''}
       </div>
     </Section>
   );
+}
+
+function getFullscreenItems(deathsProps, recoveredProps) {
+  return [
+    <GlobalSectionItem key={0} {...deathsProps} />,
+    <GlobalSectionItem key={1} {...recoveredProps} />
+  ];
 }
 
 function GlobalSectionItem({type, title, number}) {

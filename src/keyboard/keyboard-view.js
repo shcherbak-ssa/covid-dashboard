@@ -66,8 +66,6 @@ export default class KeyboardView {
   isLetterKey(keyElement) {
     const { code } = keyElement.dataset;
     return /^Key/.test(code);
-    // const russianKeys = ['BracketLeft', 'BracketRight', 'Semicolon', 'Quote', 'Comma', 'Period'];
-    // return /^Key/.test(code) || (this.properties.lang === RU_LANG_KEY && russianKeys.includes(code));
   }
 
   shiftIsNull(keyElement) {

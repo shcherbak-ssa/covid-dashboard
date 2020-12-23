@@ -29,15 +29,7 @@ export async function loadData() {
 
 export async function loadTimelineForCountry({iso2Id, population}) {
   try {
-    const response = await fetch(
-      `https://disease.sh/v3/covid-19/historical/${iso2Id}?lastdays=all`,
-      {
-        method: 'GET',
-        headers: {},
-      }
-    );
-  
-    const historicalCountry = await response.json();
+    const historicalCountry = await request(`historical/${iso2Id}?lastdays=all`);
     return transformForChartCountry(historicalCountry.timeline, population);
   } catch (error) {
     return null;
