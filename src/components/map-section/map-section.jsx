@@ -92,7 +92,7 @@ export default function MapSection(props) {
     ccc.polygonTemplate.events.on('hit', (event) => {
       const index = event.target.dataItem.dataContext.apiInd;
       if (index !== null) {
-        setSelectedCountry([index]);
+        setSelectedCountry(apiData[index]);
       }
     });
 
