@@ -21,7 +21,7 @@ export default function InputForCountriesSection(content) {
   };
 
   return (
-    <form className="search-field">
+    <div className="search-field">
       <input
         ref={content.refCountryInput}
         className="search-field-input"
@@ -30,6 +30,6 @@ export default function InputForCountriesSection(content) {
         placeholder="Search"
         onClick={onInputCliCKHandler}
         onChange={onChangeHandler} />
-    </form>
+    </div>
   );
 }
