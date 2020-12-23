@@ -1,0 +1,43 @@
+@import '@style-assets';
+
+.chart-section {
+  grid-area: chart;
+
+  .section-content {
+    @media screen and (min-width: 1023px) {
+      grid-template-columns: 1fr 6fr 4fr 1fr;
+      grid-template-areas: ". content menu .";
+
+      .options-menu {
+        grid-area: menu;
+        top: -60px;
+        right: 50px;
+      }
+    }
+  }
+
+  &-layout {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    z-index: 1;
+  }
+
+  &-content {
+    height: 100%;
+    width: 100%;
+    grid-area: content;
+    position: relative;
+  }
+}
+
+.dark-theme .chart-section-layout {
+  background: #393E46;
+  color: #fff;
+}

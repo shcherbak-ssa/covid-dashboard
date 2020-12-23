@@ -1,0 +1,63 @@
+
+@import '@style-assets';
+
+.base-radio {
+  display: flex;
+  align-items: center;
+  padding-left: 16px;
+  height: 40px;
+  transition: .2s;
+  -x-font-size: 16px/24px;
+
+  .dark-theme & {
+    color: $text-on-dark;
+  }
+
+  &-label {
+    margin-right: 10px;
+    background: #E3DAF9;
+    -x-size: 24px;
+
+    .dark-theme & {
+      background: $dark;
+
+      @media screen and (min-width: 1023px) {
+        .fullscreen & {
+          background: rgba(34, 34, 34, 0.6);
+        }
+      }
+    }
+
+    span {
+      background: #fff;
+      display: none;
+      -x-size: 10px;
+    }
+
+    &, span {
+      border-radius: 50%;
+    }
+  }
+
+  &.is-selected, &:hover {
+    background: #F1F1F5;
+
+    .dark-theme & {
+      background: rgba(45, 45, 45, 0.9);
+    }
+  }
+
+  &.is-selected {
+    .base-radio-label {
+      background: $dark;
+
+      span {
+        display: block;
+      }
+
+      .dark-theme & {
+        background: #000;
+      }
+    }
+  }
+}

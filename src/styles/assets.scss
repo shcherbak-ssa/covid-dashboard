@@ -1,0 +1,40 @@
+
+$design-width: 1366;
+
+$dark: #393E46;
+
+$text-on-dark: #fff;
+$text-on-light: #393E46;
+
+$cases-number-type-color: #FF2105;
+$deaths-number-type-color: #393E46;
+$recovered-number-type-color: #70A800;
+
+/** light theme */
+$header-background-light-theme: #393E46;
+$main-background-light-theme: #F1F1F5;
+$footer-background-light-theme: #393E46;
+
+$section-title-color-light-theme: #393E46;
+$section-background-light-theme: #fff;
+
+$options-menu-background-light-theme: #fff;
+
+$fullscreen-container-background-light-theme: #fff;
+
+/** dark theme */
+$header-background-dark-theme: #222;
+$main-background-dark-theme: #2D2D2D;
+$footer-background-dark-theme: #222;
+
+$section-title-color-dark-theme: #fff;
+$section-background-dark-theme: #393E46;
+
+$options-menu-background-dark-theme: #222;
+
+$fullscreen-container-background-dark-theme: #393E46;
+
+/** functions */
+@function relativeWidth($width) {
+  @return $width/$design-width * 100%;
+}

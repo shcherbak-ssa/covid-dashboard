@@ -1,0 +1,11 @@
+
+@import '@style-assets';
+
+.base-title {
+  color: $section-title-color-light-theme;
+  font: 500 18px/28px 'Montserrat', sans-serif;
+
+  .dark-theme & {
+    color: $section-title-color-dark-theme;
+  }
+}

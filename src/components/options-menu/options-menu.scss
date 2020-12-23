@@ -1,0 +1,64 @@
+
+@import '@style-assets';
+
+.options-menu {
+  background: $options-menu-background-light-theme;
+  border-radius: 4px;
+  box-shadow: 0 4px 4px rgba(51, 51, 51, 0.04), 0 14px 24px rgba(51, 51, 51, 0.12);
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 54px;
+  right: 12px;
+  padding: 8px 0;
+  width: 240px;
+  z-index: 9;
+
+  .dark-theme & {
+    background: $options-menu-background-dark-theme;
+  }
+
+  &-divider {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding-left: 16px;
+    -x-font-size: 13px/20px;
+
+    .dark-theme & {
+      color: $text-on-dark;
+    }
+  }
+
+  &.is-open {
+    display: flex;
+  }
+
+  @media screen and (min-width: 1023px) {
+    .fullscreen .dark-theme & {
+      background: transparent;
+    }
+
+    .fullscreen .dark-theme &-divider {
+      color: rgba(255, 255, 255, 0.8);
+    }
+  }
+}
+
+@media screen and (min-width: 1023px) {
+  .fullscreen .options-menu {
+    box-shadow: none;
+    width: 100%;
+    padding: 0;
+
+    &-divider {
+      color: rgba(57, 62, 70, 0.8);
+      font-size: 14px;
+    }
+  
+    &-section .base-radio,
+    &-section .base-checkbox {
+      border-radius: 4px;
+    }
+  }
+}

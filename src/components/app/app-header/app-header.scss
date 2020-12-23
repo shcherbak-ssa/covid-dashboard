@@ -1,0 +1,74 @@
+
+@import '@style-assets';
+
+.app-header {
+  background: $header-background-light-theme;
+  color: $text-on-dark;
+  padding: 0 16px;
+
+  .dark-theme & {
+    background: $header-background-dark-theme;
+  }
+
+  .header {
+    &-title {
+      font-size: 24px;
+
+      @media screen and (max-width: 470px) {
+        font-size: 20px;
+      }
+    }
+
+    &-label {
+      @media screen and (max-width: 800px) {
+        display: none;
+      }
+    }
+
+    &-date {
+      @media screen and (max-width: 690px) {
+        display: none;
+      }
+    }
+    
+    &-toggle {
+      background: $section-background-light-theme;
+      margin-left: 12px;
+      -x-size: 48px 24px;
+
+      span {
+        background: $dark;
+        display: block;
+        transition: .2s;
+        -x-size: 16px;
+        -x-position: absolute 4px x x 4px;
+
+        .dark-theme & {
+          background: #000;
+          left: 28px;
+        }
+      }
+
+      &, span {
+        border-radius: 100px;
+      }
+
+      .dark-theme & {
+        background: $section-background-dark-theme;
+      }
+    }
+
+    &-theme {
+      .base-text-label {
+        @media screen and (max-width: 420px) {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &, .header-title, .header-theme {
+    display: flex;
+    align-items: center;
+  }
+}

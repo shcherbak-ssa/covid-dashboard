@@ -1,0 +1,57 @@
+
+@import '@style-assets';
+
+.app-footer {
+  background: $footer-background-light-theme;
+  padding: 0 16px;
+
+  .dark-theme & {
+    background: $footer-background-dark-theme;
+  }
+
+  @media screen and (max-width: 740px) {
+    flex-direction: column;
+    padding: 24px;
+  }
+
+  .footer {
+    &-links {
+      color: $text-on-dark;
+      display: flex;
+      align-items: center;
+
+      @media screen and (max-width: 740px) {
+        flex-direction: column;
+        margin-bottom: 20px;
+
+        .base-link {
+          margin-bottom: 6px;
+        }
+      }
+
+      span {
+        margin-right: 4px;
+
+        @media screen and (max-width: 740px) {
+          margin-right: 0;
+          margin-bottom: 10px;
+        }
+      }
+    }
+
+    &-course {
+      padding: 4px 6px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 4px;
+    }
+
+    &-course-link {
+      display: block;
+      width: 74px;
+
+      @media screen and (max-width: 730px) {
+        padding-left: 6px;
+      }
+    }
+  }
+}
