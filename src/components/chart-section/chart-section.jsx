@@ -6,8 +6,8 @@ import * as am4charts from '@amcharts/amcharts4/charts';
 import './chart-section.scss';
 import {
   FONT_COLOR_LIGHT,
-  FONT_COLOR_DARK
-
+  FONT_COLOR_DARK,
+  OCEAN_COLOR_DARK
 } from './../../constants';
 
 import Section from '../section';
@@ -88,19 +88,21 @@ export default function ChartSection(props) {
     const xAxesGrid = chart.current.xAxes.values[0].renderer.grid.template;
     const yAxeslabels = chart.current.yAxes.values[0].renderer.labels.template;
     const yAxesGrid = chart.current.yAxes.values[0].renderer.grid.template;
+    const chartBackground = chart.current.background;
     if (!isDarkTheme) {
       xAxeslabels.fill = FONT_COLOR_LIGHT;
       yAxeslabels.fill = FONT_COLOR_LIGHT;
       yAxesGrid.stroke = FONT_COLOR_LIGHT;
       xAxesGrid.stroke = FONT_COLOR_LIGHT;
+      chartBackground.fill = FONT_COLOR_DARK;
     } else {
       xAxeslabels.fill = FONT_COLOR_DARK;
       yAxeslabels.fill = FONT_COLOR_DARK;
       yAxesGrid.stroke = FONT_COLOR_DARK;
       xAxesGrid.stroke = FONT_COLOR_DARK;
+      chartBackground.fill = OCEAN_COLOR_DARK;
     }
   }, [isDarkTheme]);
-
   useEffect(() => {
     chart.current.data = valueData;
     chart.current.series.values[0].stroke = getRuleColor(options);

@@ -24,7 +24,7 @@ const OCEAN_COLOR_DARK = '#4c5564';
 const FONT_COLOR_LIGHT = '#393E46';
 const FONT_COLOR_DARK = '#FFFFFF';
 const FILL_MAX_CASES_COLOR = '#FF2105';
-const FILL_MAX_DEATH_COLOR = '#393E46';
+const FILL_MAX_DEATH_COLOR = '#2d2d2d';
 const FILL_MAX_RECOVERED_COLOR = '#70a800';
 
 const FILL_MIN_ALL_COLOR = '#aac4e7'; // not used yet
