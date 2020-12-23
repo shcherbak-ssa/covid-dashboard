@@ -19,6 +19,8 @@
   }
 
   .section-content {
+    align-items: initial;
+
     @media screen and (min-width: 1023px) {
       grid-template-columns: repeat(4, 1fr);
       grid-template-areas: ". content menu .";
@@ -54,8 +56,11 @@
     flex-direction: column;
     height: 100%;
     position: relative;
-    // align-items: center;
     overflow: hidden;
+    width: 100%;
+    @media screen and (max-width: 1023px) {
+      max-width: 270px;
+    }
 
     &-search {
       margin-bottom: 20px;
