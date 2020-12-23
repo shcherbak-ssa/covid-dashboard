@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, {
   useEffect, useState, useLayoutEffect, useRef
 } from 'react';
@@ -17,6 +18,7 @@ export default function ChartSection(props) {
   const [countryData, setCountryData] = useState({});
   const [valueData, setValueData] = useState({});
   const [availableData, setAvailableData] = useState({});
+
   const chart = useRef(null);
 
   const FONT_COLOR_LIGHT = am4core.color('#ffffff');
@@ -51,7 +53,6 @@ export default function ChartSection(props) {
     } else { setCountryData({}); }
   }
   useLayoutEffect(() => {
-
     const schedule = am4core.create('chartdiv1', am4charts.XYChart);
     schedule.numberFormatter.numberFormat = '#a';
     schedule.numberFormatter.bigNumberPrefixes = [
@@ -142,8 +143,7 @@ export default function ChartSection(props) {
     } else {
       obj = apiData.global.Total.cases;
     }
-
-    for (let key in obj) {
+    Object.keys(obj).forEach(key => {
       const newDate = {};
       let correctDate = key.split('/');
       if (correctDate[0].length === 1) correctDate[0] = 0 + correctDate[0];
@@ -158,14 +158,14 @@ export default function ChartSection(props) {
         newDate.value = obj[key];
       }
       newData.push(newDate);
-    }
+    });
     return newData;
   }
   function changeChart() {
     if (!availableData) {
-      return (<div className='chart-section-layout'> Data is not available</div>)
+      return (<div className='chart-section-layout'> Data is not available</div>);
     }
-
+    return null;
   }
   const content = changeChart();
   return (
@@ -174,6 +174,5 @@ export default function ChartSection(props) {
         <div id="chartdiv1" style={{ width: '100%', height: '100%' }}></div>
         {content}
       </div>
-    </Section>)
-
+    </Section>);
 }
